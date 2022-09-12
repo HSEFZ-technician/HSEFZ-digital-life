@@ -1,0 +1,32 @@
+.settings_title{
+    border-bottom: 1px solid #bbb;
+    font-size: 1.8em;
+    font-weight: 700;
+    padding-bottom: 0.6rem;
+}
+
+@media(min-width: 992px){
+    .settings_title{
+        margin-top: -0.5rem;
+    }
+}
+
+td a{
+    text-decoration: none !important;
+    color: #4183C4;
+}
+td a:hover{
+    color: #3C7DBE;
+}
+.table th{
+    border-top: none !important;
+    border-bottom-width: 1px !important;
+    font-size: 0.9rem;
+}
+.table td{
+    font-size: 0.95rem;
+}
+
+.table{
+    table-layout: fixed;
+}

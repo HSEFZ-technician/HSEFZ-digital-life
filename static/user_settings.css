@@ -1,0 +1,45 @@
+.settings-content{
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 1000px;
+    margin-top: 1.8rem;
+}
+
+@media(min-width: 992px){
+    .settings-nav{
+        max-width: 250px !important;
+    }
+}
+
+.settings-nav-row{
+    height: 2.3rem;
+    line-height: 1.6rem;
+    margin: 0.3rem 0.1rem;
+    display: flex;
+    padding: 0;
+    border-radius: 5px;
+    display: inline-block;
+    width: 100%;
+}
+
+.settings-nav-row a{
+    text-decoration: none !important;
+    color: #000 !important;
+    font-size: 0.85rem;
+    font-weight: 400;
+    padding: 0.4rem 1rem;
+    width: 100%;
+    display: block;
+}
+
+.settings-current{
+    background-color: #f1f1f1 !important;
+}
+
+.settings-other{
+    background-color: #fff;
+}
+
+.settings-other a:hover{
+    background-color: #f6f6f6;
+}

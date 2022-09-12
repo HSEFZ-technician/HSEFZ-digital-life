@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'form.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="input_form">
+    {% crispy form form.helper %}
+    <div class="extra-links">
+        <a href="{% url 'club:manual_activate' %}" class="not_verified">激活账号</a>
+        <a href="{% url 'club:send_modify_password_email' %}" class="forget-password">忘记密码</a>
+    </div>
+    <hr>
+    <div class="social-media">
+        <h6>还没账户？
+            <a href="{% url 'club:register' %}">注册</a>
+        </h6>
+    </div>
+</div>
+
+{% endblock %}

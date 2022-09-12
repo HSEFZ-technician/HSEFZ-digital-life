@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'user_settings.css' %}">
+
+{% endblock %}
+
+{% block body %}
+
+<div class="row settings-content ml-auto mr-auto">
+    <div class="col-lg settings-nav">
+        <div class="settings-nav-row {% if now_user_info %} settings-current {% else %} settings-other {% endif %}">
+            <a href="{% if now_user_info %} # {% else %} {% url 'club:user_info' %} {% endif %}">
+                <div style="display: flex;flex-direction: row">
+                    <font face="微软雅黑">
+                        个人资料
+                    </font>
+                    <span class="ml-auto">
+                        <i class="fa-solid fa-circle-user"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
+        <div class="settings-nav-row {% if now_user_security %} settings-current {% else %} settings-other {% endif %}">
+            <a href="{% if now_user_security %} # {% else %} {% url 'club:user_security' %} {% endif %}">
+                <div style="display: flex;flex-direction: row">
+                    <font face="微软雅黑">
+                        账号安全
+                    </font>
+                    <span class="ml-auto">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
+        {% if user.is_superuser or user.is_staff %}
+        <div class="settings-nav-row {% if now_event_manage or now_modify_event %} settings-current {% else %} settings-other {% endif %}">
+            <a href="{% if now_event_manage %} # {% else %} {% url 'club:event_manage' %} {% endif %}">
+                <div style="display: flex;flex-direction: row">
+                    <font face="微软雅黑">
+                        课程管理
+                    </font>
+                    <span class="ml-auto">
+                        <i class="fa-solid fa-landmark"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+        {% if user.is_superuser %}
+        <div class="settings-nav-row {% if now_user_manage %} settings-current {% else %} settings-other {% endif %}">
+            <a href="{% if now_user_manage %} # {% else %} # {% endif %}">
+                <div style="display: flex;flex-direction: row">
+                    <font face="微软雅黑">
+                        用户管理
+                    </font>
+                    <span class="ml-auto">
+                        <i class="fa-solid fa-list-check"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+        {% if now_modify_event %}
+        <div class="settings-nav-row">
+            <a href="{% url 'club:event_manage' %}" style="color:#4183C4 !important;">
+                <div style="display: flex;flex-direction: row">
+                    <span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                    <font face="微软雅黑" style="margin-left: 0.2rem;">
+                        返回课程管理
+                    </font>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-lg settings-forms">
+        {% block settings_content %}
+        {% endblock %}
+    </div>
+</div>
+
+{% endblock %}

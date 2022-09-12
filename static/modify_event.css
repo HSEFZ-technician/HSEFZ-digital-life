@@ -1,0 +1,91 @@
+.asteriskField{
+    display:none;
+}
+
+#id-setting_modify_event_form{
+    width: 90%;
+}
+
+#id-setting_modify_event_form label{
+    padding-bottom: 0.15rem;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #ccc;
+    /* width:100%; */
+    font-family: '黑体';
+}
+
+.settings_title{
+    border-bottom: 1px solid #bbb;
+    font-size: 1.8em;
+    font-weight: 700;
+    padding-bottom: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+@media(min-width: 992px){
+    .settings_title{
+        margin-top: -0.5rem;
+    }
+}
+
+.btn-div{
+    margin-bottom: 0.5rem;
+}
+
+.btn-div button{
+    width: 5rem;
+    height: 1.6rem;
+    padding: 0 1rem;
+    margin-right: 1rem;
+}
+
+.btn-div .spinner-border{
+    height: 1.2rem !important;
+    width: 1.2rem !important;
+    margin: auto !important;
+    border-width: 0.2em;
+}
+
+#add-button,#remove-button{
+    margin: 0.5rem 0;
+}
+
+.table th{
+    border-top: none !important;
+    border-bottom-width: 1px !important;
+    font-size: 0.9rem;
+}
+
+.table td{
+    font-size: 0.95rem;
+}
+
+.table{
+    table-layout: fixed;
+    margin-bottom: 0.5rem !important;
+}
+
+.table-div{
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 0.5rem;
+}
+
+.index-column{
+    width: 2rem;
+    text-align: center;
+}
+
+.name-column{
+    width: 6rem;
+}
+
+td span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+}

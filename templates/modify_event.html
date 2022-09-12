@@ -1,0 +1,137 @@
+{% extends "user_settings.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static 'modify_event.css' %}">
+<script src="{% static 'table2csv.js' %}" type="text/javascript"></script>
+<script src="{% static 'modify_event.js' %}" type="text/javascript"></script>
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block settings_content %}
+
+<div class="settings_title">
+    <font face="Nato Sans">
+        课程信息
+    </font>
+</div>
+<div class="d-inline-flex btn-div">
+    <button class="btn btn-outline-success" id="new-button">
+        新建
+    </button>
+    <button class="btn btn-outline-info" id="save-button" type="submit" form="id-setting_modify_event_form">
+        保存
+    </button>
+    <button class="btn btn-outline-danger" id="delete-button">
+        删除
+    </button>
+</div>
+
+<div id="optional-content">
+    {% crispy form form.helper %}
+    <div class="settings_title" style="margin-top:0 !important;">
+        <font face="Nato Sans">
+            内定用户
+        </font>
+    </div>
+    <div style="display:flex;flex-direction: row;">
+        <div class="col table-div">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="index-column">#</th>
+                        <th class="name-column">名字</th>
+                        <th>邮箱</th>
+                        <th>组</th>
+                    </tr>
+                </thead>
+                <tbody id="table-locked">
+                    {% autoescape off %}
+                    {{ locked_value }}
+                    {% endautoescape %}
+                </tbody>
+            </table>
+        </div>
+        <div style="width: 10rem;padding-left:1rem;display:block;">
+            <div class="container btn-div">
+                <button class="btn btn-outline-success" id="add-button">
+                    添加
+                </button>
+                <button class="btn btn-outline-danger" id="remove-button">
+                    删除
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="settings_title" style="margin-top:0 !important;">
+        <font face="Nato Sans">
+            所有用户
+        </font>
+    </div>
+    <div style="display:flex;flex-direction: row;">
+        <div class="col table-div">
+            <table class="table" id="download-table">
+                <thead>
+                    <tr>
+                        <th class="index-column">#</th>
+                        <th class="name-column">名字</th>
+                        <th>邮箱</th>
+                        <th>组</th>
+                    </tr>
+                </thead>
+                <tbody id="table-other">
+                    {% autoescape off %}
+                    {{ other_value }}
+                    {% endautoescape %}
+                </tbody>
+            </table>
+        </div>
+        <div style="width: 10rem;padding-left:1rem;display:block;">
+            <div class="container btn-div">
+                <button class="btn btn-outline-info" id="download-button">
+                    下载
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if has_value %}
+<script type="text/javascript">
+    const hide_form = false;
+</script>
+<style type="text/css">
+    #new-button{
+        display: none;
+    }
+</style>
+{% else %}
+<script type="text/javascript">
+    const hide_form = true;
+</script>
+<style type="text/css">
+    #save-button{
+        display: none;
+    }
+    #delete-button{
+        display: none;
+    }
+    #optional-content{
+        display: none;
+    }
+</style>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,83 @@
+body {
+    align-items: center;
+    background-color: #efefef !important;
+}
+
+.input_form {
+    padding: 20px 50px 20px 50px;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+    text-align: center;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.input_form .form-icon {
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.input_form .item{
+    border-radius: 2px;
+    margin-bottom: 10px;
+    padding: 2px 10px 2px 10px;
+}
+
+.input_form .submit_button{
+    background-color: limegreen;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.input_form .input_hint{
+    float: left;
+}
+
+.input_form label{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.input_form hr{
+    height: 2px;
+    background-color: #e7e7e7;
+    border: none;
+}
+
+.input_form .extra-links{
+    margin-top: -1em;
+    margin-bottom: -0.5em;
+    text-decoration: none;
+    color: rgb(52,152,219);
+    font-size: small;
+    overflow: auto;
+}
+
+.input_form .forget-password{
+    float: right;
+}
+
+.input_form .not_verified{
+    float: left;
+}
+
+.input_form .social-media a{
+    text-decoration: none;
+}
+
+.input_form .password_or_username_invalid{
+    display: block;
+    text-align: center;
+    color: #dc3545;
+    font-weight: bolder;
+    font-size: 80%;
+    margin-bottom: -0.5em;
+    margin-top: -0.5em;
+}

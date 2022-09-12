@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'form.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="input_form">
+    {% crispy form form.helper %}
+    <hr>
+    <div class="social-media">
+        <h6>已有账户？
+            <a href="{% url 'club:login' %}">登录</a>
+        </h6>
+    </div>
+</div>
+
+{% endblock %}

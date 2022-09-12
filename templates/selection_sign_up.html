@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% load static %}
+
+{% block include %}
+
+<script>
+    const query_url = "http://{{ domain }}{% url 'club:selection_sign_up' %}?id={{ selection_id }}&&type=json";
+    const submit_url = "http://{{ domain }}{% url 'club:selection_sign_up' %}?id={{ selection_id }}";
+    const desc_url = "http://{{ domain }}{% url 'club:selection_desc' %}";
+</script>
+<link rel="stylesheet" type="text/css" href="{% static 'selection_sign_up.css' %}">
+<script type="text/javascript" src="{% static 'selection_sign_up.js' %}"></script>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="row sign-up-content ml-auto mr-auto">
+    <div class="col-lg sign-up-nav">
+        <div class="sign-up-nav-row">
+            <a href="{% url 'club:home' %}">
+                <div style="display: flex;flex-direction: row">
+                    <span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                    <font face="微软雅黑" style="margin-left: 0.2rem;">
+                        返回选课列表
+                    </font>
+                </div>
+            </a>
+        </div>
+        <div class="container">
+            <div class="desc-of-desc-title">
+                <span><h5 style="margin:0;">说明</h5></span>
+                <button type="button" class="btn btn-outline-info ml-auto refresh-button" style="padding: 0 1rem;">
+                    刷新
+                </button>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item border-success">
+                    <span style="vertical-align: middle;">
+                        <i class="fa-solid fa-check fa-lg"></i>
+                    </span>
+                    <span>&nbsp;表示你当前已选择了这门课</span>
+                </li>
+                <li class="list-group-item border-danger">
+                    <span style="vertical-align: middle;">
+                        <i class="fa-solid fa-ban fa-lg"></i>
+                    </span>
+                    <span>&nbsp;表示当前这门课禁止报名</span>
+                </li>
+                <li class="list-group-item border-danger">
+                    <span style="vertical-align: middle;">
+                        <i class="fa-solid fa-xmark fa-2xl"></i>
+                    </span>
+                    <span>&nbsp;表示当前这门课已满</span>
+                </li>
+                <li class="list-group-item border-info">
+                    <span>&nbsp;否则表示：如果你当前报名的课程数未达上限，则你可以报名这门课</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg sign-up-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="status-title">状态</th>
+                    <th class="name-title">名称</th>
+                    <th>简介</th>
+                    {% if display_type %}
+                    <th class="type-title">类别</th>
+                    {% endif %}
+                    <th class="cnum-title">当前人数</th>
+                    <th class="rnum-title">剩余名额</th>
+                    <th class="op-title">操作</th>
+                </tr>
+            </thead>
+            <tbody id="sign-up-table-tbody">
+                {% autoescape off %}
+                {{ sign_up_table_content }}
+                {% endautoescape %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

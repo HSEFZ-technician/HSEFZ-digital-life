@@ -1,0 +1,50 @@
+.settings_title{
+    border-bottom: 1px solid #bbb;
+    font-size: 1.8em;
+    font-weight: 700;
+    padding-bottom: 0.6rem;
+}
+
+@media(min-width: 992px){
+    .settings_title{
+        margin-top: -0.5rem;
+    }
+}
+
+.asteriskField{
+    display: none;
+}
+
+#id-setting_modify_password_form label{
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+#id-setting_modify_password_form #id_old_password,#id_new_password,#id_password_confirm{
+    width: 75%;
+}
+
+#id-setting_modify_password_form .submit_button{
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.4rem 1.2rem;
+    height: 2.2rem;
+    width: 5rem;
+}
+
+.submit_button .spinner-border{
+    height: 1.4rem;
+    width: 1.4rem;
+}
+
+#id-setting_modify_password_form .submit_button:enabled{
+    background-color: #2185d0;
+}
+
+#id-setting_modify_password_form{
+    margin-top: 1.8rem;
+}
+
+#id-setting_modify_password_form .submit_button:hover:enabled{
+    background-color: rgb(0, 94, 184);
+}

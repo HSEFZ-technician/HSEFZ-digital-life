@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
+    <div class="col-xl-6 col-md-8 offset-xl-1_5">
+        <div class="home-container">
+            <div class="home-container-title">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <font face="微软雅黑" class="title-text">公告</font>
+            </div>
+            <div class="notice-container">
+                <div class="row notice-row">
+                    <div class="notice-title notice-category">
+                        <font face="微软雅黑">标题</font>
+                    </div>
+                    <div class="notice-date notice-category">
+                        <font face="微软雅黑">日期</font>
+                    </div>
+                </div>
+                {% autoescape off %}
+                {{ notice_content }}
+                {% endautoescape %}
+            </div>
+        </div>
+        <div class="home-container">
+            <div class="home-container-title">
+                <i class="fa-solid fa-database"></i>
+                <font face="微软雅黑" class="title-text">选课</font>
+            </div>
+            <div class="row selection-row">
+                {% autoescape off %}
+                {{ selection_content }}
+                {% endautoescape %}
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-4">
+        <div class="home-container info-home-container">
+            <div class="home-container-title">
+                <i class="fa-solid fa-circle-info"></i>
+                <font face="微软雅黑" class="title-text">关于</font>
+            </div>
+            <div class="home-feynman-icon">
+                <img src="{% static 'feynman.jpg' %}" style="max-width: 100%;">
+            </div>
+            <p><font face="微软雅黑" class="about-text">此网站为华师大二附中机选网站</font></p>
+            <p>
+            <font face="Nato Sans" class="about-text">Made by <a class="about-text-link" href="mailto:aixiaoyaowudi@gmail.com">xiaoyaowudi</a></font>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

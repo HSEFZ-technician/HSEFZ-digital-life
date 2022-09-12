@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'page.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="page-box">
+    {% autoescape off %}
+    {{ content }}
+    {% endautoescape %}
+</div>
+
+{% endblock %}

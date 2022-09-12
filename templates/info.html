@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'info.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ info }}</title>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="info-box">
+    <font face="微软雅黑">
+        <h4>{{ info }}</h4>
+    </font>
+</div>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "user_settings.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static 'user_info.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block settings_content %}
+
+<div class="settings_title">
+        <font face="Nato Sans">
+            个人信息
+        </font>
+</div>
+
+<div style="margin-top: 1rem;">
+    <p><span>{{ info_content }}</span></p>
+    <p>如有疑问请联系&nbsp;<a href="mailto:xiaoziyao@hsefz.cn">xiaoziyao@hsefz.cn</a></p>
+</div>
+
+{% endblock %}
