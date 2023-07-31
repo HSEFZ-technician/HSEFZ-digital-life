@@ -28,6 +28,7 @@ def fit_constraints(x, A):
 
     return True
 
+
 def get_selection_data(selection_object, user, is_started, ignore_forbid = False):
     res       = {}
     type_set  = EventClassType.objects.filter(event_id = selection_object)
