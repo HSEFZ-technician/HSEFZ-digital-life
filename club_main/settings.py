@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
 
 # Application definition
@@ -80,23 +80,14 @@ WSGI_APPLICATION = 'club_main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-'''
-
 DATABASES = {
         'default':{
             'ENGINE':'django.db.backends.mysql',
-            'NAME':'NAME',
-            'USER':'USER',
-            'PASSWORD':'PASSWORD',
+            'NAME':'selection_users',
+            'USER':'root',
+            'PASSWORD':'123',
             'HOST':'localhost',
-            'PORT':'PORT',
+            'PORT':'3306',
         }
 }
 
@@ -180,10 +171,10 @@ EMAIL_SUFFIX = '@hsefz.cn'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-EMAIL_HOST = 'EMAIL_HOST'
-EMAIL_HOST_USER = 'EMAIL_HOST_USER'
-EMAIL_HOST_PASSWORD = 'EMAIL_HOST_PASSWORD'
-EMAIL_PORT = 0
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_USER = 'dengchenluo@hsefz.cn'
+EMAIL_HOST_PASSWORD = 'chenluoluo07313'
+EMAIL_PORT = 25
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CELERY_BROKER_URL = "CELERY_BROKER_URL"

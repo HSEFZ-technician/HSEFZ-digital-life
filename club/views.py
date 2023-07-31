@@ -623,7 +623,7 @@ def selection_desc_view(request):
 @login_required()
 def user_info_view(request):
     
-    info_content = "%s %s %s %s"
+    # info_content = "%s %s %s %s"
 
     student_id        = request.user.student_id
     student_real_name = request.user.student_real_name
@@ -631,7 +631,7 @@ def user_info_view(request):
 
     student_groups    = ','.join([g.name for g in request.user.groups.all()])
 
-    return render(request,'user_info.html',{'title':'个人信息','info_content':info_content % (student_id,student_real_name,student_email,student_groups),'now_user_info': True})
+    return render(request,'user_info.html',{'title':'个人信息','id': str(student_id),'real_name': str(student_real_name), 'email': str(student_email),'group': str(student_groups),'now_user_info': True})
 
 @login_required()
 def event_manage_view(request):

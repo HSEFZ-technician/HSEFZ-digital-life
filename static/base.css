@@ -18,7 +18,7 @@ body{
     padding-left: 30px;
     padding-top: 15px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #bbb;
+    /* border-bottom: 1px solid #bbb; */
 }
 
 .navbar-expand-md .navbar-nav .nav-item{
@@ -46,16 +46,16 @@ body{
 }
 
 .dropdown-button:hover{
-    text-decoration: underline !important;
+    /* text-decoration: underline !important; */
 }
 
 .dropdown-button:active{
-    text-decoration: underline !important;
+    /* text-decoration: underline !important; */
     font-weight: bolder;
 }
 
 .dropdown-button:focus{
-    text-decoration: underline !important;
+    /* text-decoration: underline !important; */
     font-weight: bolder;
 }
 

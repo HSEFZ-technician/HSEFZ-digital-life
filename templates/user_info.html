@@ -27,8 +27,16 @@
 </div>
 
 <div style="margin-top: 1rem;">
-    <p><span>{{ info_content }}</span></p>
-    <p>如有疑问请联系&nbsp;<a href="mailto:xiaoziyao@hsefz.cn">xiaoziyao@hsefz.cn</a></p>
+    <div class="card">
+        <div class="card-body">
+          <p class="card-text"><bold>姓名</bold> <span>{{ real_name }}</span></p>
+          <p class="card-text"><bold>学号</bold> <span>{{ id }}</span></p>
+          <p class="card-text"><bold>邮箱</bold> <span>{{ email }}</span></p>
+          <p class="card-text"><span>{{ group }}</span></p>
+        </div>
+    </div>
+    <br>
+    <p>如有疑问请联系&nbsp;<a href="mailto:dengchenluo@hsefz.cn">dengchenluo@hsefz.cn</a></p>
 </div>
 
 {% endblock %}

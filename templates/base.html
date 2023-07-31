@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/solid.min.css" integrity="sha512-uj2QCZdpo8PSbRGL/g5mXek6HM/APd7k/B5Hx/rkVFPNOxAQMXD+t+bG4Zv8OAdUpydZTU3UHmyjjiHv2Ww0PA==" crossorigin="anonymous"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/solid.min.js" integrity="sha512-dcTe66qF6q/NW1X64tKXnDDcaVyRowrsVQ9wX6u7KSQpYuAl5COzdMIYDg+HqAXhPpIz1LO9ilUCL4qCbHN5Ng==" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="shortcut icon" href="{% static '256x256.jpg' %}">
     <link rel="stylesheet" href="{% static 'base.css' %}">
 
     {% block title %} {% endblock %}
@@ -40,10 +40,7 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav ml-auto navigation-bar-right-links">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">关于本站</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">选课系统</a>
+                    <a class="nav-link" href="https://hsefz.aeilot.top">社团年鉴</a>
                 </li>
                 <li class="nav-item dropdown">
                 {% if user.is_authenticated %}
