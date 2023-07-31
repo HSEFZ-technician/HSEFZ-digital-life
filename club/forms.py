@@ -445,12 +445,11 @@ class ModifyEventForm(forms.Form):
         choices=[(0,'default'),(1,'not_default')],
     )
 
-    long_desc = forms.CharField(
-        label='课程长简介',
+    linkToYearbook = forms.CharField(
+        label='社团年鉴网站地址',
         required=False,
         min_length=0,
-        max_length=20000,
-        widget=forms.Textarea,
+        max_length=100,
     )
 
     forbid_chosen = forms.BooleanField(
@@ -473,6 +472,6 @@ class ModifyEventForm(forms.Form):
             Field('short_desc', css_class="form-control"),
             Field('max_num', css_class="form-control"),
             Field('type_class', css_class="form-control"),
-            Field('long_desc', css_class="form-control"),
+            Field('linkToYearbook', css_class="form-control"),
             Field('forbid_chosen', css_class="form-control"),
         )

@@ -14,6 +14,10 @@
     display: none;
 }
 
+.form-control{
+    border-radius: 6px !important;
+}
+
 #id-setting_modify_password_form label{
     font-size: 0.9rem;
     font-weight: bold;
@@ -29,6 +33,7 @@
     padding: 0.4rem 1.2rem;
     height: 2.2rem;
     width: 5rem;
+    border-radius: 6px !important;
 }
 
 .submit_button .spinner-border{

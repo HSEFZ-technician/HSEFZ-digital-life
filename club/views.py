@@ -714,7 +714,7 @@ def modify_event_view(request):
                                                                                 'short_desc':'默认',
                                                                                 'max_num':0,
                                                                                 'type_class':types[0][0],
-                                                                                'long_desc':'',
+                                                                                'linkToYearbook':'',
                                                                                 'forbid_chosen':False,
                                                                             }})
             elif typename == 'delete':
@@ -734,7 +734,7 @@ def modify_event_view(request):
                     rec.name = form.cleaned_data['title']
                     rec.desc = form.cleaned_data['short_desc']
                     rec.max_num = form.cleaned_data['max_num']
-                    rec.full_desc = form.cleaned_data['long_desc'].strip()
+                    rec.full_desc = form.cleaned_data['linkToYearbook'].strip()
                     rec.hf_desc = (rec.full_desc != '')
                     rec.forbid_chs = form.cleaned_data['forbid_chosen']
                     rec.class_type = EventClassType.objects.get(pk=form.cleaned_data['type_class'])
@@ -813,7 +813,7 @@ def modify_event_view(request):
                                         'short_desc':rec.desc,
                                         'max_num':rec.max_num,
                                         'type_class':rec.class_type.pk,
-                                        'long_desc':rec.full_desc,
+                                        'linkToYearbook':rec.full_desc,
                                         'forbid_chosen':rec.forbid_chs,
                                     })
         ld = get_selection_list(rec)

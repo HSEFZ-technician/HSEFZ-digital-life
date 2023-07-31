@@ -4,6 +4,10 @@
     padding-bottom: 0.6rem;
 }
 
+.card{
+    border-radius: 12px !important;
+}
+
 bold{
     font-weight: bolder;
 }

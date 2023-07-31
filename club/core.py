@@ -56,6 +56,7 @@ def get_selection_data(selection_object, user, is_started, ignore_forbid = False
         c_res              = {}
         c_res['type']      = c_type.pk
         c_res['full_desc'] = c.hf_desc
+        c_res['link'] = c.full_desc
         c_res['id']        = c.pk
         c_res['desc']      = c.desc
         c_res['name']      = c.name
@@ -194,7 +195,7 @@ def convert_selection_data_to_html(data):
         full_desc_button = ''
 
         if c['full_desc']:
-            full_desc_button = "<button class='btn btn-info btn-full-desc' id='%s'>查看</button>" % (class_id)
+            full_desc_button = "<a href='%s'>查看社团年鉴页面</a>" % (c['link'])
         
         result += row_content % (logo, name, desc, full_desc_button, type_div, cnum, rnum, op_content)
     

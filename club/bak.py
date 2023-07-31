@@ -521,7 +521,7 @@ def selection_sign_up_view(request):
 
     if get_type == 'json':
         return JsonResponse(res)
-    
+
     content = convert_selection_data_to_html(res)
     
     return render(request, 'selection_sign_up.html', {'title': _.title, 'sign_up_table_content': content,
