@@ -196,7 +196,7 @@ def convert_selection_data_to_html(data):
         full_desc_button = ''
 
         if c['full_desc']:
-            full_desc_button = "<a href='%s'>查看社团年鉴页面</a>" % (c['link'])
+            full_desc_button = "<a href='%s'>社团年鉴</a>" % (c['link'])
         
         result += row_content % (logo, name, desc, full_desc_button, type_div, cnum, rnum, op_content)
     

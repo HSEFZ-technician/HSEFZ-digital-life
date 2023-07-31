@@ -10,6 +10,7 @@ body{
     color: #444 !important;
 }
 
+
 .navigation-bar{
     padding-left: 30px;
     padding-top: 15px;
@@ -47,13 +48,18 @@ body{
 
 .dropdown-button:active{
     /* text-decoration: underline !important; */
-    font-weight: bolder;
+    /* font-weight: bold; */
 }
 
 .dropdown-button:focus{
     /* text-decoration: underline !important; */
-    font-weight: bolder;
+    /* font-weight: bold; */
 }
+
+.dropdown{
+    top: 2px;
+}
+
 
 @media(min-width: 1200px){
     .offset-xl-1_5{

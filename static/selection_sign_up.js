@@ -40,7 +40,7 @@ function convert_form_data_to_json(data) {
             op_content="<button class='btn btn-danger id='{0}' disabled>未开始</button>".format(class_id);
         }
         if(c['full_desc']){
-            full_desc_button="<a href='{0}'>查看社团年鉴页面</a>".format(c['link']);
+            full_desc_button="<a href='{0}'>社团年鉴</a>".format(c['link']);
         }
         result+=row_content.format(logo,name,desc,full_desc_button,type_div,cnum,rnum,op_content);
     }

@@ -50,6 +50,24 @@
     border-top-color: rgba(34,36,38,0.15);
 }
 
+.border-success {
+    color: #28a745;
+    background: #28a7452e!important;
+    border: none !important;
+}
+
+.border-danger {
+    color: #dc3545;
+    background: #dc35452e!important;
+    border: none !important;
+}
+
+.border-info {
+    color: #17a2b8;
+    background: #17a2b82e!important;
+    border: none !important;
+}
+
 .status-title{
     width: 5rem;
     padding-left: 1rem;
@@ -64,8 +82,18 @@
     color:limegreen;
 }
 
+.btn{
+    border-radius: 20px !important;
+    padding: 2px;
+}
+
 .name-title{
     width: 11rem;
+}
+
+.list-group{
+    border-color: #00000000;
+    border-radius: 8px !important;
 }
 
 .cnum-title, .rnum-title{
