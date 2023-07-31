@@ -12,8 +12,24 @@ pip install -r requirements.txt
 
 ## Usage
 
-Run the following codes:
+Setup DB: (We are using MariaDB as the database)
+
+Before this step, make sure you've set up a local DB server and made changes in the `club_main/settings.py` file. (Specify the server info)
+
+```bash
+python manage.py makemigrations club
+python manage.py migrate
+```
+
+Create superuser:
+
+```bash
+python manage.py createsuperuser
+```
+
+Run the server:
 
 ```bash
 python manage.py runserver
 ```
+And that's it!
