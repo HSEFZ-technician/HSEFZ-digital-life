@@ -61,6 +61,7 @@ def get_selection_data(selection_object, user, is_started, ignore_forbid = False
         c_res['id']        = c.pk
         c_res['desc']      = c.desc
         c_res['name']      = c.name
+        c_res['mnum']      = c.max_num
         c_res['cnum']      = StudentSelectionInformation.objects.filter(info_id=c).count()
         c_res['rnum']      = max(c.max_num - c_res['cnum'],0)
 

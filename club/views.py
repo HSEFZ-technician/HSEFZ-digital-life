@@ -504,29 +504,32 @@ def selection_sign_up_view(request):
     if request.method == 'POST':
         if (not is_started):
             return JsonResponse({'code':0,'message':'当前选课还未开始','data':res})
+        json_data = json.loads(request.body.decode())
+        class_id  = json_data['class_id']
+        type_name = json_data['type']
         try:
-            json_data = json.loads(request.body.decode())
-            class_id  = json_data['class_id']
-            type_name = json_data['type']
             if type_name == 'register':
                 for c in res['data']:
                     if c['id'] == class_id:
-                        if c['status'] == 0:
-                            sel = StudentSelectionInformation(info_id=EventClassInformation.objects.get(pk=class_id),user_id=request.user,locked=False)
-                            sel.save()
-                            return JsonResponse({'code':1,'message':'报名成功','data':get_selection_data(_, request.user, True)})
-                        else:
-                            return JsonResponse({'code':0,'message':'您当前无法报名此课程','data':res})
+                        with transaction.atomic():
+                            if c['status'] == 0 and (c['mnum'] - StudentSelectionInformation.objects.select_for_update().filter(info_id=class_id).count() > 0):
+                                sel = StudentSelectionInformation(info_id=EventClassInformation.objects.get(pk=class_id),user_id=request.user,locked=False)
+                                # StudentSelectionInformation.objects.raw("LOCK TABLES club_studentselectioninformation")
+                                sel.save()
+                                return JsonResponse({'code':1,'message':'报名成功','data':get_selection_data(_, request.user, True)})
+                            else:
+                                return JsonResponse({'code':0,'message':'您当前无法报名此课程','data':res})
             elif type_name == 'cancel_register':
                 for c in res['data']:
                     if c['id'] == class_id:
                         if c['status'] == 4:
-                            sel = StudentSelectionInformation.objects.filter(info_id=EventClassInformation.objects.get(pk=class_id),user_id=request.user,locked=False)
-                            if sel.count() == 0:
-                                return JsonResponse({'code':0,'message':'您当前无法取消报名此课程','data':res})
-                            else:
-                                sel.delete()
-                                return JsonResponse({'code':1,'message':'取消报名成功','data':get_selection_data(_, request.user, True)})
+                            with transaction.atomic():
+                                sel = StudentSelectionInformation.objects.filter(info_id=EventClassInformation.objects.get(pk=class_id),user_id=request.user,locked=False)
+                                if sel.count() == 0:
+                                    return JsonResponse({'code':0,'message':'您当前无法取消报名此课程','data':res})
+                                else:
+                                    sel.delete()
+                            return JsonResponse({'code':1,'message':'取消报名成功','data':get_selection_data(_, request.user, True)})
                         else:
                             return JsonResponse({'code':0,'message':'您当前无法取消报名此课程','data':res})
             else:
