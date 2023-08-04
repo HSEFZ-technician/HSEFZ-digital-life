@@ -329,66 +329,89 @@ def home_view(request):
     notice_template = '''<div class='row notice-row'><div class='notice-title'>
                          <a href='/notice/%d/'>%s</a></div><div class='notice-date'>
                          <span>%s</span></div></div>'''
-
-    running_div     = '''
-    <div class="col-lg-6 selection">
-        <div class="selection-content border-running">
-            <div class="home-selection-title title-running running-title"><font face="微软雅黑"><a href="%s" target="_blank">%s</a></font></div>
-            <div class="row selection-info-content">
-                <div class="selection-information">
-                    <div class="selection-info-line"><span><font face="微软雅黑" style="font-weight:bold;color:#444;">选课人群:</font></span></div>
-                    <div class="selection-info-line"><span><font face="微软雅黑" style="color:dimgrey;">%s</font></span></div>
-                    <div class="button-container">
-                        <button type="button" class="btn btn-info detail-button running-button" onclick="window.open('%s','_blank');">查看详情</button>
-                    </div>
-                </div>
-                <div class="selection-status running-status">
-                    <div class="selection-info-line">
-                        <span><font face="微软雅黑" style="font-weight:bold;color:#444;">状态:</font></span>
-                        <span class="ml-auto mr-auto"><font face="微软雅黑" style="font-weight:900;" class="running-text">进行中</font></span>
-                    </div>
-                    <div class="selection-info-line selection-hr-line"><hr class="running-hr"></div>
-                    <div class="selection-info-line">
-                        <span><font face="微软雅黑" style="font-weight:bold;color:#444;">时间:</font></span>
-                        <span class="ml-auto" style="color: dimgrey;">%s</span>
-                    </div>
-                    <div class="selection-info-line" style="color: dimgrey;">
-                        <span class="ml-auto"><font face="微软雅黑">至&nbsp;</font></span><span>%s</span>
-                    </div>
-                </div>
+    running_div = '''
+        <div class="col-lg-6 selection">
+        <div class="card selection-content">
+            <div class="card-body">
+              <h5 class="card-title">%s <span class="badge badge-pill badge-primary">进行中...</span></h5>
+              <h6 class="card-subtitle mb-2 text-muted">选课人群: %s</h6>
+              <p class="card-text">选课时间为 %s 至 %s</p>
+              <a href="%s" class="card-link">查看详情</a>
             </div>
         </div>
-    </div>'''
-
+        </div>
+    '''
     not_started_div = '''
     <div class="col-lg-6 selection">
-        <div class="selection-content border-not-started">
-            <div class="home-selection-title title-not-started not-started-title"><font face="微软雅黑"><a href="%s" target="_blank">%s</a></font></div>
-            <div class="row selection-info-content">
-                <div class="selection-information">
-                    <div class="selection-info-line"><span><font face="微软雅黑" style="font-weight:bold;color:#444;">选课人群:</font></span></div>
-                    <div class="selection-info-line"><span><font face="微软雅黑" style="color:dimgrey;">%s</font></span></div>
-                    <div class="button-container">
-                        <button type="button" class="btn btn-success detail-button not-started-button" onclick="window.open('%s','_blank');">查看详情</button>
-                    </div>
-                </div>
-                <div class="selection-status not-started-status">
-                    <div class="selection-info-line">
-                        <span><font face="微软雅黑" style="font-weight:bold;color:#444;">状态:</font></span>
-                        <span class="ml-auto mr-auto"><font face="微软雅黑" style="font-weight:900;" class="not-started-text">未开始</font></span>
-                    </div>
-                    <div class="selection-info-line selection-hr-line"><hr class="not-started-hr"></div>
-                    <div class="selection-info-line">
-                        <span><font face="微软雅黑" style="font-weight:bold;color:#444;">时间:</font></span>
-                        <span class="ml-auto" style="color: dimgrey;">%s</span>
-                    </div>
-                    <div class="selection-info-line" style="color: dimgrey;">
-                        <span class="ml-auto"><font face="微软雅黑">至&nbsp;</font></span><span>%s</span>
-                    </div>
-                </div>
+        <div class="card selection-content">
+            <div class="card-body">
+              <h5 class="card-title">%s <span class="badge badge-pill badge-info">未开始</span></h5>
+              <h6 class="card-subtitle mb-2 text-muted">选课人群: %s</h6>
+              <p class="card-text">选课时间为 %s 至 %s</p>
+              <a href="%s" class="card-link">查看详情</a>
             </div>
         </div>
-    </div>'''
+        </div>
+    '''
+    # running_div     = '''
+    # <div class="col-lg-6 selection">
+    #     <div class="selection-content border-running">
+    #         <div class="home-selection-title title-running running-title"><font face="微软雅黑"><a href="%s" target="_blank">%s</a></font></div>
+    #         <div class="row selection-info-content">
+    #             <div class="selection-information">
+    #                 <div class="selection-info-line"><span><font face="微软雅黑" style="font-weight:bold;color:#444;">选课人群:</font></span></div>
+    #                 <div class="selection-info-line"><span><font face="微软雅黑" style="color:dimgrey;">%s</font></span></div>
+    #                 <div class="button-container">
+    #                     <button type="button" class="btn btn-info detail-button running-button" onclick="window.open('%s','_blank');">查看详情</button>
+    #                 </div>
+    #             </div>
+    #             <div class="selection-status running-status">
+    #                 <div class="selection-info-line">
+    #                     <span><font face="微软雅黑" style="font-weight:bold;color:#444;">状态:</font></span>
+    #                     <span class="ml-auto mr-auto"><font face="微软雅黑" style="font-weight:900;" class="running-text">进行中</font></span>
+    #                 </div>
+    #                 <div class="selection-info-line selection-hr-line"><hr class="running-hr"></div>
+    #                 <div class="selection-info-line">
+    #                     <span><font face="微软雅黑" style="font-weight:bold;color:#444;">时间:</font></span>
+    #                     <span class="ml-auto" style="color: dimgrey;">%s</span>
+    #                 </div>
+    #                 <div class="selection-info-line" style="color: dimgrey;">
+    #                     <span class="ml-auto"><font face="微软雅黑">至&nbsp;</font></span><span>%s</span>
+    #                 </div>
+    #             </div>
+    #         </div>
+    #     </div>
+    # </div>'''
+
+    # not_started_div = '''
+    # <div class="col-lg-6 selection">
+    #     <div class="selection-content border-not-started">
+    #         <div class="home-selection-title title-not-started not-started-title"><font face="微软雅黑"><a href="%s" target="_blank">%s</a></font></div>
+    #         <div class="row selection-info-content">
+    #             <div class="selection-information">
+    #                 <div class="selection-info-line"><span><font face="微软雅黑" style="font-weight:bold;color:#444;">选课人群:</font></span></div>
+    #                 <div class="selection-info-line"><span><font face="微软雅黑" style="color:dimgrey;">%s</font></span></div>
+    #                 <div class="button-container">
+    #                     <button type="button" class="btn btn-success detail-button not-started-button" onclick="window.open('%s','_blank');">查看详情</button>
+    #                 </div>
+    #             </div>
+    #             <div class="selection-status not-started-status">
+    #                 <div class="selection-info-line">
+    #                     <span><font face="微软雅黑" style="font-weight:bold;color:#444;">状态:</font></span>
+    #                     <span class="ml-auto mr-auto"><font face="微软雅黑" style="font-weight:900;" class="not-started-text">未开始</font></span>
+    #                 </div>
+    #                 <div class="selection-info-line selection-hr-line"><hr class="not-started-hr"></div>
+    #                 <div class="selection-info-line">
+    #                     <span><font face="微软雅黑" style="font-weight:bold;color:#444;">时间:</font></span>
+    #                     <span class="ml-auto" style="color: dimgrey;">%s</span>
+    #                 </div>
+    #                 <div class="selection-info-line" style="color: dimgrey;">
+    #                     <span class="ml-auto"><font face="微软雅黑">至&nbsp;</font></span><span>%s</span>
+    #                 </div>
+    #             </div>
+    #         </div>
+    #     </div>
+    # </div>'''
 
     notice_set      = Notice.objects.filter(active=True)
 
@@ -424,21 +447,16 @@ def home_view(request):
         
         if s.start_time <= time_now:
 
-            selection_list.append((s.start_time, running_div     % ('/selection_sign_up/?id=%d' % (s.pk),
-                                                                    s.title,
-                                                                    student_string,
-                                                                    '/selection_sign_up/?id=%d' % (s.pk),
+            selection_list.append((s.start_time, running_div     % (s.title,student_string,
                                                                     s.start_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT),
-                                                                    s.end_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT))))
+                                                                    s.end_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT),
+                                                                    '/selection_sign_up/?id=%d' % (s.pk))))
         else:
 
-            selection_list.append((s.start_time, not_started_div % ('/selection_sign_up/?id=%d' % (s.pk),
-                                                                    s.title,
-                                                                    student_string,
-                                                                    '/selection_sign_up/?id=%d' % (s.pk),
+            selection_list.append((s.start_time, not_started_div     % (s.title,student_string,
                                                                     s.start_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT),
-                                                                    s.end_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT))))
-
+                                                                    s.end_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT),
+                                                                    '/selection_sign_up/?id=%d' % (s.pk))))
     selection_list.sort(key=lambda x:x[0])
 
     for i in selection_list:

@@ -48,6 +48,7 @@
 }
 
 .notice-container{
+    margin-top: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -56,9 +57,7 @@
 }
 
 .notice-container .notice-title a{
-    color: #4183C4;
     text-decoration-style: solid;
-    text-decoration-color: #4183C4;
     text-decoration-line: none;
 }
 
@@ -75,7 +74,7 @@
     line-height: 1.7rem;
     font-size: 0.95rem;
     text-align: left;
-    border-bottom: 1px solid #00000025;
+    border-bottom: none !important;
 }
 
 .notice-category{
@@ -88,8 +87,30 @@
 }
 
 .selection-content{
-    margin: 0.8rem 1rem;
-    border-radius: 8px;
+    margin: 0.8rem 1rem !important;
+    border-radius: 8px !important;
+}
+
+.text{
+    color: #000000 !important;
+}
+
+.badge{
+    margin-left: 5px;
+}
+
+.badge-primary {
+    color: #007bff !important;
+    background-color: #007bff2e !important;
+}
+
+.badge-info {
+    color: #17a2b8 !important;
+    background-color: #17a2b82e !important;
+}
+
+.card-title{
+    font-weight: bold;
 }
 
 .selection-row{

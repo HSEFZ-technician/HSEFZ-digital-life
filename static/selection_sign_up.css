@@ -82,6 +82,41 @@
     color:limegreen;
 }
 
+.btn-primary {
+    color: #007bff !important;
+    background-color: #007bff2e !important;
+    border: none !important;
+}
+
+.card{
+    margin: auto;
+    border-radius: 8px !important;
+}
+
+.btn-outline-info {
+    color: #17a2b8 !important;
+    background-color: #17a2b82e !important;
+    border: none !important;
+}
+
+/*.btn-primary:hover {*/
+/*    color: #fff;*/
+/*    background-color: #007bff;*/
+/*    border-color: #007bff;*/
+/*}*/
+
+.btn-danger {
+    color: #dc3545 !important;
+     background-color: #dc35452e !important;
+    border: none !important;
+}
+
+/*.btn-danger:hover {*/
+/*    color: #fff;*/
+/*    background-color: #dc3545;*/
+/*    border-color: #dc3545;*/
+/*}*/
+
 .btn{
     border-radius: 20px !important;
     padding: 2px;
