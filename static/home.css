@@ -51,6 +51,10 @@
     margin-bottom: 2rem;
 }
 
+.notice-date{
+    margin-right: auto;
+}
+
 .notice-container .notice-title{
     width: 80%;
 }
@@ -99,13 +103,13 @@
 }
 
 .badge-primary {
-    color: #007bff !important;
-    background-color: #007bff2e !important;
+    color: #00550a !important;
+    background-color: #008d112e !important;
 }
 
 .badge-info {
-    color: #17a2b8 !important;
-    background-color: #17a2b82e !important;
+    color: #816a00 !important;
+    background-color: #ffcf004d !important;
 }
 
 .card-title{
