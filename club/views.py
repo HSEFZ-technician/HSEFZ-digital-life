@@ -511,20 +511,22 @@ def selection_sign_up_view(request):
             if type_name == 'register':
                 for c in res['data']:
                     if c['id'] == class_id:
-                        with transaction.atomic():
-                            if c['status'] == 0 and (c['mnum'] - StudentSelectionInformation.objects.select_for_update().filter(info_id=class_id).count() > 0):
-                                sel = StudentSelectionInformation(info_id=EventClassInformation.objects.get(pk=class_id),user_id=request.user,locked=False)
-                                # StudentSelectionInformation.objects.raw("LOCK TABLES club_studentselectioninformation")
-                                sel.save()
-                                return JsonResponse({'code':1,'message':'报名成功','data':get_selection_data(_, request.user, True)})
-                            else:
-                                return JsonResponse({'code':0,'message':'您当前无法报名此课程','data':res})
+                        StudentSelectionInformation.objects.raw("LOCK TABLES club_studentselectioninformation;")
+                        if c['status'] == 0 and (c['mnum'] - StudentSelectionInformation.objects.filter(info_id=class_id).count() > 0):
+                            sel = StudentSelectionInformation(info_id=EventClassInformation.objects.get(pk=class_id),user_id=request.user,locked=False)
+                            # StudentSelectionInformation.objects.raw("LOCK TABLES club_studentselectioninformation")
+                            sel.save()
+                            StudentSelectionInformation.objects.raw("UNLOCK TABLES;")
+                            return JsonResponse({'code':1,'message':'报名成功','data':get_selection_data(_, request.user, True)})
+                        else:
+                            StudentSelectionInformation.objects.raw("UNLOCK TABLES;")
+                            return JsonResponse({'code':0,'message':'您当前无法报名此课程','data':res})
             elif type_name == 'cancel_register':
                 for c in res['data']:
                     if c['id'] == class_id:
                         if c['status'] == 4:
                             with transaction.atomic():
-                                sel = StudentSelectionInformation.objects.filter(info_id=EventClassInformation.objects.get(pk=class_id),user_id=request.user,locked=False)
+                                sel = StudentSelectionInformation.objects.select_for_update().filter(info_id=EventClassInformation.objects.get(pk=class_id),user_id=request.user,locked=False)
                                 if sel.count() == 0:
                                     return JsonResponse({'code':0,'message':'您当前无法取消报名此课程','data':res})
                                 else:
