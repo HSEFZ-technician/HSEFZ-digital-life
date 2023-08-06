@@ -1,0 +1,76 @@
+{% extends "user_settings.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static 'modify_event.css' %}">
+<!-- <script src="{% static 'table2csv.js' %}" type="text/javascript"></script> -->
+<script src="{% static 'modify_notice.js' %}" type="text/javascript"></script>
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block settings_content %}
+
+<div class="settings_title">
+    <font face="Nato Sans">
+        编辑公告
+    </font>
+</div>
+
+<div class="d-inline-flex btn-div">
+    <button class="btn btn-outline-info" id="save-button">
+        保存
+    </button>
+    <button class="btn btn-outline-info" id="delete-button">
+        删除
+    </button>
+</div>
+
+<div id="optional-content">
+    {% crispy form form.helper %}
+</div>
+
+<script>
+    const manage_url = "{% url 'club:notice_manage' %}";
+</script>
+
+<!-- {% if has_value %}
+<script type="text/javascript">
+    const hide_form = false;
+</script>
+<style type="text/css">
+    #new-button {
+        display: none;
+    }
+</style>
+{% else %}
+<script type="text/javascript">
+    const hide_form = true;
+</script>
+<style type="text/css">
+    #save-button {
+        display: none;
+    }
+
+    #delete-button {
+        display: none;
+    }
+
+    #optional-content {
+        display: none;
+    }
+</style> -->
+{% endif %}
+
+{% endblock %}

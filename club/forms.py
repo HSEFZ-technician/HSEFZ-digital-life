@@ -411,7 +411,7 @@ class SettingModifyPasswordForm(forms.Form):
             Field('old_password', css_class="form-control"),
             Field('new_password', css_class="form-control"),
             Field('password_confirm', css_class="form-control"),
-            HTML('<button class="btn btn-primary submit_button" type="submit" id="submit-id-submit">提交</button>'),
+            HTML('<button class="btn btn-primary submit_button" id="submit-id-submit">提交</button>'),
             # ButtonHolder(
             #     Submit('submit', '提交', css_class="btn btn-primary submit_button")
             # ),
@@ -474,4 +474,35 @@ class ModifyEventForm(forms.Form):
             Field('type_class', css_class="form-control"),
             Field('linkToYearbook', css_class="form-control"),
             Field('forbid_chosen', css_class="form-control"),
+        )
+
+class ModifyNoticeForm(forms.Form):
+
+    title = forms.CharField(
+        label='公告标题',
+        required=True,
+        min_length=1,
+        max_length=30,
+    )
+
+    content = forms.CharField(
+        label='内容',
+        required=False,
+        widget=forms.Textarea,
+        min_length=0,
+        max_length=10000,
+    )
+
+    def __init__(self,default_value,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-setting_modify_notice_form"
+        self.helper.form_method = 'post'
+
+        for k in default_value:
+            self.fields[k].initial = default_value[k]
+
+        self.helper.layout = Layout(
+            Field('title', css_class="form-control"),
+            Field('content', css_class="form-control"),
         )

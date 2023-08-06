@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, LoginForm, ManualActivateForm, ModifyPasswordForm, SendModifyPasswordEmailForm, SettingModifyPasswordForm, ModifyEventForm
+from .forms import RegisterForm, LoginForm, ModifyNoticeForm, ManualActivateForm, ModifyPasswordForm, SendModifyPasswordEmailForm, SettingModifyPasswordForm, ModifyEventForm
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from .models import StudentClubData, Notice, SelectionEvent, StudentSelectionInformation, EventClassInformation, EventClassType
@@ -333,7 +333,7 @@ def home_view(request):
         <div class="col-lg-6 selection">
         <div class="card selection-content">
             <div class="card-body">
-              <h5 class="card-title">%s <span class="badge badge-pill badge-primary">进行中...</span></h5>
+              <h5 class="card-title">%s <span class="badge badge-pill badge-primary">进行中</span></h5>
               <h6 class="card-subtitle mb-2 text-muted">选课人群: %s</h6>
               <p class="card-text">选课时间为 %s 至 %s</p>
               <a href="%s" class="card-link">查看详情</a>
@@ -695,6 +695,89 @@ def comb_list_single_data(d):
     for i in range(len(d)):
         res+='<tr><td>%d</td><td>%s</td><td><span>%s</span></td><td><span>%s</span></td></tr>' % (i+1,d[i]['n'],d[i]['e'],d[i]['g'])
     return res
+
+@login_required()
+def notice_manage_view(request):
+    if (not request.user.is_superuser):
+        raise Http404
+
+    modify_notice_url = "/modify_notice"
+
+    if request.method == 'POST':
+        try:
+            json_data = json.loads(request.body.decode())
+            typename  = json_data['type']
+            if typename == "new":
+                _ = Notice(release_date = datetime.datetime.now(), title = '标题', content = '', active = True)
+                _.save()
+                return JsonResponse({'code':1,'message':'新建成功'})
+            else:
+                return JsonResponse({'code':0,'message':'请求非法'})
+        except Exception as e:
+            # print(e)
+            return JsonResponse({'code':0,'message':'数据非法或发生了错误'})
+
+    _s               = Notice.objects.all()
+    table_content    = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%s</td></tr>"
+    cs               = []
+    for _ in _s:
+        cs.append((_.release_date,table_content % (modify_notice_url, _.pk, _.title,
+                                                 _.release_date)))
+    
+    cs.sort(key=lambda x:x[0])
+
+    table_div=''
+    
+    for i in cs:
+        table_div+=i[1]
+
+    return render(request,'notice_manage.html',{'title':'公告管理','now_notice_manage':True, 'table_div':table_div})
+
+@login_required()
+def modify_notice_view(request):
+    notice_id = request.GET.get('id',None)
+    try:
+        _ = Notice.objects.get(pk=notice_id)
+    except Exception as e:
+        raise Http404
+
+    cap = request.user.is_superuser
+
+    if (not cap):
+        raise Http404
+
+    if request.method == 'POST':
+        try:
+            json_data = json.loads(request.body.decode())
+            typename  = json_data['type']
+            if typename == 'save':
+                form = ModifyNoticeForm({},json_data['data'])
+                rec = _
+                if form.is_valid():
+                    rec.title = form.cleaned_data['title']
+                    rec.content = form.cleaned_data['content'].strip()
+                    rec.save()
+                    return JsonResponse({'code':1,'message':'保存成功'})
+                else:
+                    return JsonResponse({'code':0,'message':'表单非法'})
+            elif typename == 'delete':
+                rec = _
+                rec.delete()
+                return JsonResponse({'code':1,'message':'删除成功'})
+            else:
+                return JsonResponse({'code':0,'message':'请求非法'})
+        except Exception as e:
+            # print(e)
+            return JsonResponse({'code':0,'message':'数据非法或发生了错误'})
+
+    rec = _
+    form = ModifyNoticeForm({'title':rec.title,'content':rec.content})
+    return render(request,'modify_notice.html',{'title':'修改公告 - %s' % rec.title,
+                                                'form':form,
+                                                'now_modify_notice':True,
+                                                'has_value':True
+                                                })
+
 
 @login_required()
 def modify_event_view(request):

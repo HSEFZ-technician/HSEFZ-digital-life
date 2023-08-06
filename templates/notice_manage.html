@@ -1,0 +1,58 @@
+{% extends "user_settings.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static 'modify_event.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'event_manage.css' %}">
+
+<script src="{% static 'notice_manage.js' %}" type="text/javascript"></script>
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block settings_content %}
+
+<div class="settings_title">
+    <font face="Nato Sans">
+        选择需要修改的公告
+    </font>
+</div>
+
+<div class="d-inline-flex btn-div">
+    <button class="btn btn-outline-info" id="new-button">
+        新建
+    </button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                标题
+            </th>
+            <th style="width:7rem;">
+                发布时间
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% autoescape off %}
+        {{ table_div }}
+        {% endautoescape %}
+    </tbody>
+</table>
+<script src="{% static 'user_security.js' %}" type="text/javascript"></script>
+
+{% endblock %}

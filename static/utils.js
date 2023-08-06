@@ -58,3 +58,90 @@ $.ajaxSetup({
         }
     }
 });
+function del_wrap(data_function,f){
+    Swal.fire({
+        title: '请确认',
+        text: "删除操作不可逆!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+    }).then((result)=>{
+        if (result.isConfirmed) {
+            f(data_function());
+        }
+    })
+}
+function norm_wrap(data_function,f){
+    f(data_function());
+}
+function input_wrap(title,data_function,f){
+    Swal.fire({
+        title: title,
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: '提交',
+    }).then((result)=>{
+        if (result.isConfirmed) {
+            f(data_function(result.value));
+        }
+    })
+}
+function ajax_button_click(button,spinner_style,url,data_function,success_function,wrap_func){
+    let original_content = button.html();
+    function recover(){
+        button.html(original_content);
+        button.prop('disabled', false);
+    }
+    button.on('click',function(){
+        wrap_func(data_function,function(processed_data){
+            button.html('<div style="display: flex;"><div class="spinner-border text-'+spinner_style+'"></div></div>');
+            button.prop('disabled',true);
+            $.ajax({
+                url: url,
+                method: 'post',
+                dataType: 'json',
+                contentType: "application/json",
+                data:JSON.stringify(processed_data),
+                success: function (data,status) {
+                    recover();
+                    if(data.code==1){
+                        Swal.fire({
+                            title: 'Success',
+                            text: data['message'],
+                            icon: 'success',
+                        });
+                        success_function(data);
+                    }else{
+                        if(data.message){
+                            Swal.fire({
+                                title: 'Failure',
+                                text: data.message,
+                                icon: 'error'
+                            });
+                        }else{
+                            Swal.fire({
+                                title: 'Failure',
+                                text: '请求错误',
+                                icon: 'error'
+                            });
+                        }
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    recover();
+                    Swal.fire({
+                        title: 'Failure',
+                        text: '请求错误',
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+    });
+}
