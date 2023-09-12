@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'SECRET_KEY'
+SECRET_KEY = 'django-insecure-cz1=q^m@dzv$k0kmq(&*pdwl9*hyswa_mfi_@2v2t5bxq3n=3p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = ['1.116.185.61']
 
 
 # Application definition
@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'club_main.wsgi.application'
 DATABASES = {
         'default':{
             'ENGINE':'django.db.backends.mysql',
-            'NAME':'selection_users',
-            'USER':'root',
-            'PASSWORD':'123',
+            'NAME':'club_test',
+            'USER':'club_test',
+            'PASSWORD':'E&fyPV4vIzUj9KN',
             'HOST':'localhost',
             'PORT':'3306',
         }
@@ -131,7 +131,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-STATIC_ROOT = 'path_to_static_files'
+STATIC_ROOT = '/www/static_files'
+
+# STATIC_ROOT = '/home/ubuntu/HSEFZ-club-selection/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -175,8 +177,6 @@ EMAIL_HOST = 'mail.hsefz.cn'
 # EMAIL_HOST = '180.166.56.245'
 EMAIL_HOST_USER = 'cuservice@hsefz.cn'
 EMAIL_HOST_PASSWORD = '2d1a461cc49206a6'
-# EMAIL_HOST_USER = 'dengchenluo@hsefz.cn'
-# EMAIL_HOST_PASSWORD = 'chenluoluo07313'
 EMAIL_PORT = 25
 # EMAIL_PORT = 65525
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

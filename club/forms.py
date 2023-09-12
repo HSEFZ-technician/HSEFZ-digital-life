@@ -106,12 +106,13 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError('邮箱只能包含大小写字母、.、下划线、数字!', code='invalid')
         
         try:
-            student_id = self.cleaned_data['username']
+            # student_id = self.cleaned_data['username']
             student_realname = self.cleaned_data['realname']
         except Exception as e:
             return value
 
-        user = StudentClubData.objects.filter(username=value,student_id=student_id,student_real_name=student_realname)
+        # user = StudentClubData.objects.filter(username=value,student_id=student_id,student_real_name=student_realname)
+        user = StudentClubData.objects.filter(username=value,student_real_name=student_realname)
 
         if user.count() == 0:
             raise forms.ValidationError('该学生不存在!', code='invalid')
@@ -411,7 +412,7 @@ class SettingModifyPasswordForm(forms.Form):
             Field('old_password', css_class="form-control"),
             Field('new_password', css_class="form-control"),
             Field('password_confirm', css_class="form-control"),
-            HTML('<button class="btn btn-primary submit_button" type="submit" id="submit-id-submit">提交</button>'),
+            HTML('<button class="btn btn-primary submit_button" id="submit-id-submit">提交</button>'),
             # ButtonHolder(
             #     Submit('submit', '提交', css_class="btn btn-primary submit_button")
             # ),
@@ -449,7 +450,7 @@ class ModifyEventForm(forms.Form):
         label='社团年鉴网站地址',
         required=False,
         min_length=0,
-        max_length=100,
+        max_length=300,
     )
 
     forbid_chosen = forms.BooleanField(
@@ -474,4 +475,35 @@ class ModifyEventForm(forms.Form):
             Field('type_class', css_class="form-control"),
             Field('linkToYearbook', css_class="form-control"),
             Field('forbid_chosen', css_class="form-control"),
+        )
+
+class ModifyNoticeForm(forms.Form):
+
+    title = forms.CharField(
+        label='公告标题',
+        required=True,
+        min_length=1,
+        max_length=30,
+    )
+
+    content = forms.CharField(
+        label='内容',
+        required=False,
+        widget=forms.Textarea,
+        min_length=0,
+        max_length=10000,
+    )
+
+    def __init__(self,default_value,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-setting_modify_notice_form"
+        self.helper.form_method = 'post'
+
+        for k in default_value:
+            self.fields[k].initial = default_value[k]
+
+        self.helper.layout = Layout(
+            Field('title', css_class="form-control"),
+            Field('content', css_class="form-control"),
         )

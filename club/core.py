@@ -145,6 +145,13 @@ def convert_selection_data_to_html(data):
     result = ''
     dtype  = data['display_type']
     
+    # disa = False
+    
+    # for c in data['data']:
+    #     if c['status']==4 or c['status']==5:
+    #         disa = True
+    #         break
+    
     for c in data['data']:
         name = c['name']
         logo = ''
@@ -187,6 +194,10 @@ def convert_selection_data_to_html(data):
         
         elif c['status'] == 5:
             op_content = "<button class='btn btn-danger' id='%s' disabled>不可取消</button>" % (class_id)
+        
+        # elif disa:
+        #     op_content = "<button class='btn border-success' id='%s' disabled>已选其他</button>" % (class_id)
+
         
         elif c['status'] == 6:
             op_content = "<button class='btn btn-primary' id='%s' disabled>未开始</button>" % (class_id)

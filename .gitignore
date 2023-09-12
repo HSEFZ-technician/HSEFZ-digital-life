@@ -1,2 +1,15 @@
 django-venv
+club_main/settings.py
+uwsgi.log
+uwsgi.pid
+uwsgi.sock
+uwsgi.status
+club_main/__pycache__/
+club/migrations/
+club/__pycache__/
+.idea/
 
+managers.txt
+output/
+output.txt
+data/
