@@ -50,6 +50,18 @@
                 </div>
             </a>
         </div>
+        <div class="settings-nav-row {% if now_user_manage %} settings-current {% else %} settings-other {% endif %}">
+            <a href="{% if now_score_manage %} # {% else %} # {% endif %}">
+                <div style="display: flex;flex-direction: row">
+                    <font face="微软雅黑">
+                        分数录入
+                    </font>
+                    <span class="ml-auto">
+                        <i class="fa-solid fa-list"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
         {% endif %}
         {% if user.is_superuser %}
         <div class="settings-nav-row {% if now_user_manage %} settings-current {% else %} settings-other {% endif %}">

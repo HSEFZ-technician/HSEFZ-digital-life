@@ -67,5 +67,3 @@ for i in range(num):
 
 cnx.commit()
 cnx.close()
-
-INSERT INTO club_studentclubdata (email, username, student_id, student_real_name, is_created, is_active, is_staff, is_superuser, password, date_joined) VALUES ('tangweizhe@hsefz.cn', 'tangweizhe', '2606', '唐维喆', 0,0,0,0, 'pbkdf2_sha256$390000$VGGs9jKlpZzFfokMoncwwV$8GgdrHLU3fDmPQGp4c6M29wHe2tqdOTjXUqR6bDqAmw=', '2023-09-02 00:00:00');

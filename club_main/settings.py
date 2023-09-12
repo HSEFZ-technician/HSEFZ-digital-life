@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-cz1=q^m@dzv$k0kmq(&*pdwl9*hyswa_mfi_@2v2t5bxq3n=3p'
+SECRET_KEY = 'SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['1.116.185.61']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -81,14 +81,14 @@ WSGI_APPLICATION = 'club_main.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-        'default':{
-            'ENGINE':'django.db.backends.mysql',
-            'NAME':'club_test',
-            'USER':'club_test',
-            'PASSWORD':'E&fyPV4vIzUj9KN',
-            'HOST':'localhost',
-            'PORT':'3306',
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'selection_users',
+        'USER': 'root',
+        'PASSWORD': '123',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
 }
 
 # Password validation
@@ -131,14 +131,13 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-STATIC_ROOT = '/www/static_files'
-
-# STATIC_ROOT = '/home/ubuntu/HSEFZ-club-selection/static'
+STATIC_ROOT = 'path_to_static_files'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.AllowAllUsersModelBackend']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -177,6 +176,8 @@ EMAIL_HOST = 'mail.hsefz.cn'
 # EMAIL_HOST = '180.166.56.245'
 EMAIL_HOST_USER = 'cuservice@hsefz.cn'
 EMAIL_HOST_PASSWORD = '2d1a461cc49206a6'
+# EMAIL_HOST_USER = 'dengchenluo@hsefz.cn'
+# EMAIL_HOST_PASSWORD = 'chenluoluo07313'
 EMAIL_PORT = 25
 # EMAIL_PORT = 65525
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -191,7 +192,8 @@ FROM_EMAIL = "Noreply <cuservice@hsefz.cn>"
 
 EMAIL_EXPIRED_MINUTES = 15
 
-IMAGE_PATH_PREFIX = os.path.join(os.path.abspath(os.path.dirname(__file__)),os.path.join('static','desc_image'))
+IMAGE_PATH_PREFIX = os.path.join(os.path.abspath(
+    os.path.dirname(__file__)), os.path.join('static', 'desc_image'))
 
 IMAGE_URL_PREFIX = '/static/desc_image/'
 

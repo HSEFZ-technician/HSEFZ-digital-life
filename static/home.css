@@ -282,3 +282,10 @@
 .running-button:active {
     background-color: #ff2121 !important;
 }
+
+
+.progress-container {
+    margin-bottom: 2rem !important;
+    padding: 0.55rem 0rem 0.55rem 0.1rem !important;
+    margin: 0rem 1rem !important;
+}
