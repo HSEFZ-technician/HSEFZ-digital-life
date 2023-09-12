@@ -10,7 +10,7 @@ cnx = mysql.connector.connect(
     host='localhost',
     port='3306',
     user='club_test',
-    password='E&fyPV4vIzUj9KN',
+    password='111222',
     database='club_test',
     auth_plugin='caching_sha2_password'
 )

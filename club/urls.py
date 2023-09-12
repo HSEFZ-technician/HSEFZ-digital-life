@@ -14,7 +14,7 @@ urlpatterns = [
     path('send_modify_password_email/', send_modify_password_email_view,
          name='send_modify_password_email'),
     path('', home_view, name='home'),
-    path('selection/', selection_home_view, name='selection_home'),
+    # path('', selection_home_view, name='selection_home'),
     path('logout/', logout_view, name='logout'),
     path('user_security/', user_security_view, name='user_security'),
     path('selection_sign_up/', selection_sign_up_view, name='selection_sign_up'),
