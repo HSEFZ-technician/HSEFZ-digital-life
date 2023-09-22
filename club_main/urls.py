@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-handler404='club.views.page404'
+handler404 = 'club.views.page404'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('club.urls')),
+    path('volunteer/', include('volunteer.urls'))
 ]

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'crispy_forms',
     'widget_tweaks',
+    'volunteer',
 ]
 
 MIDDLEWARE = [

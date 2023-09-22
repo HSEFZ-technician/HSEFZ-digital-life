@@ -1,0 +1,56 @@
+.main-container {
+    margin-top: 2rem;
+}
+
+.progress-card{
+    border-radius: 8px !important;
+}
+
+
+.progress-bar, .progress{
+    border-radius: 12px !important;
+}
+
+.info-major{
+    margin-top: 6px;
+}
+.info-minor{
+    margin-bottom: 2px;
+}
+
+
+.score-table .table thead th{
+    border-top: none;
+    border-bottom-width: 1px;
+    font-size: 0.95rem;
+    border-bottom-color: rgba(34,36,38,0.15);
+}
+
+.score-table .table tbody td{
+    font-size: 0.95rem;
+    border-top-color: rgba(34,36,38,0.15);
+}
+
+.name-title{
+    width: 15rem;
+}
+
+.detail-container-title {
+    padding: 0.45rem 1rem;
+    margin-top: 10px;
+    height: 2.5rem;
+    line-height: 1.6rem;
+    vertical-align: middle;
+}
+
+.table{
+    table-layout: fixed;
+}
+
+.snum-title{
+    max-width: 5rem;
+}
+
+.date-title{
+    margin-right: auto;
+}
