@@ -10,7 +10,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'modify_event.css' %}">
 <!-- <script src="{% static 'table2csv.js' %}" type="text/javascript"></script> -->
-<script src="{% static 'search_user.js' %}" type="text/javascript"></script>
+<script src="{% static 'modify_score.js' %}" type="text/javascript"></script>
 
 {% endblock %}
 
@@ -24,13 +24,16 @@
 
 <div class="settings_title">
     <font face="Nato Sans">
-        搜索用户
+        录入课时 - {{ user_data }}
     </font>
 </div>
 
 <div class="d-inline-flex btn-div">
-    <button class="btn btn-outline-info" id="push-button">
-        搜索
+    <button class="btn btn-outline-info" id="save-button">
+        保存
+    </button>
+    <button class="btn btn-outline-info" id="delete-button">
+        删除
     </button>
 </div>
 
@@ -39,7 +42,7 @@
 </div>
 
 <script>
-    const manage_url = "{% url 'volunteer:score_event' %}";
+    const manage_url = "{% url 'volunteer:score_input' %}";
 </script>
 
 <!-- {% if has_value %}

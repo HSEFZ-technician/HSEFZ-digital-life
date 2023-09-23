@@ -26,13 +26,13 @@
 
 <div class="settings_title">
     <font face="Nato Sans">
-        选择需要修改的事件
+        选择需要修改的项目 {{ user_data }}
     </font>
 </div>
 
 <div class="d-inline-flex btn-div">
-    <button class="btn btn-outline-info" id="load-button">
-        加载
+    <button class="btn btn-outline-info" id="load-button" onclick="location.href = 'search_user';">
+        搜索
     </button>
     <button class="btn btn-outline-info" id="new-button">
         新建
@@ -43,13 +43,13 @@
     <thead>
         <tr>
             <th>
-                姓名
+                名称
             </th>
             <th>
-                班级
+                课时
             </th>
             <th>
-                邮箱
+                添加时间
             </th>
         </tr>
     </thead>

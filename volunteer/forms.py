@@ -68,6 +68,33 @@ class SearchUserForm(forms.Form):
             self.fields[k].initial = default_value[k]
 
         self.helper.layout = Layout(
-            Field('name', css_class="form-control"),
             Field('class_id', css_class="form-control"),
+            Field('name', css_class="form-control"),
+
+        )
+
+
+class ModifyScoreForm(forms.Form):
+
+    date = forms.DateField(required=True, label='添加时间')
+
+    type_class = forms.ChoiceField(
+        label='课时事件类型',
+        choices=[(0, 'default'), (1, 'not_default')],
+        required=True,
+    )
+
+    def __init__(self, query_set, default_value, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-setting_modify_score_form"
+        self.helper.form_method = 'post'
+        self.fields['type_class'].choices = query_set
+
+        for k in default_value:
+            self.fields[k].initial = default_value[k]
+
+        self.helper.layout = Layout(
+            Field('type_class', css_class="form-control"),
+            Field('date', css_class="form-control"),
         )

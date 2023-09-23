@@ -131,6 +131,21 @@
         </div>
         {% endif %}
 
+        {% if now_modify_score %}
+        <div class="settings-nav-row">
+            <a onclick="history.back()" style="color:#4183C4 !important;">
+                <div style="display: flex;flex-direction: row">
+                    <span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                    <font face="微软雅黑" style="margin-left: 0.2rem;">
+                        返回课时录入
+                    </font>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+
         {% if now_modify_notice %}
         <div class="settings-nav-row">
             <a href="{% url 'club:notice_manage' %}" style="color:#4183C4 !important;">
