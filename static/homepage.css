@@ -1,0 +1,223 @@
+/* font-face */
+
+@font-face {
+    font-family: "NewYeNian";
+    src: url("/static/NewYeNian.otf");
+}
+
+/* page content */
+
+.hand-written, .card-title{
+    font-family: "NewYeNian";
+}
+
+#nav-list {
+    margin-top: -60px;
+    padding-bottom: 13px;
+    padding-top: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#page-logo {
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+/* #page-introduction-container {
+    display: block;
+    position: fixed;
+    z-index: -1;
+    margin-top: -67px;
+    width: 100%;
+    height: 40%;
+    background-image: url("../introduction-background.png");
+} */
+
+#page-introduction-container-mask {
+    display: block;
+    position: fixed;
+    z-index: -1;
+    padding-top: 60px;
+    /* padding-left: 10%; */
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+#topic-back {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 40%, rgb(255, 217, 104) 70%);
+    width: fit-content;
+    border-radius: 10%;
+    /* padding-bottom:10px;
+    padding-top: -10px; */
+}
+
+#topic {
+    padding: -2px;
+    color: rgba(213, 43, 43, 0.942);
+}
+
+#app-list-container {
+    position: absolute;
+    top: 50%;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.description{
+    padding-left: 10px;
+}
+
+.title-container{
+    height: 100%;
+    width: 100%;
+    margin-top: 36px;
+    padding: 72px 0;
+}
+
+.title-container h1{
+    font-size: 500%;
+    /* color: #d11a2d; */
+    font-weight: bolder;
+}
+
+.highlight {
+    text-decoration: underline;
+    text-decoration-thickness: 0.4em;
+    text-decoration-color: #ffe40066;
+    text-underline-offset: -0.3em;
+    text-decoration-skip-ink: none;
+}
+
+.container{
+    margin: 36px auto;
+}
+
+.info-area{
+    margin-top: 35px;
+}
+
+
+main{
+    /* min-height: 45vh; */
+    background-color: transparent;
+}
+
+body{
+    overflow-y: auto;
+    background-color: #f5f5f7;
+}
+
+.title-sm{
+    font-weight: bold;
+}
+
+.col{
+    margin-top: 30px;
+}
+
+.info-title{
+    font-size: 35px;
+}
+
+.app-info{
+    /* font-size: 20px; */
+    margin-top: 20px;
+}
+
+.info-area h4{
+    font-weight: bold;
+}
+
+.app-card-instance{
+    width: 18rem;
+}
+
+a{
+    text-decoration: none;
+    color: #000 !important;
+}
+
+.row{
+    margin: auto;
+}
+
+.name-link{
+    color: #000000;
+}
+
+.card{
+    border-radius: 10px;
+    border-color: #00000000;
+    box-shadow: 0px 0px 2px #00000010;
+    background-color: #ffffff;
+}
+
+.card-link{
+    background-color: black;
+    border-radius: 100px;
+    border: #000000;
+    color: white;
+    font-size: small;
+    /* font-weight: bold; */
+    padding-top: 4px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* font-weight: lighter; */
+    margin-left: 13rem;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 3px #00000010;
+    transition: all 0.2s;
+}
+
+footer{
+    margin-top: 50px;
+}
+
+.card-title{
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+.info-text, .card-text{
+    /* font-family: 'NewYeNian'; */
+    /* font-size: 18px; */
+    /* font-weight: 500; */
+}
+
+@media(max-width: 767px){
+    .card{
+        margin: auto;
+        width: 75vw;
+    }
+
+    .title-container h1{
+        font-size: 55px;
+    }
+}
+
+/* .name-link{
+    background-image: url('/static/handwritten-underline.jpg');
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    padding-bottom: 20px;
+} */
+
+.name-link{
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #00000030;
+}
+
+.name-link:hover, .name-link:active{
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #000000;
+    transition: 0.4s;
+}
+
+.

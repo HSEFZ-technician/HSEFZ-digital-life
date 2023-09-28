@@ -6,6 +6,7 @@ from django.http import JsonResponse, Http404, HttpResponseRedirect
 from volunteer.forms import ModifyScoreEventForm, SearchUserForm, ModifyScoreForm
 from club.models import StudentClubData
 from django.conf import settings
+import datetime
 
 # Create your views here.
 
@@ -53,6 +54,11 @@ def score_manage(request):
             json_data = json.loads(request.body.decode())
             typename = json_data['type']
             if typename == "new" and student_id != None:
+                ev = ScoreEventData.objects.first()
+                ss = StudentClubData.objects.get(pk=student_id)
+                _ = StudentScoreData(
+                    user_id=ss, score_event_id=ev, date_of_addition=datetime.datetime.now())
+                _.save()
                 return JsonResponse({'code': 1, 'message': '新建成功'})
             else:
                 return JsonResponse({'code': 0, 'message': '请求非法'})
@@ -202,7 +208,7 @@ def search_user(request):
 
     return render(request, 'volunteer/search_user.html', {'title': '搜索用户', 'now_score_manage': False,
                                                           'form': form,
-                                                          'now_modify_score': True,
+                                                          'now_search_user': True,
                                                           'has_value': True
                                                           })
 
@@ -258,5 +264,6 @@ def modify_score(request):
                                                            'form': form,
                                                            'now_modify_score': True,
                                                            'has_value': True,
-                                                           'user_data': '%s %s' % (user.student_id, user.student_real_name)
+                                                           'user_data': '%s %s' % (user.student_id, user.student_real_name),
+                                                           'user_id_score_input': _.user_id.pk
                                                            })

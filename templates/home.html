@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base-homepage.html' %}
 
 {% load static %}
 
 {% block include %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'homepage.css' %}">
 
 {% endblock %}
 
@@ -16,11 +16,60 @@
 
 {% block body %}
 
-<div class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
-    <div class="col-xl-6 col-md-8 offset-xl-1_5">
-        Home Page Coming Soon
-        {% comment %} TODO: {% endcomment %}
+<div class="container">
+    <main id="main" class="main">
+      <div class="title-container">
+          <h1 class="highlight hand-written">#EFZ 数字生活</h1>
+          <div class="info-area">
+            <!-- <h4 class="info-title hand-written">#EFZ</h4> -->
+            <p class="info-text">由社团联技术顾问开发，我们的使命是构建一个EFZ学生专属的数字服务平台！<br>本网站目前由 <a href="dengchenluo@hsefz.cn" class="name-link">2507 满五</a> 维护/开发，若遇问题，请及时反馈。</p>
+          </div>
+      </div>
+    </main>
+    <section id="apps">
+      <h2 class="highlight hand-written title-sm">我们的应用</h2>
+      <p class="app-info info-text">目前，技术顾问团队已经开发机选系统、社团年鉴、校内志愿者课时查询等应用。</p>
+      <div class="row app-cards row-cols-auto">
+        <div class="col">
+            <a href="/selection">
+          <div class="card app-card-instance">
+            <div class="card-body">
+              <h5 class="card-title">机选系统</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">/selection</h6>
+              <p class="card-text">由 <a class="name-link" href="https://www.xiaoyaowudi.com/">2409 xiaoyaowudi</a> 开发的网站，后来 <a class="name-link" href="https://aeilot.top/">2507 满五</a> 进行了重新设计和优化。为同学提供社团、志愿者服务队、导师的抢选服务。</p>
+            </div>
+          </div>
+        </a>
+        </div>
+        <div class="col">
+            <a href="https://hsefz.aeilot.top">
+          <div class="card app-card-instance">
+            <div class="card-body">
+              <h5 class="card-title">社团年鉴</h5>
+              {% comment %} <h6 class="card-subtitle mb-2 text-body-secondary">Hosted with <a target="_blank" href="https://vercel.com/"><svg height="14" viewBox="0 0 75 65" fill="var(--color-fg-default)"><path d="M37.59.25l36.95 64H.64l36.95-64z"></path></svg></a></h6> {% endcomment %}
+              <h6 class="card-subtitle mb-2 text-body-secondary">Hosted with Vercel</h6>
+              <p class="card-text"><a href="https://aeilot.top/" class="name-link">2507 满五</a> 开发，基于 Notion。各社团骨干成员已经在上面发布了各自的制作精美的社团年鉴，供大家查看。</p>
+            </div>
+          </div>
+        </a>
+        </div>
+        <div class="col">
+            <a href="/volunteer">
+          <div class="card app-card-instance">
+            <div class="card-body">
+              <h5 class="card-title">校内志愿者课时查询</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">/volunteer</h6>
+              <p class="card-text"><a href="https://aeilot.top/" class="name-link">2507 满五</a> 开发，26届干事优化。方便同学查看校内志愿者课时数，同时减轻了志愿者服务部同学的工作负担。</p>
+            </div>
+          </div>
+        </a>
+        </div>
+      </div>
+    </section>
+    <!-- <footer>
+      <p>华东师范大学第二附属中学版权所有</p>
+    </footer> -->
     </div>
-</div>
+  </div>
 
 {% endblock %}

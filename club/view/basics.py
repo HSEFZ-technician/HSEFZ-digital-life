@@ -23,7 +23,6 @@ from club.core import get_selection_data, convert_selection_data_to_html, get_se
 
 
 def home_view(request):
-    # TODO:
     return render(request, 'home.html', {'title': '华师二附中·数字生活'})
 
 
