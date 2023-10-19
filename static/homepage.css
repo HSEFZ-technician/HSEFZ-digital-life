@@ -105,7 +105,7 @@ main{
 
 body{
     overflow-y: auto;
-    background-color: #f5f5f7;
+    background-color: #f5f5f7 !important;
 }
 
 .title-sm{
@@ -147,10 +147,10 @@ a{
 }
 
 .card{
-    border-radius: 10px;
-    border-color: #00000000;
-    box-shadow: 0px 0px 2px #00000010;
-    background-color: #ffffff;
+    border-radius: 10px !important;
+    border-color: #00000000 !important;
+    box-shadow: 0px 0px 2px #00000010 !important;
+    background-color: #ffffff !important;
 }
 
 .card-link{
@@ -219,5 +219,3 @@ footer{
     text-decoration-color: #000000;
     transition: 0.4s;
 }
-
-.
