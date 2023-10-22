@@ -207,3 +207,6 @@ LOCAL_TIMEZONE = pytz.timezone('Etc/GMT-8')
 NEW_PASSWORD_LENGTH = 9
 
 LOGIN_URL = '/login/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+ALLOWED_FILE_TYPES = ['jpg', 'jpeg', 'png', 'csv', 'xls']

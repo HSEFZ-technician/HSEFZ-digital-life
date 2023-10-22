@@ -98,3 +98,7 @@ class ModifyScoreForm(forms.Form):
             Field('type_class', css_class="form-control"),
             Field('date', css_class="form-control"),
         )
+
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
