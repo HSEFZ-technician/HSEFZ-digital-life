@@ -80,7 +80,7 @@ def addscore(name, class_id, servicename, serviceterm, servicepoint, uploaduser)
     return "No errors."
 
 def process_import_file(F, uploaduser):
-    fn = "tmpdata/" + genfn() + ".csv"
+    fn = "tmp/" + genfn() + ".csv"
     with open(fn, "wb") as wr:
         for chunk in F.chunks():
             wr.write(chunk)
