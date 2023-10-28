@@ -17,14 +17,7 @@ class ModifyScoreEventForm(forms.Form):
         max_length=30,
     )
 
-    desc = forms.CharField(
-        label='描述',
-        required=False,
-        min_length=1,
-        max_length=100,
-    )
-
-    point = forms.IntegerField(min_value=0, required=True, label='课时')
+    point = forms.FloatField(min_value=0, required=True, label='课时')
 
     def __init__(self, default_value, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -37,7 +30,6 @@ class ModifyScoreEventForm(forms.Form):
 
         self.helper.layout = Layout(
             Field('name', css_class="form-control"),
-            Field('desc', css_class="form-control"),
             Field('point', css_class="form-control"),
         )
 
@@ -75,13 +67,24 @@ class SearchUserForm(forms.Form):
 
 
 class ModifyScoreForm(forms.Form):
-
-    date = forms.DateField(required=True, label='添加时间')
-
     type_class = forms.ChoiceField(
         label='课时事件类型',
         choices=[(0, 'default'), (1, 'not_default')],
         required=True,
+    )
+
+    datetime = forms.CharField(
+        label='时间',
+        required=True,
+        min_length=1,
+        max_length=100,
+    )
+
+    desc = forms.CharField(
+        label='描述',
+        required=False,
+        min_length=0,
+        max_length=100,
     )
 
     def __init__(self, query_set, default_value, *args, **kwargs):
@@ -96,7 +99,8 @@ class ModifyScoreForm(forms.Form):
 
         self.helper.layout = Layout(
             Field('type_class', css_class="form-control"),
-            Field('date', css_class="form-control"),
+            Field('datetime', css_class="form-control"),
+            Field('desc', css_class="form-control"),
         )
 
 

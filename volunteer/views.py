@@ -35,17 +35,17 @@ def generate_row(name, score, date):
 def index(request):
     _ = StudentScoreData.objects.filter(user_id=request.user.pk)
     content = ''
-    sum_of_course = 0
+    sum_of_course = 0.0
     for i in _:
         event = i.score_event_id
         sum_of_course += event.point
-        content += generate_row(event.name, event.point, i.date_of_addition)
+        content += generate_row(event.name, event.point, i.date_of_activity)
     return render(request, 'volunteer/home.html', {'content': content, 'percentage': (sum_of_course/40)*100, 'score': sum_of_course})
 
 
 @login_required()
 def score_manage(request):
-    if (not request.user.is_superuser):
+    if (not (request.user.is_superuser or request.user.is_staff)):
         raise Http404
     student_id = request.GET.get('id', None)
     modify_score_url = "/volunteer/modify_score"
@@ -58,7 +58,7 @@ def score_manage(request):
                 ev = ScoreEventData.objects.first()
                 ss = StudentClubData.objects.get(pk=student_id)
                 _ = StudentScoreData(
-                    user_id=ss, score_event_id=ev, date_of_addition=datetime.datetime.now())
+                    user_id=ss, score_event_id=ev, date_of_addition=datetime.datetime.now(), date_of_activity="2023")
                 _.save()
                 return JsonResponse({'code': 1, 'message': '新建成功'})
             else:
@@ -90,7 +90,7 @@ def score_manage(request):
 @login_required()
 def event_manage(request):
 
-    if (not request.user.is_superuser):
+    if (not (request.user.is_superuser or request.user.is_staff)):
         raise Http404
 
     modify_event_url = "/volunteer/modify_score_event"
@@ -101,7 +101,7 @@ def event_manage(request):
             typename = json_data['type']
             if typename == "new":
                 _ = ScoreEventData(name='标题', point=0,
-                                   user_id=request.user, desc='描述')
+                                   user_id=request.user)
                 _.save()
                 return JsonResponse({'code': 1, 'message': '新建成功'})
             else:
@@ -135,7 +135,7 @@ def modify_score_event(request):
     except Exception as e:
         raise Http404
 
-    cap = request.user.is_superuser
+    cap = request.user.is_superuser or request.user.is_staff
 
     if (not cap):
         raise Http404
@@ -149,7 +149,6 @@ def modify_score_event(request):
                 rec = _
                 if form.is_valid():
                     rec.name = form.cleaned_data['name']
-                    rec.desc = form.cleaned_data['desc'].strip()
                     rec.point = form.cleaned_data['point']
                     rec.save()
                     return JsonResponse({'code': 1, 'message': '保存成功'})
@@ -167,7 +166,7 @@ def modify_score_event(request):
 
     rec = _
     form = ModifyScoreEventForm(
-        {'name': rec.name, 'desc': rec.desc, 'point': rec.point})
+        {'name': rec.name, 'point': rec.point})
 
     return render(request, 'volunteer/modify_score_event.html', {'title': '修改课时事件 - %s' % rec.name, 'now_score_event_manage': True,
                                                                  'form': form,
@@ -178,7 +177,7 @@ def modify_score_event(request):
 
 @login_required()
 def search_user(request):
-    cap = request.user.is_superuser
+    cap = request.user.is_superuser or request.user.is_staff
 
     if (not cap):
         raise Http404
@@ -226,7 +225,7 @@ def modify_score(request):
     user = StudentClubData.objects.get(pk=_.user_id.pk)
 
     cap = request.user.is_superuser
-    types = [(i.pk, "%s - %d 课时" % (i.name, i.point))
+    types = [(i.pk, "%s - %.1f 课时" % (i.name, i.point))
              for i in ScoreEventData.objects.all()]
 
     if (not cap):
@@ -240,7 +239,8 @@ def modify_score(request):
                 form = ModifyScoreForm(types, {}, json_data['data'])
                 rec = _
                 if form.is_valid():
-                    rec.date_of_addition = form.cleaned_data['date']
+                    rec.date_of_activity = form.cleaned_data['datetime']
+                    rec.desc = form.cleaned_data['desc']
                     rec.score_event_id = ScoreEventData.objects.get(
                         pk=form.cleaned_data['type_class'])
                     rec.save()
@@ -259,7 +259,7 @@ def modify_score(request):
 
     rec = _
     form = ModifyScoreForm(types,
-                           {'type_class': rec.score_event_id.pk, 'date': rec.date_of_addition})
+                           {'type_class': rec.score_event_id.pk, 'datetime': rec.date_of_activity, 'desc': rec.desc})
 
     return render(request, 'volunteer/modify_score.html', {'title': '录入课时 - %s' % rec.user_id.student_real_name, 'now_score_manage': True,
                                                            'form': form,
