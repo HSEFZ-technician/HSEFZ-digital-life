@@ -10,4 +10,6 @@ urlpatterns = [
          name='modify_score_event'),
     path('modify_score', views.modify_score,  name='modify_score'),
     path('search_user', views.search_user,  name='search_user'),
+    path('export', views.export,  name='export'),
+    path('import', views.Import,  name='import'),
 ]
