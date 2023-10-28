@@ -205,5 +205,5 @@ NEW_PASSWORD_LENGTH = 9
 
 LOGIN_URL = '/login/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'tmp')
 ALLOWED_FILE_TYPES = ['jpg', 'jpeg', 'png', 'csv', 'xls']
