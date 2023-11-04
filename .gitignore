@@ -22,3 +22,5 @@ output/
 output.txt
 data/
 tmp/
+
+**/__pycache__
