@@ -20,5 +20,6 @@ handler404 = 'club.views.page404'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('club.urls')),
-    path('volunteer/', include('volunteer.urls'))
+    path('volunteer/', include('volunteer.urls')),
+    path('league/', include('league.urls'))
 ]
