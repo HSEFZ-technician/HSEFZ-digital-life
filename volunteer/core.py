@@ -82,8 +82,23 @@ def addscore(name, class_id, servicename, serviceterm, servicepoint, uploaduser,
     _.save()
     return "No errors."
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+    
+    return False
 
-def process_import_file(F, uploaduser):
+
+def check_file(F, uploaduser):
     fn = "tmp/" + genfn() + ".csv"
     with open(fn, "wb") as wr:
         for chunk in F.chunks():
@@ -97,14 +112,51 @@ def process_import_file(F, uploaduser):
             if (fst):
                 fst = False
                 continue
-            if (len(row) % 4 != 3):
+            if (len(row) % 4 != 0):
                 res += "Csv file format wrong.\n"
+                return res
+            student_id = row[1]
+            class_id = student_id[3:7]
+            name = row[2]
+            # print(row)
+            for i in range(3, len(row), 4):
+                try: 
+                    servicename = row[i]
+                    if servicename == '':
+                        continue
+                    servicepoint = row[i + 1]
+                    if(not is_number(servicepoint)):
+                        res += 'Point error for %s %s where service name is %s\n' % (class_id, name, servicename)
+                    serviceterm = row[i + 2]
+                    servicedesc = row[i + 3]
+                except Exception:
+                    res += 'Unknown Error for %s %s\n' % (class_id, name)
+        wr.close()
+    os.remove(fn)
+    return res
+
+
+def process_import_file(F, uploaduser):
+    fn = "tmp/" + genfn() + ".csv"
+    with open(fn, "wb") as wr:
+        for chunk in F.chunks():
+            wr.write(chunk)
+        wr.close()
+    res = check_file(F,uploaduser)
+    if not res == "":
+        return JsonResponse({'code': 0, 'message': res})
+    with open(fn, "r", encoding='UTF-8') as wr:
+        csv_reader = csv.reader(wr)
+        fst = True
+        for row in csv_reader:
+            if (fst):
+                fst = False
                 continue
             student_id = row[1]
             class_id = student_id[3:7]
             # print(class_id)
             name = row[2]
-            print(row)
+            # print(row)
             for i in range(3, len(row), 4):
                 servicename = row[i]
                 if servicename == '':
@@ -114,14 +166,9 @@ def process_import_file(F, uploaduser):
                 servicedesc = row[i + 3]
                 ads = addscore(name, class_id, servicename,
                                serviceterm, servicepoint, uploaduser, servicedesc)
-                if (ads != "No errors."):
-                    res += ads
-                    res += '\n'
         wr.close()
     os.remove(fn)
-    if (res == ""):
-        return JsonResponse({'code': 1, 'message': 'No errors.'})
-    return JsonResponse({'code': 0, 'message': res})
+    return JsonResponse({'code': 1, 'message': 'No errors.'})
 
 
 @login_required()
