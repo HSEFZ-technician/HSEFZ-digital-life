@@ -13,7 +13,7 @@ import datetime
 
 @login_required()
 def export(request):
-    if (not request.user.is_superuser):
+    if (not (request.user.is_superuser or request.user.is_staff)):
         raise Http404
     students = StudentClubData.objects.all()
     map = {}
@@ -89,6 +89,11 @@ def is_number(s):
     except ValueError:
         pass
     try:
+        eval(s)
+        return True
+    except ValueError:
+        pass
+    try:
         import unicodedata
         unicodedata.numeric(s)
         return True
@@ -115,11 +120,11 @@ def check_file(F, uploaduser):
             if (len(row) % 4 != 0):
                 res += "Csv file format wrong.\n"
                 return res
-            student_id = row[1]
+            student_id = row[2]
             class_id = student_id[3:7]
-            name = row[2]
+            name = row[1]
             # print(row)
-            for i in range(3, len(row), 4):
+            for i in range(4, len(row), 4):
                 try: 
                     servicename = row[i]
                     if servicename == '':
@@ -135,6 +140,13 @@ def check_file(F, uploaduser):
     os.remove(fn)
     return res
 
+def delALL(cur):
+    print(cur)
+    studentList = StudentClubData.objects.filter(student_id__regex="%s.."%cur).all()
+    for curStu in studentList:
+        tmp = ScoreEventData.objects.filter(user_id=curStu)
+        tmp.delete()
+        
 
 def process_import_file(F, uploaduser):
     fn = "tmp/" + genfn() + ".csv"
@@ -148,16 +160,21 @@ def process_import_file(F, uploaduser):
     with open(fn, "r", encoding='UTF-8') as wr:
         csv_reader = csv.reader(wr)
         fst = True
+        secd = False
         for row in csv_reader:
             if (fst):
                 fst = False
+                secd = True
                 continue
-            student_id = row[1]
+            if secd:
+                student_id = row[2]
+                cur = student_id[3:5]
+                delALL(cur)
+                secd = False
+            student_id = row[2]
             class_id = student_id[3:7]
-            # print(class_id)
-            name = row[2]
-            # print(row)
-            for i in range(3, len(row), 4):
+            name = row[1]
+            for i in range(4, len(row), 4):
                 servicename = row[i]
                 if servicename == '':
                     continue
@@ -173,7 +190,7 @@ def process_import_file(F, uploaduser):
 
 @login_required()
 def Import(request):
-    if (not request.user.is_superuser):
+    if (not (request.user.is_superuser or request.user.is_staff)):
         raise Http404
     if (request.method == "POST"):
         return process_import_file(request.FILES.get("csv", None), request.user)

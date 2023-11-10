@@ -224,7 +224,7 @@ def modify_score(request):
 
     user = StudentClubData.objects.get(pk=_.user_id.pk)
 
-    cap = request.user.is_superuser
+    cap = request.user.is_superuser or request.user.is_staff
     types = [(i.pk, "%s - %.1f 课时" % (i.name, i.point))
              for i in ScoreEventData.objects.all()]
 

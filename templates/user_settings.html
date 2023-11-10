@@ -37,6 +37,7 @@
             </a>
         </div>
         {% if user.is_superuser %}
+        <hr>
         <div
             class="settings-nav-row {% if now_event_manage or now_modify_event %} settings-current {% else %} settings-other {% endif %}">
             <a href="{% if now_event_manage %} # {% else %} {% url 'club:event_manage' %} {% endif %}">
@@ -50,6 +51,9 @@
                 </div>
             </a>
         </div>
+        {% endif %}
+        {% if user.is_superuser or user.is_staff %}
+        <hr>
         <div class="settings-nav-row {% if now_score_manage %} settings-current {% else %} settings-other {% endif %}">
             <a href="{% if now_score_manage %} # {% else %} {% url 'volunteer:score_input' %} {% endif %}">
                 <div style="display: flex;flex-direction: row">
@@ -76,6 +80,7 @@
         </div>
         {% endif %}
         {% if user.is_superuser %}
+        <hr>
         <div class="settings-nav-row {% if now_user_manage %} settings-current {% else %} settings-other {% endif %}">
             <a href="{% if now_user_manage %} # {% else %} # {% endif %}">
                 <div style="display: flex;flex-direction: row">

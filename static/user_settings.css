@@ -1,17 +1,17 @@
-.settings-content{
+.settings-content {
     margin-left: 0 !important;
     margin-right: 0 !important;
     max-width: 1000px;
     margin-top: 1.8rem;
 }
 
-@media(min-width: 992px){
-    .settings-nav{
+@media(min-width: 992px) {
+    .settings-nav {
         max-width: 250px !important;
     }
 }
 
-.settings-nav-row{
+.settings-nav-row {
     height: 2.3rem;
     line-height: 1.6rem;
     margin: 0.3rem 0.1rem;
@@ -22,7 +22,7 @@
     width: 100%;
 }
 
-.settings-nav-row a{
+.settings-nav-row a {
     text-decoration: none !important;
     color: #000 !important;
     font-size: 0.85rem;
@@ -32,14 +32,24 @@
     display: block;
 }
 
-.settings-current{
+.settings-current {
     background-color: #f1f1f1 !important;
 }
 
-.settings-other{
+.settings-other {
     background-color: #fff;
 }
 
-.settings-other a:hover{
+.settings-other a:hover {
     background-color: #f6f6f6;
+}
+
+.divider {
+    text-decoration: none !important;
+    color: #000 !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    padding: 0.4rem 1rem !important;
+    width: 100% !important;
+    display: block !important;
 }

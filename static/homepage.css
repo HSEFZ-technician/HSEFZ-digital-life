@@ -7,7 +7,8 @@
 
 /* page content */
 
-.hand-written, .card-title{
+.hand-written,
+.card-title {
     font-family: "NewYeNian";
 }
 
@@ -64,18 +65,18 @@
     padding-right: 15%;
 }
 
-.description{
+.description {
     padding-left: 10px;
 }
 
-.title-container{
+.title-container {
     height: 100%;
     width: 100%;
     margin-top: 36px;
     padding: 72px 0;
 }
 
-.title-container h1{
+.title-container h1 {
     font-size: 500%;
     /* color: #d11a2d; */
     font-weight: bolder;
@@ -89,71 +90,71 @@
     text-decoration-skip-ink: none;
 }
 
-.container{
+.container {
     margin: 36px auto;
 }
 
-.info-area{
+.info-area {
     margin-top: 35px;
 }
 
 
-main{
+main {
     /* min-height: 45vh; */
     background-color: transparent;
 }
 
-body{
+body {
     overflow-y: auto;
     background-color: #f5f5f7 !important;
 }
 
-.title-sm{
+.title-sm {
     font-weight: bold;
 }
 
-.col{
+.col {
     margin-top: 30px;
 }
 
-.info-title{
+.info-title {
     font-size: 35px;
 }
 
-.app-info{
+.app-info {
     /* font-size: 20px; */
     margin-top: 20px;
 }
 
-.info-area h4{
+.info-area h4 {
     font-weight: bold;
 }
 
-.app-card-instance{
+.app-card-instance {
     width: 18rem;
 }
 
-a{
+a {
     text-decoration: none;
     color: #000 !important;
 }
 
-.row{
+.row {
     margin: auto;
 }
 
-.name-link{
+.name-link {
     color: #000000;
 }
 
-.card{
+.card {
     border-radius: 10px !important;
     border-color: #00000000 !important;
     box-shadow: 0px 0px 2px #00000010 !important;
     background-color: #ffffff !important;
 }
 
-.card-link{
+.card-link {
     background-color: black;
     border-radius: 100px;
     border: #000000;
@@ -174,28 +175,29 @@ a{
     transition: all 0.2s;
 }
 
-footer{
+footer {
     margin-top: 50px;
 }
 
-.card-title{
+.card-title {
     font-size: 25px;
     font-weight: bolder;
 }
 
-.info-text, .card-text{
+.info-text,
+.card-text {
     /* font-family: 'NewYeNian'; */
     /* font-size: 18px; */
     /* font-weight: 500; */
 }
 
-@media(max-width: 767px){
-    .card{
+@media(max-width: 767px) {
+    .card {
         margin: auto;
         width: 75vw;
     }
 
-    .title-container h1{
+    .title-container h1 {
         font-size: 55px;
     }
 }
@@ -207,15 +209,44 @@ footer{
     padding-bottom: 20px;
 } */
 
-.name-link{
+.name-link {
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-color: #00000030;
 }
 
-.name-link:hover, .name-link:active{
+.name-link:hover,
+.name-link:active {
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-color: #000000;
     transition: 0.4s;
+}
+
+.team-title {
+    margin-top: 50px;
+}
+
+#img-title {
+    position: absolute;
+    height: 125%;
+    bottom: -20px;
+    right: 0px;
+    margin-right: 5%;
+}
+
+
+@media (max-width: 1400px) {
+    #img-title {
+        max-width: 40%;
+        object-fit: scale-down;
+        margin-left: 20% !important;
+        /* display: none; */
+    }
+}
+
+@media (max-width: 1200px) {
+    #img-title {
+        display: none;
+    }
 }
