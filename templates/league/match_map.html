@@ -1,0 +1,119 @@
+{% extends 'league/base.html' %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'match_map.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="map-container">
+    <div class="map-col">
+
+        <div class="groups" id="group-1"></div>
+
+        <div class="lines-container">
+            <div class="lines lines-v lines-v-s" id="line-a"></div>
+            <div class="lines lines-h lines-h-l lines-h-right" id="line-b"></div>
+            <div class="lines lines-v lines-v-s" id="line-c"></div>
+        </div>
+
+        <div class="groups" id="group-2"></div>
+
+
+        <div style="height: 80px;"></div> <!-- space -->
+
+
+        <div class="groups" id="group-3"></div>
+
+        <div class="lines-container">
+            <div class="lines lines-v lines-v-s" id="line-d"></div>
+            <div class="lines lines-h lines-h-l lines-h-right" id="line-e"></div>
+            <div class="lines lines-v lines-v-s" id="line-f"></div>
+        </div>
+
+        <div class="groups" id="group-4"></div>
+
+    </div>
+    <div class="map-col">
+
+        <div class="groups" id="group-5"></div>
+
+        <div class="lines-container">
+            <div class="lines lines-v lines-v-l" id="line-g"></div>
+            <div class="lines lines-h lines-h-l lines-h-right" id="line-h"></div>
+            <div class="lines lines-v lines-v-l" id="line-i"></div>
+        </div>
+
+        <div class="groups" id="group-6"></div>
+
+    </div>
+
+    <div class="map-col">
+        <div class="groups" id="group-winner"></div>
+        <div class="map-row">
+            <div class="groups" id="group-7" style="margin: 35px 0;"></div>
+            <div class="lines-container-center">
+                <div class="lines lines-h lines-h-s" id="line-j"></div>
+                <div class="lines lines-v lines-v-s lines-v-top" id="line-z"></div>
+                <div class="lines lines-h lines-h-s" id="line-t"></div>
+            </div>
+            <div class="groups" id="group-14" style="margin: 35px 0;"></div>
+        </div>
+        <div style="height: 50px; width: 100%;"></div>
+    </div>
+
+    <div class="map-col">
+
+        <div class="groups" id="group-12"></div>
+
+        <div class="lines-container">
+            <div class="lines lines-v lines-v-l" id="line-q"></div>
+            <div class="lines lines-h lines-h-l lines-h-left" id="line-r"></div>
+            <div class="lines lines-v lines-v-l" id="line-s"></div>
+        </div>
+
+        <div class="groups" id="group-13"></div>
+    </div>
+
+    <div class="map-col">
+
+        <div class="groups" id="group-8"></div>
+
+        <div class="lines-container">
+            <div class="lines lines-v lines-v-s" id="line-k"></div>
+            <div class="lines lines-h lines-h-l lines-h-left" id="line-l"></div>
+            <div class="lines lines-v lines-v-s" id="line-m"></div>
+        </div>
+
+        <div class="groups" id="group-9"></div>
+
+
+        <div style="height: 80px;"></div> <!-- space -->
+
+
+        <div class="groups" id="group-10"></div>
+
+        <div class="lines-container">
+            <div class="lines lines-v lines-v-s" id="line-n"></div>
+            <div class="lines lines-h lines-h-l lines-h-left" id="line-o"></div>
+            <div class="lines lines-v lines-v-s" id="line-p"></div>
+        </div>
+
+        <div class="groups" id="group-11"></div>
+    </div>
+
+</div>
+
+<script src="{% static 'match_map.js' %}" type="text/javascript"></script>
+
+{% endblock %}

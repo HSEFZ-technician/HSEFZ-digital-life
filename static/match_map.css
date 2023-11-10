@@ -1,0 +1,101 @@
+div {
+    transition: all 0.2s;
+}
+
+.logo-div {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0;
+}
+
+.logo {
+    height: 60px;
+}
+
+.map-container {
+    margin: 0 30px 30px;
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    gap: 0px;
+}
+
+.map-col {
+    width: auto;
+    height: 570px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.groups {
+    width: 200px;
+    height: 48px;
+    border: 2px solid #c4c4c4;
+    border-radius: 8px;
+}
+
+.lines-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.lines-container-center {
+    height: 122px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.lines {
+    border: 1px solid #c4c4c4;
+}
+
+.lines-v {
+    width: 0px;
+}
+
+.lines-h {
+    height: 0px;
+}
+
+.lines-v-s {
+    height: 60px;
+}
+
+.lines-v-l {
+    height: 125px;
+}
+
+.lines-h-s {
+    width: 20px;
+}
+
+.lines-h-l {
+    width: 100px;
+}
+
+.lines-h-right {
+    margin-left: auto;
+}
+
+.lines-h-left {
+    margin-right: auto;
+}
+
+.lines-v-top {
+    margin-bottom: auto;
+}
