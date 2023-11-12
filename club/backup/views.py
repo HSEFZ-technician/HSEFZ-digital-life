@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from .models import StudentClubData, Notice, SelectionEvent, StudentSelectionInformation, EventClassInformation
 from django.conf import settings
 from .tokens import VerifyToken, PasswordGenerator
-from .tasks import send_email
+from .tasks import send_email, send_email_nosync
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -58,6 +58,8 @@ def register_view(request):
                 student_real_name=student_realname,
             )
 
+            # TODO: Email Authentication Removed
+
             new_account.set_password(student_password)
 
             new_account.save()
@@ -86,9 +88,11 @@ def register_view(request):
             )
 
             # print("start task")
-            send_email.delay(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
+            send_email_nosync(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
+            # send_email.delay(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
 
             return render(request,'info.html', {'info':'注册邮件已发送，请检查邮箱!'})
+            # return render(request,'info.html', {'info':'注册成功！'})
  
         else:
             return render(request,'register.html',{'form':register_form, 'title':'注册'})
@@ -169,7 +173,8 @@ def manual_activate_view(request):
             )
 
             # print("start task")
-            send_email.delay(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+            # send_email.delay(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+            send_email_nosync(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
 
             return render(request, 'info.html',{'info':'注册邮件已发送，请检查邮箱！'})
         
@@ -298,7 +303,9 @@ def send_modify_password_email_view(request):
             )
 
             # print("start task")
-            send_email.delay(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+            # send_email.delay(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+            send_email_nosync(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+
 
             return render(request, 'info.html',{'info':'邮件已发送，请检查邮箱！'})
         else:

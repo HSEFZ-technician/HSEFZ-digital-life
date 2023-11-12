@@ -19,6 +19,14 @@ import json
 import re
 from club.core import get_selection_data, convert_selection_data_to_html, get_selection_list
 
+def check_password(password):
+
+    if re.fullmatch(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$',password) == None:
+        return False
+    else:
+        return True
+
+
 @login_required()
 def user_security_view(request):
 

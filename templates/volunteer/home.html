@@ -21,41 +21,43 @@
 
 <div class="container main-container">
     <div class="row gx-5 justify-content-center">
-    <div class="col-md-5">
-        <div class="progress-container">
-            <div class="card progress-card">
-                <div class="card-body">
-                    <h2 class="card-title">{{ score }}/40.0</h2>
-                    <div class="progress" role="progressbar" aria-label="Score" aria-valuenow="100" aria-valuemin="0" aria-valuemax="{{ percentage }}">
-                        <div class="progress-bar  bg-success" style="width: {{ percentage }}%"></div>
+        <div class="col-md-5">
+            <div class="progress-container">
+                <div class="card progress-card">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ score }}/40.0</h2>
+                        <div class="progress" role="progressbar" aria-label="Score" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="{{ percentage }}">
+                            <div class="progress-bar  bg-success" style="width: {{ percentage }}%"></div>
+                        </div>
+                        <hr>
+                        <h5 class="info-major">校内志愿者课时统计</h5>
+                        <p class="info-minor">EFZ“100%学生在校期间完成100课时志愿者”，学生需要在各校外社会实践基地完成60学时志愿服务的同时，在校内完成40学时志愿服务。</p>
+                        <p class="info-minor">数据由志愿者服务部录入，更新可能有延迟。如果对课时有疑问，请联系 <a
+                                href="mailto:zhangziyue1@hsefz.cn">2507 张子阅</a>！</p>
+                        <p class="info-minor">页面由 <a href="mailto:dengchenluo@hsefz.cn">2507 满五</a> 开发，如遇网页问题，及时反馈！</p>
                     </div>
-                    <hr>
-                    <h5 class="info-major">校内志愿者课时统计</h5>
-                    <p class="info-minor">EFZ“100%学生在校期间完成100课时志愿者”，学生需要在各校外社会实践基地完成60学时志愿服务同时，在校内完成40学时志愿服务。</p>
-                    <p class="info-minor">数据由志愿者服务部录入，更新可能有延迟。如果对课时有疑问，请联系 <a href="mailto:zhangziyue1@hsefz.cn">2507 张子阅</a>！</p>
-                    <p class="info-minor">页面由 <a href="mailto:dengchenluo@hsefz.cn">2507 满五</a> 开发，如遇网页问题，及时反馈！</p>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col">
-        <div class="detail-container">
-            <div class="col-lg score-table">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="name-title">名称</th>
-                            <th class="snum-title">课时</th>
-                            <th class="date-title">时间</th>
-                        </tr>
-                    </thead>
-                    {% autoescape off %}
-                    {{ content }}
-                    {% endautoescape %}
-                </table>
+        <div class="col">
+            <div class="detail-container">
+                <div class="col-lg score-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="name-title">名称</th>
+                                <th class="snum-title">课时</th>
+                                <th class="date-title">时间</th>
+                            </tr>
+                        </thead>
+                        {% autoescape off %}
+                        {{ content }}
+                        {% endautoescape %}
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </div>
 
