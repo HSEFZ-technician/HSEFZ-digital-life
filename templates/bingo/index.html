@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'page.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>title</title>
+
+{% endblock %}
+{% block body %}
+<script>
+  $(document).ready(function () {
+    $('#gen-button').on("click", function () {
+      let n = $('#n-input').val();
+      if(!/^\d+$/.test(n)) {
+        Swal.fire({ title: '生成失败', text: '必须是整数', icon: 'error' });
+        return;
+      }
+      window.location.href = "/bingo/?n=" + n;
+    });
+  });
+</script>
+<div class="page-box">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="生成数量" aria-label="生成数量" aria-describedby="basic-addon2" id="n-input">
+    <div class="input-group-append">
+      <button class="btn btn-outline-info" type="button" id="gen-button">生成</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
