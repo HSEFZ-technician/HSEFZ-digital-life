@@ -21,6 +21,8 @@ def export(request):
     listOfGrades = []
     listOfAll = [[], [], []]
     for i in students:
+        if i.student_id == '000000000':
+            continue
         listStudent = []
         listStudent.append(i.student_id)
         listStudent.append(i.student_real_name)
@@ -31,13 +33,18 @@ def export(request):
             listStudent.append(eventDetail.point)
             listStudent.append(j.date_of_activity)
             listStudent.append(j.desc)
-        if map.get(i.student_id[0:2]) == None:
-            listOfGrades.append(i.student_id[0:2])
-            map[i.student_id[0:2]] = cur
+        curGrade = ''
+        if len(i.student_id)!=9:
+            curGrade = i.student_id[0:2]
+        else:
+            curGrade = i.student_id[3:5]
+        if map.get(curGrade) == None:
+            listOfGrades.append(curGrade)
+            map[curGrade] = cur
             listOfAll[cur].append(["班级", "姓名", "服务1", "课时数1", "时间1", "描述", "服务2", "课时数2", "时间2", "描述", "服务3",
                                   "课时数3", "时间3", "描述", "服务4", "课时数4", "时间4", "描述", "服务5", "课时数5", "时间5", "描述", "服务6", "课时数6", "时间6", "描述",])
             cur += 1
-        listOfAll[map[i.student_id[0:2]]].append(listStudent)
+        listOfAll[map[curGrade]].append(listStudent)
     pathList = []
     for i in listOfGrades:
         csvPath = os.path.join(club_main.settings.MEDIA_ROOT, "%s.csv" % i)
@@ -62,7 +69,7 @@ def genfn():
 
 def addscore(name, class_id, servicename, serviceterm, servicepoint, uploaduser, desc):
     ss = StudentClubData.objects.filter(student_real_name=name,
-                                        student_id=class_id)
+                                        student_id__regex="^120%s..|^%s" % (class_id, class_id))
     if (ss.count() == 0):
         return "No student named %s in %s." % (name, class_id)
     ss = ss[0]
@@ -142,7 +149,8 @@ def check_file(F, uploaduser):
 
 def delALL(cur):
     print(cur)
-    studentList = StudentClubData.objects.filter(student_id__regex="%s.."%cur).all()
+    studentList = StudentClubData.objects.filter(student_id__regex="^%s.."%cur).all()
+    studentList = StudentClubData.objects.filter(student_id__regex="^120%s...."%cur).all()
     for curStu in studentList:
         tmp = ScoreEventData.objects.filter(user_id=curStu)
         tmp.delete()
@@ -172,7 +180,7 @@ def process_import_file(F, uploaduser):
                 delALL(cur)
                 secd = False
             student_id = row[2]
-            class_id = student_id[3:7]
+            class_id = student_id
             name = row[1]
             for i in range(4, len(row), 4):
                 servicename = row[i]

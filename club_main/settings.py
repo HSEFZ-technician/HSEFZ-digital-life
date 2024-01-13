@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'club',
-    "bingo",
+    'bingo',
     'rest_framework_jwt',
     'crispy_forms',
     'widget_tweaks',
