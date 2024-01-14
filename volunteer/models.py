@@ -31,3 +31,9 @@ class StudentScoreData(models.Model):
 
     desc = models.CharField(
         max_length=200, verbose_name="Description", null=True)
+    
+class StudentDataChecker(models.Model):
+    user_id = models.ForeignKey(
+        StudentClubData, verbose_name="Student Information", on_delete=models.CASCADE)
+    
+    data_checked = models.BooleanField(verbose_name="Checked", default=False)

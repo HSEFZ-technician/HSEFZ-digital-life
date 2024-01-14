@@ -4,7 +4,7 @@ import os
 from django.conf import settings
 import club_main.settings
 from club.models import StudentClubData
-from volunteer.models import StudentScoreData, ScoreEventData
+from volunteer.models import StudentScoreData, ScoreEventData, StudentDataChecker
 import zipfile
 from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -26,6 +26,12 @@ def export(request):
         listStudent = []
         listStudent.append(i.student_id)
         listStudent.append(i.student_real_name)
+        check_name = "未确认"
+        check_item = StudentDataChecker.objects.filter(user_id=i)
+        if len(check_item) != 0:
+            if check_item[0].data_checked:
+                check_name = "已确认"
+        listStudent.append(check_name)
         events = StudentScoreData.objects.filter(user_id=i).all()
         for j in events:
             eventDetail = j.score_event_id
@@ -41,7 +47,7 @@ def export(request):
         if map.get(curGrade) == None:
             listOfGrades.append(curGrade)
             map[curGrade] = cur
-            listOfAll[cur].append(["班级", "姓名", "服务1", "课时数1", "时间1", "描述", "服务2", "课时数2", "时间2", "描述", "服务3",
+            listOfAll[cur].append(["班级", "姓名","课时确认","服务1", "课时数1", "时间1", "描述", "服务2", "课时数2", "时间2", "描述", "服务3",
                                   "课时数3", "时间3", "描述", "服务4", "课时数4", "时间4", "描述", "服务5", "课时数5", "时间5", "描述", "服务6", "课时数6", "时间6", "描述",])
             cur += 1
         listOfAll[map[curGrade]].append(listStudent)
@@ -73,6 +79,11 @@ def addscore(name, class_id, servicename, serviceterm, servicepoint, uploaduser,
     if (ss.count() == 0):
         return "No student named %s in %s." % (name, class_id)
     ss = ss[0]
+    ck_list = StudentDataChecker.objects.filter(user_id=ss)
+    if len(ck_list)==0:
+        tmp = StudentDataChecker(user_id=ss, data_checked=False)
+        # TODO： REFRESHING CHECKING DATA
+        tmp.save()
     ev = ScoreEventData.objects.filter(name=servicename,
                                        point=servicepoint)
     if (ev.count() == 0):
@@ -149,8 +160,7 @@ def check_file(F, uploaduser):
 
 def delALL(cur):
     print(cur)
-    studentList = StudentClubData.objects.filter(student_id__regex="^%s.."%cur).all()
-    studentList = StudentClubData.objects.filter(student_id__regex="^120%s...."%cur).all()
+    studentList = StudentClubData.objects.filter(student_id__regex="^120%s....|^%s.."%(cur,cur)).all()
     for curStu in studentList:
         tmp = ScoreEventData.objects.filter(user_id=curStu)
         tmp.delete()
