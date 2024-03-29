@@ -48,7 +48,7 @@ def index(request):
                     ck_table[0].data_checked = True
                     ck_table[0].save()
                 else:
-                    tmp = StudentDataChecker(user_id=request.user, data_checked=True)
+                    tmp = StudentDataChecker(user_id=request.user.pk, data_checked=True)
                     # TODO： REFRESHING CHECKING DATA
                     tmp.save()
                 return JsonResponse({'code': 1, 'message': '确认成功'})
