@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'widget_tweaks',
     'volunteer',
+    'league',
 ]
 
 MIDDLEWARE = [
