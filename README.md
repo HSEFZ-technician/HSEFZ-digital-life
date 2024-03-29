@@ -4,7 +4,7 @@ Built by [aeilot](https://aeilot.top) and [xiaoyaowudi](https://www.xiaoyaowudi.
 
 ## 贡献须知 | Notice for assistant technicians
 
-所有干事都必须创建 PR 进行代码修改！！！不得直接在主 branch 上 commit！！！
+所有干事都必须创建 PR 进行代码修改！！！不得直接在主 branch 上 commit！！！谢谢！
 
 Assistants MUST not directly commit changes to the main branch. It's proposed that they create PRs to propose a change.
 

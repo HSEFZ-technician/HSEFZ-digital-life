@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from volunteer.models import ScoreEventData, StudentScoreData
+from volunteer.models import ScoreEventData, StudentScoreData, StudentDataChecker
 import json
 from django.http import JsonResponse, Http404, HttpResponseRedirect
 from volunteer.forms import ModifyScoreEventForm, SearchUserForm, ModifyScoreForm
@@ -35,12 +35,33 @@ def generate_row(name, score, date):
 def index(request):
     _ = StudentScoreData.objects.filter(user_id=request.user.pk)
     content = ''
+    ck_table = StudentDataChecker.objects.filter(user_id=request.user.pk)
+    data_checked = False
+    if len(ck_table) != 0:
+        data_checked = ck_table[0].data_checked
+    if request.method == 'POST':
+        try:
+            json_data = json.loads(request.body.decode())
+            typename = json_data['type']
+            if typename == "check":
+                if len(ck_table) != 0:
+                    ck_table[0].data_checked = True
+                    ck_table[0].save()
+                else:
+                    tmp = StudentDataChecker(user_id=request.user, data_checked=True)
+                    # TODO： REFRESHING CHECKING DATA
+                    tmp.save()
+                return JsonResponse({'code': 1, 'message': '确认成功'})
+            else:
+                return JsonResponse({'code': 0, 'message': '请求非法'})
+        except Exception as e:
+            return JsonResponse({'code': 0, 'message': '发生了错误'})
     sum_of_course = 0.0
     for i in _:
         event = i.score_event_id
         sum_of_course += event.point
         content += generate_row(event.name, event.point, i.date_of_activity)
-    return render(request, 'volunteer/home.html', {'content': content, 'percentage': (sum_of_course/40)*100, 'score': sum_of_course})
+    return render(request, 'volunteer/home.html', {'content': content, 'percentage': (sum_of_course/40)*100, 'score': sum_of_course, 'checked': data_checked})
 
 
 @login_required()

@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from club.models import StudentClubData, Notice, SelectionEvent, StudentSelectionInformation, EventClassInformation, EventClassType
 from django.conf import settings
 from club.tokens import VerifyToken, PasswordGenerator
-from club.tasks import send_email
+from club.tasks import send_email, send_email_nosync
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -78,15 +78,17 @@ def register_view(request):
                     'user': new_account,
                     'token': token,
                     'domain': current_site,
-                    'title': '社团机选网站账号验证',
+                    'title': 'EFZ数字生活·账号验证',
                     'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
                     'is_activate': True,
                 }
             )
 
             # print("start task")
-            send_email.delay(mail_subject, message, [
-                             student_username+settings.EMAIL_SUFFIX,])
+            # send_email.delay(mail_subject, message, [
+                            #  student_username+settings.EMAIL_SUFFIX,])
+            send_email_nosync(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
+
 
             return render(request, 'info.html', {'info': '注册邮件已发送，请检查邮箱!'})
 
@@ -181,15 +183,16 @@ def manual_activate_view(request):
                     'user': account,
                     'token': token,
                     'domain': current_site,
-                    'title': '社团机选网站账号验证',
+                    'title': 'EFZ数字生活·账号验证',
                     'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
                     'is_activate': True,
                 }
             )
 
             # print("start task")
-            send_email.delay(mail_subject, message, [
-                             account.username+settings.EMAIL_SUFFIX,])
+            # send_email.delay(mail_subject, message, [
+                            #  account.username+settings.EMAIL_SUFFIX,])
+            send_email_nosync(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
 
             return render(request, 'info.html', {'info': '注册邮件已发送，请检查邮箱！'})
 
@@ -306,23 +309,36 @@ def send_modify_password_email_view(request):
             )
 
             current_site = get_current_site(request)
-            mail_subject = '修改你的密码'
+            mail_subject = '账号密码修改'
+            # message = render_to_string(
+            #     'email.html',
+            #     {
+            #         'user': account,
+            #         'token': token,
+            #         'domain': current_site,
+            #         'title': 'EFZ数字生活·账号密码修改',
+            #         'information': '您好！您的账号正在进行密码修改，请点击下方链接，完成后密码将变为 %s ，该邮件有效期' % (new_password)
+            #         + str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成！',
+            #         'is_activate': False,
+            #     }
+            # )
+            
             message = render_to_string(
                 'email.html',
                 {
                     'user': account,
-                    'token': token,
-                    'domain': current_site,
-                    'title': '社团机选网站账号密码修改',
-                    'information': '您好！您的账号正在进行密码修改，请点击下方链接，完成后密码将变为 %s，该邮件有效期' % (new_password)
-                    + str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成！',
+                    'title': 'EFZ数字生活·账号密码修改',
+                    'information': '您好！您的账号正在进行密码修改，密码已经变为 %s ，请尽快登录，在账号安全页面（个人信息-账号安全）修改密码！'% new_password,
                     'is_activate': False,
                 }
             )
+            
+            account.set_password(new_password)
+            account.save()
 
             # print("start task")
-            send_email.delay(mail_subject, message, [
-                             account.username+settings.EMAIL_SUFFIX,])
+            # send_email.delay(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+            send_email_nosync(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
 
             return render(request, 'info.html', {'info': '邮件已发送，请检查邮箱！'})
         else:

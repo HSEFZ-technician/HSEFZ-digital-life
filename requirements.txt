@@ -7,3 +7,4 @@ django-crispy-forms
 django-widget-tweaks
 crispy-bootstrap4
 celery[redis]
+Pillow

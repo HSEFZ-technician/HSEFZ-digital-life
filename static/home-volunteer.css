@@ -2,36 +2,60 @@
     margin-top: 2rem;
 }
 
-.progress-card{
+.progress-card {
     border-radius: 8px !important;
 }
 
+.btn {
+    border-radius: 20px !important;
+    padding: 2px;
+}
 
-.progress-bar, .progress{
+.border-success {
+    color: #28a745 !important;
+    background: #28a7452e !important;
+    border: none !important;
+}
+
+.border-success:hover {
+    color: #ffffff !important;
+    background: #28a745 !important;
+    border: none !important;
+}
+
+.border-success-disabled {
+    color: #ffffff !important;
+    background: #28a745 !important;
+    border: none !important;
+}
+
+.progress-bar,
+.progress {
     border-radius: 12px !important;
 }
 
-.info-major{
+.info-major {
     margin-top: 6px;
 }
-.info-minor{
+
+.info-minor {
     margin-bottom: 2px;
 }
 
 
-.score-table .table thead th{
+.score-table .table thead th {
     border-top: none;
     border-bottom-width: 1px;
     font-size: 0.95rem;
-    border-bottom-color: rgba(34,36,38,0.15);
+    border-bottom-color: rgba(34, 36, 38, 0.15);
 }
 
-.score-table .table tbody td{
+.score-table .table tbody td {
     font-size: 0.95rem;
-    border-top-color: rgba(34,36,38,0.15);
+    border-top-color: rgba(34, 36, 38, 0.15);
 }
 
-.name-title{
+.name-title {
     width: 15rem;
 }
 
@@ -43,14 +67,14 @@
     vertical-align: middle;
 }
 
-.table{
+.table {
     table-layout: fixed;
 }
 
-.snum-title{
+.snum-title {
     max-width: 5rem;
 }
 
-.date-title{
+.date-title {
     margin-right: auto;
 }

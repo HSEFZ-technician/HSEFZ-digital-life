@@ -1,11 +1,13 @@
 {% autoescape off %}
 <!DOCTYPE html>
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="email code">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
 	<div style="background-color: #ECECEC;padding:30px">
 		<table align="center" style="width: 500px;height:100%;margin:0px auto;text-align: left;
@@ -13,15 +15,16 @@
 		font-size: 14px;font-family: 微软雅黑,黑体;border-collapse: collapse;">
 			<tbody>
 				<tr>
-					<th valign="middle" style="height:25px;line-height:25px;padding:15px 30px;border-bottom-width:1px;
+					<th valign="middle"
+						style="height:25px;line-height:25px;padding:15px 30px;border-bottom-width:1px;
 					border-bottom-style:solid;border-bottom-color: dodgerblue;background-color: dodgerblue;border-top-left-radius: 7px;border-top-right-radius: 7px;">
-					<font face="微软雅黑" size="5" style="color: rgb(255, 255, 255); ">{{ title }}</font>
+						<font face="微软雅黑" size="5" style="color: rgb(255, 255, 255); ">{{ title }}</font>
 					</th>
 				</tr>
 				<tr>
 					<td style="word-break:break-all">
 						<div style="padding:25px 35px 40px; background-color:#fff;opacity:0.8;">
-		
+
 							<h2 style="margin: 5px 0px; ">
 								<font color="#333333" style="line-height: 20px; ">
 									<font style="line-height: 22px; " size="4">
@@ -29,17 +32,19 @@
 								</font>
 							</h2>
 							<p>{{ information }}</p><br>
-							<hr style="height:2px;border:none;background-color:#efefef;margin-left: -5px;margin-right: -5px;margin-top: -10px;">
+							<hr
+								style="height:2px;border:none;background-color:#efefef;margin-left: -5px;margin-right: -5px;margin-top: -10px;">
+							{% if is_activate %}
 							<div style="width:100%;margin:0 auto;">
 								<div style="padding:10px 0px 0;margin-bottom:20px;line-height:1.3em;font-size:12px;">
-                                    {% if is_activate %}
-									<a href="http://{{ domain }}{% url 'club:activate_email' token=token %}">http://{{ domain }}{% url 'club:activate_email' token=token %}</a>
-                                    {% else %}
-									<a href="http://{{ domain }}{% url 'club:modify_password' token=token %}">http://{{ domain }}{% url 'club:modify_password' token=token %}</a>
-                                    {% endif %}
+
+									<a href="http://{{ domain }}{% url 'club:activate_email' token=token %}">http://{{
+										domain }}{% url 'club:activate_email' token=token %}</a>
 								</div>
 							</div>
-							<hr style="height:2px;border:none;background-color:#efefef;margin-left: -5px;margin-right: -5px;">
+							<hr
+								style="height:2px;border:none;background-color:#efefef;margin-left: -5px;margin-right: -5px;">
+							{% endif %}
 							<p>
 								如果这不是您本人的操作，请忽略这封邮件。
 							</p>
