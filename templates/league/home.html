@@ -1,3 +1,31 @@
+{#{% extends 'league/base.html' %}#}
+{##}
+{#{% load static %}#}
+{##}
+{#{% block include %}#}
+{##}
+{#<link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">#}
+{#<link rel="stylesheet" type="text/css" href="{% static 'home-league.css' %}">#}
+{#<script src="{% static 'progressbar.js' %}" type="text/javascript"></script>#}
+{##}
+{##}
+{#{% endblock %}#}
+{##}
+{#{% block title %}#}
+{##}
+{#<title>EFZ数字生活·体育联赛</title>#}
+{##}
+{#{% endblock %}#}
+{##}
+{#{% block body %}#}
+{#<div class="container main-container">#}
+{##}
+{#<p>Under Construction</p>#}
+{##}
+{#</div>#}
+{##}
+{#{% endblock %}#}
+
 {% extends 'base-homepage.html' %}
 {#{% extends "user_settings.html" %}#}
 
@@ -29,92 +57,28 @@
 <body>
 
     <div class="ui stackable three column grid container container-main">
+        {% if isEmpty %}
+            <div style="text-align: center">暂无赛事消息，过会再来看吧！</div>
+        {% else %}
         {% for league in form %}
         <div class="column container-grid">
             <div class="container-block">
-                <div class="league-title"><h1>{{ league.title }}</h1></div>
-                <div class="league-time"><p>{{ league.date }} {{ league.start_time }}~{{ league.end_time }}</p></div>
+                <div class="league-title"><a href="/league/sports_detail?id={{ league.id }}">{{ league.name }}</a></div>
+                <div class="league-time"><p>开始时间：{{ league.time }}</p></div>
                 <div class="ui two column grid league-teams">
-                    <div class="column league-team"><p style="text-align: left">{{ league.team_A }}</p></div>
-                    <div class="column league-team"><p style="text-align: right">{{ league.team_B }}</p></div>
+                    <div class="column league-team"><p style="text-align: left">{{ league.a_class }}</p></div>
+                    <div class="column league-team"><p style="text-align: right">{{ league.b_class }}</p></div>
                 </div>
                 <div class="ui two column grid league-scores">
-                    <div class="column league-score"><p style="text-align: left">{{ league.score_A }}</p></div>
-                    <div class="column league-score"><p style="text-align: right">{{ league.score_B }}</p></div>
+                    <div class="column league-score"><p style="text-align: left">{{ league.a_score }}</p></div>
+                    <div class="column league-score"><p style="text-align: right">{{ league.b_score }}</p></div>
                 </div>
             </div>
         </div>
         {% endfor %}
+        {% endif %}
     </div>
 
-{#  <div class="ui fluid segment" style="margin: 0 100px">#}
-{#    <div class="ui divided grid">#}
-{#      <div class="three wide column" style="text-align: center;">#}
-{#        <button class="ui button color5">高一 (1) 班</button>#}
-{#        <h3>班级口号</h3>#}
-{#        <p style="text-align: left;">原神，启动！</p>#}
-{#        <h3>班级介绍</h3>#}
-{#        <p style="text-align: left;">我们是，前面忘了，中间忘了，后面忘了。</p>#}
-{#      </div>#}
-{#      <div class="ten wide column">#}
-{#        <div class="ui two buttons fluid">#}
-{#          <button class="ui button color5" style="width: 80%;"></button>#}
-{#          <div class="or" data-text="vs"></div>#}
-{#          <button class="ui button color21" style="width: 20%;"></button>#}
-{#        </div>#}
-{#        <h1 style="text-align: center;">篮球联赛第 0 场</h1>#}
-{#        <p style="text-align: center; color: #3498db;">进行中：2023.10.6 16:00 ~ 2023.10.6 18:00</p>#}
-{#        <div class="ui segment" style="font-size: 400%;">#}
-{#          <div class="ui two column grid">#}
-{#            <div class="column" style="text-align: start; color: #2e3377;">#}
-{#              40#}
-{#            </div>#}
-{#            <div class="column" style="text-align: end; color: #71b1ca;">#}
-{#              10#}
-{#            </div>#}
-{#          </div>#}
-{#          <div class="ui vertical divider hidden" style="font-size: 100%;">#}
-{#            :#}
-{#          </div>#}
-{#        </div>#}
-{#      </div>#}
-{#      <div class="three wide column" style="text-align: center;">#}
-{#        <button class="ui button color21">高一 (2) 班</button>#}
-{#        <h3>班级口号</h3>#}
-{#        <p style="text-align: left;">原神，启动！</p>#}
-{#        <h3>班级介绍</h3>#}
-{#        <p style="text-align: left;">我们是，前面忘了，中间忘了，后面忘了。</p>#}
-{#      </div>#}
-{#    </div>#}
-{#  </div>#}
 </body>
 
 {% endblock %}
-
-
-<!--
-  color1: #c03433;
-  color2: #471619;
-  color3: #da4e71;
-  color4: #784280;
-  color5: #2e3377;
-  color6: #4073aa;
-  color7: #4a9e84;
-  color8: #2a3c26;
-  color9: #ebca47;
-  color10: #f09d37;
-  color11: #cce6e7;
-  color12: #df865e;
-  color13: #f7e9cf;
-  color14: #b58152;
-  color15: #b2aa93;
-  color16: #857331;
-  color17: #f4df82;
-  color18: #bcce84;
-  color19: #cbdeca;
-  color20: #a5aba7;
-  color21: #71b1ca;
-  color22: #c67ca1;
-  color23: #e19fad;
-  color24: #657072;
--->

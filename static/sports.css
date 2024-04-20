@@ -118,6 +118,102 @@ button.ui.button.color24 {
   color: #ffffff;
 }
 
+div.t-color1 {
+  color: #c03433;
+}
+
+div.t-color2 {
+  color: #471619;
+}
+
+div.t-color3 {
+  color: #da4e71;
+}
+
+div.t-color4 {
+  color: #784280;
+}
+
+div.t-color5 {
+  color: #2e3377;
+}
+
+div.t-color6 {
+  color: #4073aa;
+}
+
+div.t-color7 {
+  color: #4a9e84;
+}
+
+div.t-color8 {
+  color: #2a3c26;
+}
+
+div.t-color9 {
+  color: #ebca47;
+}
+
+div.t-color10 {
+  color: #f09d37;
+}
+
+div.t-color11 {
+  color: #cce6e7;
+}
+
+div.t-color12 {
+  color: #df865e;
+}
+
+div.t-color13 {
+  color: #f7e9cf;
+}
+
+div.t-color14 {
+  color: #b58152;
+}
+
+div.t-color15 {
+  color: #b2aa93;
+}
+
+div.t-color16 {
+  color: #857331;
+}
+
+div.t-color17 {
+  color: #f4df82;
+}
+
+div.t-color18 {
+  color: #bcce84;
+}
+
+div.t-color19 {
+  color: #cbdeca;
+}
+
+div.t-color20 {
+  color: #a5aba7;
+}
+
+div.t-color21 {
+  color: #71b1ca;
+}
+
+div.t-color22 {
+  color: #c67ca1;
+}
+
+div.t-color23 {
+  color: #e19fad;
+}
+
+div.t-color24 {
+  color: #657072;
+}
+
 body {
   background-color: #f5f5f7 !important;
 }
@@ -144,13 +240,15 @@ body {
 
 .league-title {
   margin: 25px 0 10px;
+  text-align: center !important;
   /*padding: 0 0 0 20px;*/
 }
 
-.league-title > h1 {
+.league-title > a {
   font-size: 24px;
   font-weight: bolder;
   text-align: center;
+  color: black;
 }
 
 .league-time {

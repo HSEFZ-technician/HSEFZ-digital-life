@@ -118,6 +118,19 @@
                 </div>
             </a>
         </div>
+            
+            <div class="settings-nav-row {% if now_class_team_manage %} settings-current {% else %} settings-other {% endif %}">
+            <a href="{% if now_class_team_manage %} # {% else %} {% url 'league:class_team_manage' %} {% endif %}">
+                <div style="display: flex;flex-direction: row">
+                    <font face="微软雅黑">
+                        班级管理
+                    </font>
+                    <span class="ml-auto">
+                        <i class="fa-solid fa-book"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
         {% endif %}
         {% if now_modify_event %}
         <div class="settings-nav-row">
@@ -209,6 +222,22 @@
             </a>
         </div>
         {% endif %}
+    
+    {% if now_modify_class_team %}
+        <div class="settings-nav-row">
+            <a href="{% url 'league:class_team_manage' %}" style="color:#4183C4 !important;">
+                <div style="display: flex;flex-direction: row">
+                    <span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                    <font face="微软雅黑" style="margin-left: 0.2rem;">
+                        返回班级管理
+                    </font>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+    
     </div>
     <div class="col-lg settings-forms">
         {% block settings_content %}

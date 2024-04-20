@@ -1,5 +1,5 @@
 
-{% extends "user_settings.html" %}
+{% extends "base-homepage.html" %}
 
 {% load crispy_forms_tags %}
 
@@ -26,61 +26,63 @@
 
 {% endblock %}
 
-{% block settings_content %}
+{% block body %}
 
 <body>
-  <div class="ui twelve buttons fluid">
-    <button class="ui button color1">鹅冠红</button>
-    <button class="ui button color2">酱紫</button>
-    <button class="ui button color3">松叶牡丹红</button>
-    <button class="ui button color4">桔梗紫</button>
-    <button class="ui button color5">满天星紫</button>
-    <button class="ui button color6">品蓝</button>
-    <button class="ui button color7">蓝绿</button>
-    <button class="ui button color8">油绿</button>
-    <button class="ui button color9">柚黄</button>
-    <button class="ui button color10">雄黄</button>
-    <button class="ui button color11">海天蓝</button>
-    <button class="ui button color12">法螺红</button>
-  </div>
-  <div class="ui twelve buttons fluid">
-    <button class="ui button color13">米色</button>
-    <button class="ui button color14">淡赭</button>
-    <button class="ui button color15">银鼠灰</button>
-    <button class="ui button color16">苔绿</button>
-    <button class="ui button color17">茉莉黄</button>
-    <button class="ui button color18">芦苇绿</button>
-    <button class="ui button color19">淡翠绿</button>
-    <button class="ui button color20">冰山蓝</button>
-    <button class="ui button color21">碧青</button>
-    <button class="ui button color22">菱锰红</button>
-    <button class="ui button color23">粉团花红</button>
-    <button class="ui button color24">夏云灰</button>
-  </div>
-  <div class="ui fluid segment">
+{#  <div class="ui twelve buttons fluid">#}
+{#    <button class="ui button color1">鹅冠红</button>#}
+{#    <button class="ui button color2">酱紫</button>#}
+{#    <button class="ui button color3">松叶牡丹红</button>#}
+{#    <button class="ui button color4">桔梗紫</button>#}
+{#    <button class="ui button color5">满天星紫</button>#}
+{#    <button class="ui button color6">品蓝</button>#}
+{#    <button class="ui button color7">蓝绿</button>#}
+{#    <button class="ui button color8">油绿</button>#}
+{#    <button class="ui button color9">柚黄</button>#}
+{#    <button class="ui button color10">雄黄</button>#}
+{#    <button class="ui button color11">海天蓝</button>#}
+{#    <button class="ui button color12">法螺红</button>#}
+{#  </div>#}
+{#  <div class="ui twelve buttons fluid">#}
+{#    <button class="ui button color13">米色</button>#}
+{#    <button class="ui button color14">淡赭</button>#}
+{#    <button class="ui button color15">银鼠灰</button>#}
+{#    <button class="ui button color16">苔绿</button>#}
+{#    <button class="ui button color17">茉莉黄</button>#}
+{#    <button class="ui button color18">芦苇绿</button>#}
+{#    <button class="ui button color19">淡翠绿</button>#}
+{#    <button class="ui button color20">冰山蓝</button>#}
+{#    <button class="ui button color21">碧青</button>#}
+{#    <button class="ui button color22">菱锰红</button>#}
+{#    <button class="ui button color23">粉团花红</button>#}
+{#    <button class="ui button color24">夏云灰</button>#}
+{#  </div>#}
+  <div class="ui fluid segment" style="margin: 20px 30px">
     <div class="ui divided grid">
       <div class="three wide column" style="text-align: center;">
-        <button class="ui button color5">高一 (1) 班</button>
+        <button class="ui button color{{ league.a_class_c }}">{{ league.a_class }}</button>
+        <div style="height: 20px; width: 100%"></div>
         <h3>班级口号</h3>
-        <p style="text-align: left;">原神，启动！</p>
+        <p style="text-align: left;">{{ league.a_class_s }}</p>
         <h3>班级介绍</h3>
-        <p style="text-align: left;">我们是，前面忘了，中间忘了，后面忘了。</p>
+        <p style="text-align: left;">{{ league.a_class_d }}</p>
       </div>
       <div class="ten wide column">
         <div class="ui two buttons fluid">
-          <button class="ui button color5" style="width: 80%;"></button>
+          <button class="ui button color{{ league.a_class_c }}" style="width: calc({{ league.a_score }} / ({{ league.a_score }} + {{ league.b_score }}) * 100%);"></button>
           <div class="or" data-text="vs"></div>
-          <button class="ui button color21" style="width: 20%;"></button>
+          <button class="ui button color{{ league.b_class_c }}" style="width: calc({{ league.b_score }} / ({{ league.a_score }} + {{ league.b_score }}) * 100%);"></button>
         </div>
-        <h1 style="text-align: center;">篮球联赛第 0 场</h1>
-        <p style="text-align: center; color: #3498db;">进行中：2023.10.6 16:00 ~ 2023.10.6 18:00</p>
+          <div style="height: 20px; width: 100%"></div>
+        <h1 style="text-align: center;">{{ league.name }}</h1>
+        <p style="text-align: center; color: #3498db;">开始时间：{{ league.time }}</p>
         <div class="ui segment" style="font-size: 400%;">
           <div class="ui two column grid">
-            <div class="column" style="text-align: start; color: #2e3377;">
-              40
+            <div class="column t-color{{ league.a_class_c }}" style="text-align: start; font-size: 80px; font-weight: bold">
+              {{ league.a_score }}
             </div>
-            <div class="column" style="text-align: end; color: #71b1ca;">
-              10
+            <div class="column t-color{{ league.b_class_c }}" style="text-align: end; font-size: 80px; font-weight: bold">
+              {{ league.b_score }}
             </div>
           </div>
           <div class="ui vertical divider hidden" style="font-size: 100%;">
@@ -89,11 +91,12 @@
         </div>
       </div>
       <div class="three wide column" style="text-align: center;">
-        <button class="ui button color21">高一 (2) 班</button>
+        <button class="ui button color{{ league.b_class_c }}">{{ league.b_class }}</button>
+        <div style="height: 20px; width: 100%"></div>
         <h3>班级口号</h3>
-        <p style="text-align: left;">原神，启动！</p>
+        <p style="text-align: left;">{{ league.b_class_s }}</p>
         <h3>班级介绍</h3>
-        <p style="text-align: left;">我们是，前面忘了，中间忘了，后面忘了。</p>
+        <p style="text-align: left;">{{ league.b_class_d }}</p>
       </div>
     </div>
   </div>

@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'event_manage.css' %}">
 
-<script src="{% static 'league_manage.js' %}" type="text/javascript"></script>
+<script src="{% static 'class_team_manage.js' %}" type="text/javascript"></script>
 
 {% endblock %}
 
@@ -31,35 +31,25 @@
 </div>
 
 <div class="d-inline-flex btn-div">
-    <a href="/league/create_league">新建</a>
-{#    <button class="btn btn-outline-info" id="new-button">#}
-{#        新建#}
-{#    </button>#}
+    <button class="btn btn-outline-info" id="new-button">
+        新建
+    </button>
 </div>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                赛事名称
+                班级名称
             </th>
             <th>
-                开始时间
+                班级颜色
             </th>
             <th>
-                队伍A
+                班级口号
             </th>
             <th>
-                队伍B
-            </th>
-            <th>
-                队伍A分数
-            </th>
-            <th>
-                队伍B分数
-            </th>
-            <th>
-                是否过时
+                班级介绍
             </th>
         </tr>
     </thead>
