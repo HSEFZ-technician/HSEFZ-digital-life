@@ -33,7 +33,7 @@ def index(request):
 
     return render(request, 'league/home.html', {'form': form, 'title': 'EFZ数字生活·体育联赛'})
 
-
+  
 def detail(request):
     matches = MatchData.objects.all()
     form, form_past = [], []
@@ -52,7 +52,7 @@ def detail(request):
     if len(form) == 0 & len(form_past) == 0:
         return render(request, 'league/detail.html', {'isEmpty': True})
 
-    return render(request, 'league/detail.html', {'form': form, 'form_past': form_past, 'title': '赛程详情'})
+    return render(request, 'league/detail.html', {'form': form, 'form_past': form_past, 'title': '所有赛事'})
 
 
 def sports_detail(request):
@@ -63,7 +63,7 @@ def sports_detail(request):
     time = (i['time'] + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
     i['time'] = time
 
-    return render(request, 'league/sports_detail.html', {'league': i})
+    return render(request, 'league/sports_detail.html', {'league': i, 'title': '赛程详情'})
 
 
 def match_map(request):
