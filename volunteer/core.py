@@ -73,9 +73,9 @@ def genfn():
     return res
 
 
-def addscore(name, class_id, student_id, servicename, serviceterm, servicepoint, uploaduser, desc):
+def addscore(name, class_id, servicename, serviceterm, servicepoint, uploaduser, desc):
     ss = StudentClubData.objects.filter(student_real_name=name,
-                                        student_id__regex="^%s|^%s" % (student_id, class_id))
+                                        student_id__regex="^120%s..|^%s" % (class_id, class_id))
     if (ss.count() == 0):
         return "No student named %s in %s." % (name, class_id)
     ss = ss[0]
@@ -159,21 +159,10 @@ def check_file(F, uploaduser):
     return res
 
 def delALL(cur):
+    print(cur)
     studentList = StudentClubData.objects.filter(student_id__regex="^120%s....|^%s.."%(cur,cur)).all()
-    print(len(studentList))
     for curStu in studentList:
-        tmp = StudentScoreData.objects.filter(user_id=curStu)
-        tmp.delete()
-
-
-def delSINGLE(cur, cur_name):
-    cur_grade = cur[3:7]
-    # print(cur, cur_grade, cur_name)
-    studentList = StudentClubData.objects.filter(student_id__regex="^%s|^%s"%(cur,cur_grade), student_real_name=cur_name).all()
-    print(len(studentList))
-    for curStu in studentList:
-        tmp = StudentScoreData.objects.filter(user_id=curStu)
-        # print(len(tmp))
+        tmp = ScoreEventData.objects.filter(user_id=curStu)
         tmp.delete()
         
 
@@ -198,15 +187,11 @@ def process_import_file(F, uploaduser):
             if secd:
                 student_id = row[2]
                 cur = student_id[3:5]
-                # delALL(cur)
+                delALL(cur)
                 secd = False
             student_id = row[2]
-            class_id = student_id[3:7]
+            class_id = student_id
             name = row[1]
-            if name=='':
-                # print(111)
-                continue
-            delSINGLE(student_id, name)
             for i in range(4, len(row), 4):
                 servicename = row[i]
                 if servicename == '':
@@ -214,7 +199,7 @@ def process_import_file(F, uploaduser):
                 servicepoint = float(eval(row[i + 1]))
                 serviceterm = row[i + 2]
                 servicedesc = row[i + 3]
-                ads = addscore(name, class_id,student_id, servicename,
+                ads = addscore(name, class_id, servicename,
                                serviceterm, servicepoint, uploaduser, servicedesc)
         wr.close()
     os.remove(fn)

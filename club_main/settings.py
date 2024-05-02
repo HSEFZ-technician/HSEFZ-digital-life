@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'crispy_forms',
     'widget_tweaks',
-    'volunteer',
     'league',
+    'volunteer',
+    # 'youth_edu',
 ]
 
 MIDDLEWARE = [
@@ -88,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'selection_users',
         'USER': 'root',
-        'PASSWORD': '123',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '3306',
     }

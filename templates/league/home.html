@@ -1,27 +1,84 @@
-{% extends 'league/base.html' %}
+{#{% extends 'league/base.html' %}#}
+{##}
+{#{% load static %}#}
+{##}
+{#{% block include %}#}
+{##}
+{#<link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">#}
+{#<link rel="stylesheet" type="text/css" href="{% static 'home-league.css' %}">#}
+{#<script src="{% static 'progressbar.js' %}" type="text/javascript"></script>#}
+{##}
+{##}
+{#{% endblock %}#}
+{##}
+{#{% block title %}#}
+{##}
+{#<title>EFZ数字生活·体育联赛</title>#}
+{##}
+{#{% endblock %}#}
+{##}
+{#{% block body %}#}
+{#<div class="container main-container">#}
+{##}
+{#<p>Under Construction</p>#}
+{##}
+{#</div>#}
+{##}
+{#{% endblock %}#}
+
+{% extends 'base-homepage.html' %}
+{#{% extends "user_settings.html" %}#}
+
+{% load crispy_forms_tags %}
 
 {% load static %}
 
 {% block include %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'home-league.css' %}">
-<script src="{% static 'progressbar.js' %}" type="text/javascript"></script>
+{#{{ block.super }}#}
 
+{#<!DOCTYPE html>#}
+<link rel="stylesheet" type="text/css" href="{% static 'semantic.min.css' %}">
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="/static/ui/semantic/dist/semantic.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'sports.css' %}">
 
 {% endblock %}
 
 {% block title %}
 
-<title>EFZ数字生活·体育联赛</title>
+<title>{{ title }}</title>
 
 {% endblock %}
 
 {% block body %}
-<div class="container main-container">
 
-<p>Under Construction</p>
+<body>
 
-</div>
+    <div class="ui stackable three column grid container container-main">
+        {% if isEmpty %}
+            <div style="text-align: center">暂无赛事消息，过会再来看吧！</div>
+        {% else %}
+        {% for league in form %}
+        <div class="column container-grid">
+            <div class="container-block">
+                <div class="league-title"><a href="/league/sports_detail?id={{ league.id }}">{{ league.name }}</a></div>
+                <div class="league-time"><p>开始时间：{{ league.time }}</p></div>
+                <div class="ui two column grid league-teams">
+                    <div class="column league-team"><p style="text-align: left">{{ league.a_class }}</p></div>
+                    <div class="column league-team"><p style="text-align: right">{{ league.b_class }}</p></div>
+                </div>
+                <div class="ui two column grid league-scores">
+                    <div class="column league-score"><p style="text-align: left">{{ league.a_score }}</p></div>
+                    <div class="column league-score"><p style="text-align: right">{{ league.b_score }}</p></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</body>
 
 {% endblock %}

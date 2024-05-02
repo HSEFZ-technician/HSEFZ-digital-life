@@ -34,6 +34,26 @@ class MatchData(models.Model):
     
     time = models.DateTimeField(blank=True, verbose_name="Match Start Time")
 
+    def toDict(self):
+
+        d = {
+            "name": self.name,
+            "a_class": self.a_class.name,
+            "b_class": self.b_class.name,
+            "a_class_c": self.a_class.color,
+            "b_class_c": self.b_class.color,
+            "a_class_s": self.a_class.slogan,
+            "b_class_s": self.b_class.slogan,
+            "a_class_d": self.a_class.desc,
+            "b_class_d": self.b_class.desc,
+            "a_score": self.a_score,
+            "b_score": self.b_score,
+            "time": self.time,
+            "isPastEvent": self.isPastEvent
+        }
+
+        return d
+
 
 class SeasonData(models.Model):
 
