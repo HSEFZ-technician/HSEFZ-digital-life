@@ -1,0 +1,89 @@
+
+{% extends 'base-homepage.html' %}
+{#{% extends "user_settings.html" %}#}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block include %}
+
+{#{{ block.super }}#}
+
+{#<!DOCTYPE html>#}
+<link rel="stylesheet" type="text/css" href="{% static 'semantic.min.css' %}">
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="/static/ui/semantic/dist/semantic.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'sports.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'homepage.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block body %}
+
+<body>
+
+    <div class="ui container container-league-detail-title">
+        <h1 class="league-detail-title highlight hand-written">
+            #EFZ 数字生活·体育联赛
+        </h1>
+    </div>
+    
+    <div class="ui container container-league-detail-subtitle"><h1 class="league-detail-subtitle">正在进行</h1></div>
+    <div class="ui stackable three column grid container container-main">
+        {% if isEmpty %}
+            <div style="text-align: center">暂无赛事消息，过会再来看吧！</div>
+        {% else %}
+        {% for league in form %}
+        <div class="column container-grid">
+            <div class="container-block">
+                <div class="league-title"><a href="/league/sports_detail?id={{ league.id }}">{{ league.name }}</a></div>
+                <div class="league-time"><p>开始时间：{{ league.time }}</p></div>
+                <div class="ui two column grid league-teams">
+                    <div class="column league-team"><p style="text-align: left">{{ league.a_class }}</p></div>
+                    <div class="column league-team"><p style="text-align: right">{{ league.b_class }}</p></div>
+                </div>
+                <div class="ui two column grid league-scores">
+                    <div class="column league-score"><p style="text-align: left">{{ league.a_score }}</p></div>
+                    <div class="column league-score"><p style="text-align: right">{{ league.b_score }}</p></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="ui container container-league-detail-subtitle"><h1 class="league-detail-subtitle">已结束</h1></div>
+    <div class="ui stackable three column grid container container-main">
+        {% if isEmpty %}
+            <div style="text-align: center">暂无赛事消息，过会再来看吧！</div>
+        {% else %}
+        {% for league in form_past %}
+        <div class="column container-grid">
+            <div class="container-block">
+                <div class="league-title"><a href="/league/sports_detail?id={{ league.id }}">{{ league.name }}</a></div>
+                <div class="league-time"><p>开始时间：{{ league.time }}</p></div>
+                <div class="ui two column grid league-teams">
+                    <div class="column league-team"><p style="text-align: left">{{ league.a_class }}</p></div>
+                    <div class="column league-team"><p style="text-align: right">{{ league.b_class }}</p></div>
+                </div>
+                <div class="ui two column grid league-scores">
+                    <div class="column league-score"><p style="text-align: left">{{ league.a_score }}</p></div>
+                    <div class="column league-score"><p style="text-align: right">{{ league.b_score }}</p></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</body>
+
+{% endblock %}
