@@ -31,7 +31,7 @@ def index(request):
     if len(form) == 0:
         return render(request, 'league/home.html', {'isEmpty': True})
 
-    return render(request, 'league/home.html', {'form': form})
+    return render(request, 'league/home.html', {'form': form, 'title': 'EFZ数字生活·体育联赛'})
 
 
 def detail(request):
@@ -52,7 +52,7 @@ def detail(request):
     if len(form) == 0 & len(form_past) == 0:
         return render(request, 'league/detail.html', {'isEmpty': True})
 
-    return render(request, 'league/detail.html', {'form': form, 'form_past': form_past})
+    return render(request, 'league/detail.html', {'form': form, 'form_past': form_past, 'title': '赛程详情'})
 
 
 def sports_detail(request):
