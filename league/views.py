@@ -31,7 +31,7 @@ def index(request):
     if len(form) == 0:
         return render(request, 'league/home.html', {'isEmpty': True})
 
-    return render(request, 'league/home.html', {'form': form})
+    return render(request, 'league/home.html', {'form': form, 'title': 'EFZ数字生活·体育联赛'})
 
 
 def sports_detail(request):
@@ -42,7 +42,7 @@ def sports_detail(request):
     time = (i['time'] + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
     i['time'] = time
 
-    return render(request, 'league/sports_detail.html', {'league': i})
+    return render(request, 'league/sports_detail.html', {'league': i, 'title': '赛程详情'})
 
 
 @login_required()
