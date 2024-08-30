@@ -157,20 +157,22 @@ def selection_sign_up_view(request):
             if type_name == 'register':
                 for c in res['data']:
                     if c['id'] == class_id:
-                        StudentSelectionInformation.objects.raw(
-                            "LOCK TABLES club_studentselectioninformation;")
-                        if c['status'] == 0 and (c['mnum'] - StudentSelectionInformation.objects.filter(info_id=class_id).count() > 0):
-                            sel = StudentSelectionInformation(info_id=EventClassInformation.objects.get(
-                                pk=class_id), user_id=request.user, locked=False)
-                            # StudentSelectionInformation.objects.raw("LOCK TABLES club_studentselectioninformation")
-                            sel.save()
-                            StudentSelectionInformation.objects.raw(
-                                "UNLOCK TABLES;")
-                            return JsonResponse({'code': 1, 'message': '报名成功', 'data': get_selection_data(_, request.user, True)})
-                        else:
-                            StudentSelectionInformation.objects.raw(
-                                "UNLOCK TABLES;")
-                            return JsonResponse({'code': 0, 'message': '您当前无法报名此课程', 'data': res})
+                        with transaction.atomic():
+                            # StudentSelectionInformation.objects.raw(
+                            #     "LOCK TABLES club_studentselectioninformation;")
+                            if c['status'] == 0 and (c['mnum'] - StudentSelectionInformation.objects.filter(info_id=class_id).count() > 0):
+                                sel = StudentSelectionInformation(info_id=EventClassInformation.objects.get(
+                                    pk=class_id), user_id=request.user, locked=False)
+                                # StudentSelectionInformation.objects.raw("LOCK TABLES club_studentselectioninformation")
+                                sel.save()
+                                # StudentSelectionInformation.objects.raw(
+                                #     "UNLOCK TABLES;")
+                                # return JsonResponse({'code': 1, 'message': '报名成功', 'data': get_selection_data(_, request.user, True)})
+                            else:
+                                # StudentSelectionInformation.objects.raw(
+                                #     "UNLOCK TABLES;")
+                                return JsonResponse({'code': 0, 'message': '您当前无法报名此课程', 'data': res})
+                        return JsonResponse({'code': 1, 'message': '报名成功', 'data': get_selection_data(_, request.user, True)})
             elif type_name == 'cancel_register':
                 for c in res['data']:
                     if c['id'] == class_id:
