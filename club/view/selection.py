@@ -153,24 +153,21 @@ def selection_sign_up_view(request):
         json_data = json.loads(request.body.decode())
         class_id = json_data['class_id']
         type_name = json_data['type']
+        e = EventClassInformation.objects.get(pk=class_id)
+        r = e.rest_num
         try:
             if type_name == 'register':
                 for c in res['data']:
                     if c['id'] == class_id:
                         with transaction.atomic():
-                            # StudentSelectionInformation.objects.raw(
-                            #     "LOCK TABLES club_studentselectioninformation;")
-                            if c['status'] == 0 and (c['mnum'] - StudentSelectionInformation.objects.filter(info_id=class_id).count() > 0):
+                            # if c['status'] == 0 and (c['mnum'] - StudentSelectionInformation.objects.filter(info_id=class_id).count() > 0):
+                            if c['status'] == 0 and r != 0:
                                 sel = StudentSelectionInformation(info_id=EventClassInformation.objects.get(
                                     pk=class_id), user_id=request.user, locked=False)
-                                # StudentSelectionInformation.objects.raw("LOCK TABLES club_studentselectioninformation")
                                 sel.save()
-                                # StudentSelectionInformation.objects.raw(
-                                #     "UNLOCK TABLES;")
-                                # return JsonResponse({'code': 1, 'message': '报名成功', 'data': get_selection_data(_, request.user, True)})
+                                e.rest_num = r - 1
+                                e.save()
                             else:
-                                # StudentSelectionInformation.objects.raw(
-                                #     "UNLOCK TABLES;")
                                 return JsonResponse({'code': 0, 'message': '您当前无法报名此课程', 'data': res})
                         return JsonResponse({'code': 1, 'message': '报名成功', 'data': get_selection_data(_, request.user, True)})
             elif type_name == 'cancel_register':
@@ -184,6 +181,8 @@ def selection_sign_up_view(request):
                                     return JsonResponse({'code': 0, 'message': '您当前无法取消报名此课程', 'data': res})
                                 else:
                                     sel.delete()
+                                    e.rest_num = r + 1
+                                    e.save()
                             return JsonResponse({'code': 1, 'message': '取消报名成功', 'data': get_selection_data(_, request.user, True)})
                         else:
                             return JsonResponse({'code': 0, 'message': '您当前无法取消报名此课程', 'data': res})
