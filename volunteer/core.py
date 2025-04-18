@@ -162,7 +162,7 @@ def delALL(cur):
     print(cur)
     studentList = StudentClubData.objects.filter(student_id__regex="^120%s....|^%s.."%(cur,cur)).all()
     for curStu in studentList:
-        tmp = ScoreEventData.objects.filter(user_id=curStu)
+        tmp = StudentScoreData.objects.filter(user_id=curStu)
         tmp.delete()
         
 
@@ -190,7 +190,7 @@ def process_import_file(F, uploaduser):
                 delALL(cur)
                 secd = False
             student_id = row[2]
-            class_id = student_id
+            class_id = student_id[3:7]
             name = row[1]
             for i in range(4, len(row), 4):
                 servicename = row[i]

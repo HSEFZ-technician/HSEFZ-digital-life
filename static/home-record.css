@@ -1,0 +1,343 @@
+.main-container {
+    margin-top: 2rem;
+}
+
+.progress-card {
+    border-radius: 8px !important;
+}
+
+.btn {
+    border-radius: 20px !important;
+    padding: 2px;
+}
+
+.border-success {
+    color: #28a745 !important;
+    background: #28a7452e !important;
+    border: none !important;
+}
+
+.border-success:hover {
+    color: #ffffff !important;
+    background: #28a745 !important;
+    border: none !important;
+}
+
+.border-success-disabled {
+    color: #ffffff !important;
+    background: #28a745 !important;
+    border: none !important;
+}
+
+.progress-bar,
+.progress {
+    border-radius: 12px !important;
+}
+
+.info-major {
+    margin-top: 6px;
+}
+
+.info-minor {
+    margin-bottom: 2px;
+}
+
+
+.score-table .table thead th {
+    border-top: none;
+    border-bottom-width: 1px;
+    font-size: 0.95rem;
+    border-bottom-color: rgba(34, 36, 38, 0.15);
+}
+
+.score-table .table tbody td {
+    font-size: 0.95rem;
+    border-top-color: rgba(34, 36, 38, 0.15);
+}
+
+.name-title {
+    width: 15rem;
+}
+
+.detail-container-title {
+    padding: 0.45rem 1rem;
+    margin-top: 10px;
+    height: 2.5rem;
+    line-height: 1.6rem;
+    vertical-align: middle;
+}
+
+.table {
+    table-layout: fixed;
+}
+
+.snum-title {
+    max-width: 5rem;
+}
+
+.date-title {
+    margin-right: auto;
+}
+
+/* .record-name {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.record-score {
+    text-align: center;
+    font-size: 80px;
+    line-height: 120px;
+    font-weight: bold;
+}
+
+.record-desc {
+    text-align: center;
+    font-size: 16px;
+    line-height: 20px;
+    margin: 0 0 4px;
+}
+
+.record-holder {
+    text-align: center;
+    font-size: 24px;
+    line-height: 28px;
+    margin: 0 0 8px;
+} */
+
+.record-back-container {
+    display: inline-block;
+    color: black;
+    height: 42px;
+    width: 90px;
+    margin: 0 0 20px;
+}
+
+.record-back-container :hover {
+    border-color: #f3f3f3;
+    background-color: #f3f3f3;
+}
+
+.record-back {
+    border-color: #0000004a;
+    border-style: solid;
+    border-width: 1px;
+    background-color: white;
+    border-radius: 21px;
+    padding: 5px;
+    height: 42px;
+    width: 90px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+    color: black;
+    transition: all 0.2s;
+}
+
+.record-back-text {
+    transition: all 0.2s;
+    height: 30px;
+    line-height: 30px;
+}
+
+.rhc-p1 {
+    display: flex;
+    flex-direction: row;
+}
+
+@media screen and (min-width: 768px) {
+    .record-name {
+        text-align: left;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 0 12px;
+    }
+    
+    .record-score {
+        text-align: left;
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: bold;
+        width: 150px;
+    }
+    
+    .record-desc {
+        text-align: left;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 0 0 4px;
+        width: auto;
+    }
+
+    .record-time {
+        text-align: left;
+        font-size: 18px;
+        line-height: 24px;
+        color: #a6a6a6;
+        margin: 0 0 4px;
+        width: auto;
+    }
+    
+    .record-holder {
+        text-align: left;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 0 0 8px;
+        width: 132px;
+    }
+    
+    .record-container {
+        display: flex;
+        flex-direction: column;
+        margin: 20px 0 0 0;
+        padding: 0 70px;
+    }
+    
+    .record-holder-container {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 4px;
+    }
+
+    .record-card-container {
+        width: 100%;
+        /* margin: 0 auto; */
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        justify-content: center;
+    }
+
+    .record-card {
+        width: 360px;
+        border: 1px;
+        border-color: rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
+        border-style: solid;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .record-card a {
+        text-decoration: none;
+        color: black !important;
+    }
+
+    .record-card a :hover {
+        text-decoration: none;
+        color: rgb(100, 100, 100) !important;
+    }
+
+    .record-card h1 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin: 0 0 1rem;
+        transition: color 0.2s ease;
+    }
+
+    .record-card p {
+        margin: 0;
+    }
+
+    .record-back {
+        margin: 0 0 0 70px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .record-name {
+        text-align: left;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 0 12px;
+    }
+    
+    .record-score {
+        text-align: left;
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: bold;
+        width: 33%;
+    }
+    
+    .record-desc {
+        text-align: left;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 0 0 4px;
+        width: 33%;
+    }
+
+    .record-time {
+        text-align: left;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 0 0 4px;
+        width: auto;
+        color: #a6a6a6;
+    }
+    
+    .record-holder {
+        text-align: left;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 0 0 8px;
+        width: 33%;
+    }
+    
+    .record-container {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .record-holder-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 4px;
+    }
+
+    .record-card-container {
+        margin: 0 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        justify-content: center;
+    }
+
+    .record-card {
+        width: 100%;
+        border: 1px;
+        border-color: rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
+        border-style: solid;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .record-card a {
+        text-decoration: none;
+        color: black !important;
+    }
+
+    .record-card a :hover {
+        text-decoration: none;
+        color: rgb(100, 100, 100) !important;
+    }
+
+    .record-card h1 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin: 0 0 1rem;
+        transition: color 0.2s ease;
+    }
+
+    .record-card p {
+        margin: 0;
+    }
+}

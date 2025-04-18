@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'home-youth_league.css' %}">
+
+{% endblock %}
+
+{% block title %}
+
+<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
+    <div class="col-xl-6 col-md-8 offset-xl-1_5">
+
+
+{#        <div class="home-container">#}
+            <div class="home-container-title">
+                <i class="fa-solid fa-database"></i>
+                <font face="微软雅黑" class="title-text">信息查询</font>
+            </div>
+                <div class="row entry-row border-bottom entry-link" onclick="window.location.href='./homework_inquiry.html'">
+                <div class="entry-title entry-category">
+                    <a href="./homework_inquiry.html">作业中心</a>
+                </div>
+                <div class="entry-date entry-category">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                    </svg>
+                </div>
+                </div>
+                <div class="row entry-row border-bottom entry-link" onclick="window.location.href='./test_inquiry.html'">
+                <div class="entry-title entry-category">
+                    <a href="./test_inquiry.html">考试查询</a>
+                </div>
+                <div class="entry-date entry-category">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                    </svg>
+                </div>
+                </div>
+                <div class="row entry-row border-bottom entry-link">
+                <div class="entry-title entry-category">
+                    <a href="">课程中心</a>
+                </div>
+                <div class="entry-date entry-category">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                    </svg>
+                </div>
+                </div>
+                
+{#        </div>#}
+<br>
+{#        <div class="home-container">#}
+    <div class="home-container-title">
+        <i class="fa-solid fa-comment"></i>
+        <font face="微软雅黑" class="title-text">申诉记录</font>
+    </div>
+    {% autoescape off %}
+    {{ appeal_content }}
+    {% endautoescape %}
+{#        </div>#}
+    </div>
+    <div class="col-xl-3 col-md-4">
+        <div class="home-container info-home-container">
+            <div class="home-container-title">
+                <i class="fa-solid fa-circle-info"></i>
+                <font face="微软雅黑" class="title-text">关于</font>
+            </div>
+
+            <p><font face="微软雅黑" class="about-text">此页面是华师大二附中团课信息查询页面</font></p>
+
+            </p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
