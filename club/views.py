@@ -21,4 +21,4 @@ from club.core import get_selection_data, convert_selection_data_to_html, get_se
 
 
 def page404(request, exception):
-    return render(request, 'info.html', {'info': '404 Not Found'})
+    return render(request, 'info.html', {'info': '404 Not Found'}, status=404)
