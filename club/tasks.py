@@ -35,11 +35,9 @@ def send_email(mail_subject, message, to):
     
 def send_email_nosync(mail_subject, message, to):
 
-    # k = smtplib.SMTP_SSL(settings.EMAIL_HOST,settings.EMAIL_PORT)
-    # k.connect(settings.EMAIL_HOST,settings.EMAIL_PORT)
-    k = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-    # k.starttls()
-    # k.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+    k = smtplib.SMTP_SSL(settings.EMAIL_HOST,settings.EMAIL_PORT)
+    k.connect(settings.EMAIL_HOST,settings.EMAIL_PORT)
+    k.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
     
     message_body = MIMEText(message, 'HTML', 'utf-8')
     message_body['From'] = formataddr(('社团联技术顾问', settings.EMAIL_HOST_USER))
