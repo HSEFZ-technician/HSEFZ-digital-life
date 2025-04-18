@@ -247,13 +247,13 @@ def modify_event_view(request):
                 if (rec.count() != 0):
                     return JsonResponse({'code':0,'message':'课程已存在，无法创建'})
                 else:
-                    eci = EventClassInformation.objects.create(user_id=request.user,event_id=_,name='默认',desc='默认',max_num=0,rest_num=0,class_type=EventClassType.objects.get(pk=types[0][0]),hf_desc=False,forbid_chs=False)
+                    eci = EventClassInformation.objects.create(user_id=request.user,event_id=_,name='默认',desc='默认',max_num=0,current_num=0,class_type=EventClassType.objects.get(pk=types[0][0]),hf_desc=False,forbid_chs=False)
                     eci.save()
                     return JsonResponse({'code':1,'message':'创建成功','data':{
                                                                                 'title':'默认',
                                                                                 'short_desc':'默认',
                                                                                 'max_num':0,
-                                                                                'rest_num':0,
+                                                                                'current_num':0,
                                                                                 'type_class':types[0][0],
                                                                                 'linkToYearbook':'',
                                                                                 'forbid_chosen':False,
@@ -275,7 +275,7 @@ def modify_event_view(request):
                     rec.name = form.cleaned_data['title']
                     rec.desc = form.cleaned_data['short_desc']
                     rec.max_num = form.cleaned_data['max_num']
-                    rec.rest_num = form.cleaned_data['max_num']
+                    rec.current_num = 0
                     rec.full_desc = form.cleaned_data['linkToYearbook'].strip()
                     rec.hf_desc = (rec.full_desc != '')
                     rec.forbid_chs = form.cleaned_data['forbid_chosen']
@@ -320,6 +320,8 @@ def modify_event_view(request):
 
                 ssi = StudentSelectionInformation(info_id=rec,user_id=user,locked=True)
                 ssi.save()
+                rec.current_num += 1
+                rec.save()
                 
                 return JsonResponse({'code':1,'message':'添加成功','data':get_selection_list(rec)})
             elif typename == 'remove':
@@ -339,6 +341,8 @@ def modify_event_view(request):
                     return JsonResponse({'code':0,'message':'记录不存在'})
                 ssi = ssi[0]
                 ssi.delete()
+                rec.current_num -= 1
+                rec.save()
                 return JsonResponse({'code':1,'message':'删除成功','data':get_selection_list(rec)})
 
             else:
