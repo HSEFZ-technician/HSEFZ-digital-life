@@ -1,0 +1,94 @@
+{% extends 'volunteer/base.html' %}
+
+{% load static %}
+
+{% block include %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'home-record.css' %}">
+<!-- <script src="{% static 'progressbar.js' %}" type="text/javascript"></script>
+<script src="{% static 'volunteer_home.js' %}" type="text/javascript"></script> -->
+
+
+{% endblock %}
+
+{% block title %}
+
+<title>EFZ数字生活·华二之“最”</title>
+
+{% endblock %}
+
+{% block body %}
+
+<!-- <body>
+
+    <div style="height: 20px; width: 100%;"></div>
+    <div class="ui stackable three column grid container container-main">
+        {% if isEmpty %}
+            <div style="text-align: center">暂无条目，过会再来看吧！</div>
+        {% else %}
+        {% for record in form %}
+        <div class="column container-grid">
+            <h1 class="record-name">{{ record.name }}</h1>
+            <p class="record-desc">{{ record.desc }}</p>
+            {% for holder in form_h %}
+            {% if holder.related_record == record.id %}
+            {% if holder.visibility %}
+            <h1 class="record-score">{{ holder.record }}</h1>
+            <p class="record-holder">by {{ holder.s_class }} {{ holder.name }}</p>
+            <p class="record-desc">记录时间：{{ holder.time }}</p>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div style="height: 20px; width: 100%;"></div><hr style="border-width: 2px;">
+        <div style="height: 20px; width: 100%;"></div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</body> -->
+
+<body>
+
+    <div style="height: 20px; width: 100%;"></div>
+    <div class="ui stackable three column grid container container-main">
+        <a href="/record" class="record-back-container">
+            <div class="record-back">
+                <div class="record-back-text"><i class="fa-solid fa-arrow-left"></i></div>
+                <div class="record-back-text">返回</div>
+            </div>
+        </a>
+        {% if isEmpty %}
+            <div style="text-align: center">暂无条目，过会再来看吧！</div>
+        {% else %}
+        {% for record in form %}
+        <div class="record-container">
+            <h1 class="record-name">{{ record.name }}</h1>
+            <!-- <p class="record-desc">{{ record.desc }}</p> -->
+            {% for holder in form_h %}
+            {% if holder.related_record == record.id %}
+            {% if holder.visibility %}
+            <div class="record-holder-container">
+                <div class="rhc-p1">
+                    <p class="record-holder">{{ holder.s_class }}</p>
+                    <p class="record-holder">{{ holder.name }}</p>
+                    <h1 class="record-score">{{ holder.record }}</h1>
+                </div>
+                <div class="rhc-p2">
+                    <p class="record-time">记录时间：{{ holder.time }}</p>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <!-- <div style="height: 20px; width: 100%;"></div><hr style="border-width: 2px;"> -->
+        <div style="height: 20px; width: 100%;"></div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</body>
+
+{% endblock %}

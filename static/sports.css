@@ -238,9 +238,28 @@ body {
   flex-direction: column;
 }
 
+.container-league-detail-title {
+  margin: 60px 0 60px !important;
+}
+
+.league-detail-title {
+  font-weight: bold;
+  font-size: 44px;
+}
+
+.container-league-detail-subtitle {
+  margin: 60px 0 30px !important;
+}
+
+.league-detail-subtitle {
+  font-weight: bold;
+  font-size: 30px;
+}
+
 .league-title {
   margin: 25px 0 10px;
   text-align: center !important;
+  transition: all 0.2s;
   /*padding: 0 0 0 20px;*/
 }
 
@@ -249,6 +268,11 @@ body {
   font-weight: bolder;
   text-align: center;
   color: black;
+  transition: all 0.2s;
+}
+
+.league-title > a:hover {
+  color: #797979 !important;
 }
 
 .league-time {

@@ -22,15 +22,16 @@
           <h1 class="highlight hand-written">#EFZ 数字生活</h1>
           <div class="info-area">
             <!-- <h4 class="info-title hand-written">#EFZ</h4> -->
-            <p class="info-text">由社团联技术顾问开发，我们的使命是构建一个EFZ学生专属的数字服务平台！<br>本网站目前由 <a href="dengchenluo@hsefz.cn" class="name-link">2507 满五</a> 维护/开发，若遇问题，请及时反馈。</p>
+            <p class="info-text">由社团联技术顾问开发，我们的使命是构建一个EFZ学生专属的数字服务平台！<br>本网站目前由 <a href="https://github.com/awa-easymoneysniper" class="name-link">2713 范弈宁</a> 维护/开发，若遇问题，请及时反馈，邮箱联系fanyining@hsefz.cn。</p>
           </div>
-          <img src="{% static 'title-rainbow.png' %}" id="img-title" alt="">
+{#          <img src="{% static 'title-rainbow.png' %}" id="img-title" alt="">#}
 
+{#          test#}
       </div>
     </main>
     <section id="apps">
       <h2 class="highlight hand-written title-sm">我们的应用</h2>
-      <p class="app-info info-text">目前，技术顾问团队已经开发机选系统、社团年鉴、校内志愿者课时查询等应用。</p>
+      <p class="app-info info-text">目前，技术顾问团队已经开发机选系统、年鉴、校内志愿者课时查询等应用。</p>
       <div class="row app-cards row-cols-auto">
         <div class="col">
             <a href="/selection">
@@ -47,10 +48,10 @@
             <a href="https://hsefz.aeilot.top">
           <div class="card app-card-instance">
             <div class="card-body">
-              <h5 class="card-title">社团年鉴</h5>
+              <h5 class="card-title">年鉴</h5>
               {% comment %} <h6 class="card-subtitle mb-2 text-body-secondary">Hosted with <a target="_blank" href="https://vercel.com/"><svg height="14" viewBox="0 0 75 65" fill="var(--color-fg-default)"><path d="M37.59.25l36.95 64H.64l36.95-64z"></path></svg></a></h6> {% endcomment %}
               <h6 class="card-subtitle mb-2 text-body-secondary">Hosted with Vercel</h6>
-              <p class="card-text"><a href="https://aeilot.top/" class="name-link">2507 满五</a> 开发，基于 Notion。各社团骨干成员已经在上面发布了各自的制作精美的社团年鉴，供大家查看。</p>
+              <p class="card-text"><a href="https://aeilot.top/" class="name-link">2507 满五</a> 和 <a href="https://github.com/awa-easymoneysniper" class="name-link">2713 范弈宁</a> 开发，基于 Notion。年鉴分为社团年鉴和团学联部门年鉴两部分，供大家查看。</p>
             </div>
           </div>
         </a>
@@ -77,6 +78,31 @@
         </div>
       </a>
       </div>
+
+      <div class="col">
+          <a href="/youth_league">
+        <div class="card app-card-instance">
+          <div class="card-body">
+            <h5 class="card-title">团校系统</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">/youth_league</h6>
+            <p class="card-text"><a href="https://aeilot.top/" class="name-link">2507 满五</a> 和 2608 李铭琦 开发。方便团校的同学们查询作业与考试分数。</p>
+          </div>
+        </div>
+        </a>
+        </div>
+
+        <div class="col">
+          <a href="/record">
+        <div class="card app-card-instance">
+          <div class="card-body">
+            <h5 class="card-title">华二之“最”展示系统</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">/record</h6>
+            <p class="card-text">2606 沈昀杰 开发。与秘书处合作，方便同学们查看华二之“最”评选结果，了解二附中人在各个方面登峰造极的成就。</p>
+          </div>
+        </div>
+        </a>
+        </div>
+
       </div>
       <h2 class="highlight team-title hand-written title-sm">我们的团队</h2>
       {% comment %} 显示当前届干事和过去部长 {% endcomment %}
@@ -90,16 +116,21 @@
           <div class="col-md-8" style="text-align:left"><a href="dengchenluo@hsefz.cn" class="name-link"><p>2507满五（邓陈珞）</p></a></div>
         </div>
         <div class="row">
-          <div class="col-md-4" style="text-align:left"><p>26届干事</p></div>
-          <div class="col-md-8" style="text-align:left"><p>2606沈昀杰、2608许越凡、2608李铭琦、2608沈毅文、2609楼骞鸿</p></div>
+          <div class="col-md-4" style="text-align:left"><p>26届部长</p></div>  
+          <div class="col-md-8" style="text-align:left"><a href="https://github.com/Code1ce" class="name-link"><p>2606 CodeIce（沈昀杰）</p></a></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4" style="text-align:left"><p>27届部长</p></div>
+          <div class="col-md-8" style="text-align:left"><a href="https://github.com/awa-easymoneysniper" class="name-link">2713 范弈宁</p></a></div>
         </div>
         <div class="row">
           <div class="col-md-4" style="text-align:left"><p>合作部门</p></div>
-          <div class="col-md-8" style="text-align:left"><p>团委宣传部、团委志愿者服务部、学生会体育部</p></div>
+{#          <div class="col-md-8" style="text-align:left"><p>团委宣传部、团委志愿者服务部、学生会体育部</p></div>#}
+            <div class="col-md-8" style="text-align:left"><p>学生处、团委宣传部、团委志愿者服务部、学生会体育部、学生会秘书处</p></div>
         </div>
         <div class="row">
           <div class="col-md-4" style="text-align:left"><p>其他</p></div>
-          <div class="col-md-8" style="text-align:left"><p><a href="https://pages.clckblog.space/" class="name-link">C.L.C.K.（2512钟熠）</a>、<a href="https://mrwillcom.com/" class="name-link">MrWillCom</a></p></div>
+          <div class="col-md-8" style="text-align:left"><p><a href="https://pages.clckblog.space/" class="name-link">C.L.C.K.（2512钟熠）</a>、<a href="https://mrwillcom.com/" class="name-link">MrWillCom</a>、2608许越凡、2608李铭琦</p></div>
         </div>
       </div>
     </section>

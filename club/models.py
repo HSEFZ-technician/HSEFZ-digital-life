@@ -86,6 +86,9 @@ class EventClassInformation(models.Model):
     max_num = models.IntegerField(
         verbose_name="Max Number of Students of the Class")
 
+    current_num = models.IntegerField(
+        verbose_name="Current Number of Students of the Class")
+
     full_desc = models.TextField(verbose_name="Class Full Description")
 
     class_type = models.ForeignKey(

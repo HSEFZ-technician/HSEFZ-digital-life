@@ -31,7 +31,28 @@ def index(request):
     if len(form) == 0:
         return render(request, 'league/home.html', {'isEmpty': True})
 
-    return render(request, 'league/home.html', {'form': form})
+    return render(request, 'league/home.html', {'form': form, 'title': 'EFZ数字生活·体育联赛'})
+
+  
+def detail(request):
+    matches = MatchData.objects.all()
+    form, form_past = [], []
+
+    for m in matches:
+        pk = m.pk
+        i = m.toDict()
+        time = (i['time'] + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
+        i['time'] = time
+        i['id'] = pk
+        if i['isPastEvent']:
+            form_past.append(i)
+        else:
+            form.append(i)
+
+    if len(form) == 0 & len(form_past) == 0:
+        return render(request, 'league/detail.html', {'isEmpty': True})
+
+    return render(request, 'league/detail.html', {'form': form, 'form_past': form_past, 'title': '所有赛事'})
 
 
 def sports_detail(request):
@@ -42,7 +63,11 @@ def sports_detail(request):
     time = (i['time'] + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
     i['time'] = time
 
-    return render(request, 'league/sports_detail.html', {'league': i})
+    return render(request, 'league/sports_detail.html', {'league': i, 'title': '赛程详情'})
+
+
+def match_map(request):
+    return render(request, 'league/match_map.html')
 
 
 @login_required()
@@ -116,7 +141,9 @@ def class_team_manage(request):
     cs = []
     for _ in _s:
         cs.append(table_content %
-                  (modify_event_url, _.pk, _.name, colors.colors[int(_.color) - 1][1], _.slogan, _.desc))
+                  (modify_event_url, _.pk, _.name, colors.colors[int(_.color) - 1][1],
+                   # colors.colors[int(_.color) - 1][1] + ' ' + colors.colors_name[int(_.color) - 1],
+                   _.slogan, _.desc))
 
     cs.sort(key=lambda x: x[0])
 
