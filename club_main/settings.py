@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'volunteer',
     'youth_league',
     'record',
+    'verification',
 ]
 
 MIDDLEWARE = [
