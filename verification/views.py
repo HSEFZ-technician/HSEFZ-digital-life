@@ -1,15 +1,7 @@
 from django.http import JsonResponse, HttpRequest
 import mysql.connector
+from django.conf import settings
 import re
-
-DB_CONFIG = {
-    'host': 'localhost',
-    'port': '3306',
-    'user': 'club_test',
-    'password': '111222',
-    'database': 'club_test',
-    'auth_plugin': 'caching_sha2_password'
-}
 
 def verify_student(request: HttpRequest):
     """
@@ -26,7 +18,7 @@ def verify_student(request: HttpRequest):
     cnx = None
     cursor = None
     try:
-        cnx = mysql.connector.connect(**DB_CONFIG)
+        cnx = mysql.connector.connect(**settings.DB_CONFIG)
         cursor = cnx.cursor()
 
         query = "SELECT student_real_name, email FROM club_studentclubdata WHERE student_id = %s"
