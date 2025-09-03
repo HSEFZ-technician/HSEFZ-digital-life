@@ -21,7 +21,7 @@ def verify_student(request: HttpRequest):
         cnx = mysql.connector.connect(**settings.DB_CONFIG)
         cursor = cnx.cursor()
 
-        query = "SELECT student_real_name, email FROM club_studentclubdata WHERE student_id = %s"
+        query = "SELECT student_real_name, email FROM club_studentclubdata WHERE student_id = %s;"
         
         cursor.execute(query, (student_id,))
         
