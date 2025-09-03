@@ -78,13 +78,13 @@ values(value1, value2, value3, 'title');
 Create a new set of events (or use django admin: url/admin): 
 ```bash
 insert into club_eventclasstype(id, type_name, event_id_id)
-values(value1, 'title', value2)
+values(value1, 'title', value2);
 ```
 
 Create a new group (or use django admin: url/admin):
 ```bash
 insert into auth_group(id, name)
-values(value1, 'group_name')
+values(value1, 'group_name');
 ```
 
 Save new students to the database:
