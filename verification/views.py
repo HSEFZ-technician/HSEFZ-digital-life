@@ -1,12 +1,10 @@
 from django.http import JsonResponse, HttpRequest
 import mysql.connector
 from django.conf import settings
+import club_main.settings
 import re
 
 def verify_student(request: HttpRequest):
-    """
-    根据学生ID，直接查询数据库并返回学生信息
-    """
     student_id = request.GET.get('id', None)
 
     if not student_id:
