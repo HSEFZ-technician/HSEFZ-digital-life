@@ -99,6 +99,14 @@ DATABASES = {
     }
 }
 
+DB_CONFIG = {
+    'host': 'localhost',
+    'port': '3306',
+    'user': 'root',
+    'password': 'abcdefg',
+    'database': 'selection_users',
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
