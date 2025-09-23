@@ -10,7 +10,7 @@
 #     host='localhost',
 #     port='3306',
 #     user='root',
-#     password='DB40x1Yc#3:2',
+#     password='1234',
 #     database='selection_users',
 #     auth_plugin='caching_sha2_password'
 # )
