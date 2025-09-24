@@ -10,6 +10,7 @@ dependencies = [
   "crispy-bootstrap4",
   "celery[redis]",
   "Pillow",
+  "python-dotenv",
 ]
 description = "The latest version of HSEFZ digital services"
 name = "hsefz-digital-life"

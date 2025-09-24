@@ -1,16 +1,21 @@
 # -*- coding: utf-8 -*-
 from club.tokens import *
 import csv
+import os
+from dotenv import load_dotenv
 # from club.models import *
 import mysql.connector
 
+# Load environment variables from .env file
+load_dotenv()
+
 cnx = mysql.connector.connect(
-    host='localhost',
-    port='3306',
-    user='root',
-    password='123',
-    database='selection_users',
-    auth_plugin='caching_sha2_password'
+    host=os.getenv('DB_HOST', 'localhost'),
+    port=os.getenv('DB_PORT', '3306'),
+    user=os.getenv('DB_USER', 'root'),
+    password=os.getenv('DB_PASSWORD', '123'),
+    database=os.getenv('DB_NAME', 'selection_users'),
+    auth_plugin=os.getenv('DB_AUTH_PLUGIN', 'caching_sha2_password')
 )
 
 cursor = cnx.cursor()

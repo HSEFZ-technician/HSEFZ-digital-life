@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import os
+from dotenv import load_dotenv
 from club.tokens import *
 # from club.models import *
 import mysql.connector
 from django.contrib.auth.hashers import make_password
 import datetime
 
+# Load environment variables from .env file
+load_dotenv()
+
 cnx = mysql.connector.connect(
-    host='localhost',
-    port='3306',
-    user='root',
-    password='123',
-    database='selection_users',
+    host=os.getenv('DB_HOST', 'localhost'),
+    port=os.getenv('DB_PORT', '3306'),
+    user=os.getenv('DB_USER', 'root'),
+    password=os.getenv('DB_PASSWORD', '123'),
+    database=os.getenv('DB_NAME', 'selection_users'),
 )
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'club_main.settings')
