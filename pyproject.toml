@@ -1,7 +1,18 @@
 [project]
+dependencies = [
+  "celery",
+  "django",
+  "mysqlclient",
+  "pytz",
+  "djangorestframework-jwt",
+  "django-crispy-forms",
+  "django-widget-tweaks",
+  "crispy-bootstrap4",
+  "celery[redis]",
+  "Pillow",
+]
+description = "The latest version of HSEFZ digital services"
 name = "hsefz-digital-life"
-version = "0.1.0"
-description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+version = "3.0.0"
