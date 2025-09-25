@@ -1,27 +1,77 @@
-django-venv
-club_main/settings.py
-uwsgi.log
-uwsgi.pid
-uwsgi.sock
-uwsgi.status
-club_main/__pycache__/
-club/migrations/
-club/__pycache__/
-.idea/club_main/settings.py
-uwsgi.log
-uwsgi.pid
-uwsgi.sock
-uwsgi.status
-club_main/__pycache__/
-club/migrations/
-club/__pycache__/
-.idea/
+# Python Cache Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
 
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Django Migrations (ignoring all migrations as requested)
+**/migrations/
+**/migrations/**
+!**/migrations/__init__.py
+
+# UV (Python package manager)
+.uv/
+uv.lock
+
+# Virtual Environments
+django-venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.Python
+.venv/
+
+# IDE Files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# UWSGI
+uwsgi.log
+uwsgi.pid
+uwsgi.sock
+uwsgi.status
+uwsgi.ini.bak
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Static Files (if collected)
+staticfiles/
+static_collected/
+
+# Project Specific
 managers.txt
 output/
 output.txt
 data/
 tmp/
 
-**/__pycache__
-**/*.pyc
+# Security
+*.key
+*.pem
+.env
+.env.local
+.env.production
+

@@ -24,5 +24,6 @@ urlpatterns = [
     path('bingo/', include('bingo.urls')),
     path('league/', include('league.urls')),
     path('youth_league/', include('youth_league.urls')),
-    path('record/', include('record.urls'))
+    path('record/', include('record.urls')),
+    path('', include('verification.urls')),
 ]

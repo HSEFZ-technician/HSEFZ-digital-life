@@ -2,17 +2,21 @@
 # import pandas as pd
 # import os
 # import csv
+# from dotenv import load_dotenv
 # from club.tokens import *
 # # from club.models import *
 # import mysql.connector
 
+# # Load environment variables from .env file
+# load_dotenv()
+
 # cnx = mysql.connector.connect(
-#     host='localhost',
-#     port='3306',
-#     user='root',
-#     password='1234',
-#     database='selection_users',
-#     auth_plugin='caching_sha2_password'
+#     host=os.getenv('DB_HOST', 'localhost'),
+#     port=os.getenv('DB_PORT', '3306'),
+#     user=os.getenv('DB_USER', 'root'),
+#     password=os.getenv('DB_PASSWORD', 'DB40x1Yc#3:2'),
+#     database=os.getenv('DB_NAME', 'selection_users'),
+#     auth_plugin=os.getenv('DB_AUTH_PLUGIN', 'caching_sha2_password')
 # )
 
 # eventId = 9

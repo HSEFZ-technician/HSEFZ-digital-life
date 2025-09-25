@@ -46,8 +46,6 @@ Run the server:
 python manage.py runserver
 ```
 
-And that's it!
-
 ## Selection system usage
 
 Please test locally before changing the database on the server. 
