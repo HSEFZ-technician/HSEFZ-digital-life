@@ -1,6 +1,21 @@
-const row_content = "<tr><td class='status-content'>{0}</td><td class='name-content'>{1}</td><td><div class='desc-full'><div class='col'>{2}</div>{3}</div></td>{4}<td class='cnum-content'>{5}</td><td class='rnum-content'>{6}</td><td class='op-content'>{7}</td></tr>";
+// const row_content = "<tr><td class='status-content'>{0}</td><td class='name-content'>{1}</td><td><div class='desc-full'><div class='col'>{2}</div>{3}</div></td>{4}<td class='cnum-content'>{5}</td><td class='rnum-content'>{6}</td><td class='op-content'>{7}</td></tr>";
+
+const row_content = "<tr>" +
+    "<td class='op-content'>{0}</td>" +      // ← 收藏按钮列
+    "<td class='status-content'>{1}</td>" +
+    "<td class='name-content'>{2}</td>" +
+    "<td><div class='desc-full'><div class='col'>{3}</div>{4}</div></td>" +
+    "{5}" +                                       // 类型列
+    "<td class='cnum-content'>{6}</td>" +
+    "<td class='rnum-content'>{7}</td>" +
+    "<td class='op-content'>{8}</td>" +
+"</tr>";
+
 
 function convert_form_data_to_json(data) {
+    // console.log("data:", data);
+    // console.log("data['data']:", data['data']);
+
     let result = '';
     let dtype = data['display_type'];
     // var disa = false;
@@ -21,7 +36,10 @@ function convert_form_data_to_json(data) {
         }
         if (dtype) {
             type_div = "<td class='type-content'>{0}</td>".format(data['types'][c['type']]);
+        } else {
+            type_div = "<td class='type-content'></td>";  // 保证占位
         }
+
         if (c['status'] == 0) {
             op_content = "<button class='btn btn-primary sign-up' id='{0}'>报名</button>".format(class_id);
         }
@@ -49,19 +67,70 @@ function convert_form_data_to_json(data) {
         if (c['full_desc']) {
             full_desc_button = "<a href='{0}'>详情</a>".format(c['link']);
         }
-        result += row_content.format(logo, name, desc, full_desc_button, type_div, cnum, rnum, op_content);
+
+        if (c['is_favorite'] == 1) {
+            favorite_content = "<button class='btn btn-primary cancel-favorite' id='{0}'>取消收藏</button>".format(class_id);
+        }
+
+        else {
+            favorite_content = "<button class='btn btn-primary add-favorite' id='{0}'>收藏</button>".format(class_id);
+        }
+
+        // result += row_content.format(favorite_content, logo, name, desc, full_desc_button, type_div, cnum, rnum, op_content);
+        result += `
+        <tr>
+            <td class="op-content">${favorite_content}</td>
+            <td class="status-content">${logo}</td>
+            <td class="name-content">${name}</td>
+            <td><div class="desc-full"><div class="col">${desc}</div>${full_desc_button}</div></td>
+            ${type_div}
+            <td class="cnum-content">${cnum}</td>
+            <td class="rnum-content">${rnum}</td>
+            <td class="op-content">${op_content}</td>
+        </tr>
+        `;
+        // console.log(c['id'], c['is_favorite'], favorite_content);
+
     }
+    // console.log(c['id'], c['is_favorite'], favorite_content);
     return result;
 }
 
+
 function refresh(data) {
     $('#sign-up-table-tbody').html(convert_form_data_to_json(data));
+    $('.add-favorite').on('click', add_favorite);
+    $('.cancel-favorite').on('click', remove_favorite);
     $('.sign-up').on('click', register);
     $('.cancel-sign-up').on('click', cancel_register);
     $('.btn-full-desc').on('click', jump_desc);
 }
 
+// function refresh(data) {
+//     $('#sign-up-table-tbody').html(convert_form_data_to_json(data));
+//     $('.sign-up').on('click', register);
+//     $('.cancel-sign-up').on('click', cancel_register);
+//     $('.btn-full-desc').on('click', jump_desc);
+// }
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
 function manual_refresh_succ_h(t) {
+    // console.log("refresh data:", res);
     return function (res) {
         t.html('刷新');
         t.prop('disabled', false);
@@ -77,6 +146,7 @@ function manual_refresh_fail_h(t) {
     };
 }
 function manual_refresh() {
+    console.log("manual_refresh clicked");
     $(this).html('<div style="display: flex;"><div class="spinner-border text-primary"></div></div>');
     $.ajax({
         url: query_url,
@@ -131,9 +201,37 @@ function register() {
 function jump_desc() {
     window.open((desc_url + '?id={0}').format($(this).attr('id')), '_blank');
 }
+
+// 收藏函数
+function add_favorite() {
+    const btn = $(this);
+    btn.html('<div style="display: flex;"><div class="spinner-border text-warning"></div></div>');
+    btn.prop('disabled', true);
+
+    get_result_and_refresh({
+        class_id: parseInt(btn.attr('id')), // 用 id 属性
+        type: 'add_favorite'
+    });
+}
+
+// 取消收藏函数
+function remove_favorite() {
+    const btn = $(this);
+    btn.html('<div style="display: flex;"><div class="spinner-border text-warning"></div></div>');
+    btn.prop('disabled', true);
+
+    get_result_and_refresh({
+        class_id: parseInt(btn.attr('id')),
+        type: 'remove_favorite'
+    });
+}
+
+
 $(document).ready(function () {
     $('.sign-up').on('click', register);
     $('.cancel-sign-up').on('click', cancel_register);
     $('.btn-full-desc').on('click', jump_desc);
     $('.refresh-button').on('click', manual_refresh);
+    $('.add-favorite').on('click', add_favorite);
+    $('.cancel-favorite').on('click', remove_favorite);
 });

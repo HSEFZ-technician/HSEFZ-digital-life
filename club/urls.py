@@ -2,7 +2,7 @@ from django.urls import path, re_path
 from .view.basics import home_view, logout_view,  notice_view
 from .view.user_ui import user_security_view, notice_manage_view, modify_notice_view, user_info_view, event_manage_view, modify_event_view
 from .view.account import register_view, login_view, activate_email_view, manual_activate_view, modify_password_view, send_modify_password_email_view
-from .view.selection import selection_sign_up_view, selection_desc_view, selection_home_view
+from .view.selection import selection_sign_up_view, selection_desc_view, selection_home_view, toggle_favorite
 
 app_name = 'club'
 urlpatterns = [
@@ -18,6 +18,7 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('user_security/', user_security_view, name='user_security'),
     path('selection_sign_up/', selection_sign_up_view, name='selection_sign_up'),
+    path('toggle_favorite/', toggle_favorite, name='toggle_favorite'),
     path('selection_desc/', selection_desc_view, name='selection_desc'),
     path('user_info/', user_info_view, name='user_info'),
     path('event_manage/', event_manage_view, name='event_manage'),

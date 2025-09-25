@@ -1,4 +1,9 @@
 from .models import *
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from .models import UserFavorite, EventClassInformation, StudentClubData
+import json
 
 # display_type:   是否显示类型
 # types:          所有的类型
@@ -52,6 +57,10 @@ def get_selection_data(selection_object, user, is_started, ignore_forbid=False):
             res['types'][i.pk] = i.type_name
 
     res['data'] = []
+    
+    favorite_ids = set(
+        UserFavorite.objects.filter(user=user).values_list("event_class_id", flat=True)
+    )
 
     for c in class_set:
 
@@ -68,6 +77,8 @@ def get_selection_data(selection_object, user, is_started, ignore_forbid=False):
         c_res['cnum'] = StudentSelectionInformation.objects.filter(
             info_id=c).count()
         c_res['rnum'] = max(c.max_num - c_res['cnum'], 0)
+        
+        c_res['is_favorite'] = (c.pk in favorite_ids)
 
         rel = StudentSelectionInformation.objects.filter(
             info_id=c, user_id=user)
@@ -95,7 +106,12 @@ def get_selection_data(selection_object, user, is_started, ignore_forbid=False):
 
         res['data'].append(c_res)
 
-    res['data'] = sorted(res['data'], key=lambda x: (x['type'], x['name']))
+    # res['data'] = sorted(res['data'], key=lambda x: (x['type'], x['name']))
+    
+    res['data'] = sorted(
+        res['data'],
+        key=lambda x: (-int(x['is_favorite']), x['type'], x['name'])
+    )
 
     data_count = len(res['data'])
 
@@ -123,6 +139,9 @@ def convert_selection_data_to_html(data):
 
     row_content = '''
     <tr>
+        <td class='favorite-content'>
+            %s
+        </td>
         <td class='status-content'>
             %s
         </td>
@@ -222,11 +241,20 @@ def convert_selection_data_to_html(data):
                 class_id)
 
         full_desc_button = ''
-
+        
         if c['full_desc']:
             full_desc_button = "<a href='%s'>详情</a>" % (c['link'])
 
-        result += row_content % (logo, name, desc,
+        if c['is_favorite'] == 1:
+            favorite_content = "<button class='btn btn-primary cancel-favorite' id='%s'>取消收藏</button>" % (
+                class_id)
+        
+        else:
+            favorite_content = "<button class='btn btn-primary add-favortie' id='%s'>收藏</button>" % (
+                class_id)
+
+
+        result += row_content % (favorite_content, logo, name, desc,
                                  full_desc_button, type_div, cnum, rnum, op_content)
 
     return result
