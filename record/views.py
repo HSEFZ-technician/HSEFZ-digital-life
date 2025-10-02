@@ -1,5 +1,6 @@
-# import datetime
-from record.models import RecordData, RecordHolderData
+import datetime
+from record.models import RecordData
+from record.models import RecordHolderData
 from record.forms import ModifyRecordForm, ModifyRecordHolderForm
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required

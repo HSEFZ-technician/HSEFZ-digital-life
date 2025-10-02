@@ -53,6 +53,7 @@ class ModifyRecordHolderForm(forms.Form):
 
     s_class = forms.CharField(label='班级', required=True, min_length=1, max_length=200)
 
+    #1
     related_record = forms.ChoiceField(required=True, label='相关纪录',
                             choices=RecordData.objects.values_list("id", "name"))
 

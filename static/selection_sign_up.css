@@ -233,3 +233,31 @@
 .type-content{
     text-align: center;
 }
+
+.favorite-title {
+    width: 6rem;
+}
+
+
+/* 收藏列宽度和居中 */
+.favorite-content {
+    padding-left: 1.1rem !important;
+    text-align: center;
+}
+
+/* 星星按钮样式 */
+.favorite-btn i {
+    font-size: 1.2rem;    /* 控制星星大小 */
+    margin: 0;            /* 去掉额外间距 */
+    cursor: pointer;      /* 鼠标变手型 */
+    color: gray;          /* 默认灰色 */
+    transition: color 0.2s;
+}
+
+.favorite-btn.active i {
+    color: gold;          /* 已收藏显示金色 */
+}
+
+.favorite-btn:hover {
+    color: #ffda6a;       /* 悬停效果 */
+}
