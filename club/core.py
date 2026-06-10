@@ -139,7 +139,7 @@ def convert_selection_data_to_html(data):
 
     row_content = '''
     <tr>
-        <td class='favorite-content'>
+        <td class='op-content'>
             %s
         </td>
         <td class='status-content'>
@@ -194,7 +194,8 @@ def convert_selection_data_to_html(data):
 
         desc = c['desc']
 
-        type_div = ''
+        # type_div = ''
+        type_div = "<td class='type-content'></td>"
 
         if dtype:
             type_div = "<td class='type-content'>%s</td>" % (
@@ -246,13 +247,12 @@ def convert_selection_data_to_html(data):
             full_desc_button = "<a href='%s'>详情</a>" % (c['link'])
 
         if c['is_favorite'] == 1:
-            favorite_content = "<button class='btn btn-primary cancel-favorite' id='%s'>取消收藏</button>" % (
+            favorite_content = "<button class='btn favorite-btn-cancel cancel-favorite' id='%s'>取消收藏</button>" % (
                 class_id)
         
         else:
-            favorite_content = "<button class='btn btn-primary add-favortie' id='%s'>收藏</button>" % (
+            favorite_content = "<button class='btn favorite-btn add-favorite' id='%s'>收藏</button>" % (
                 class_id)
-
 
         result += row_content % (favorite_content, logo, name, desc,
                                  full_desc_button, type_div, cnum, rnum, op_content)

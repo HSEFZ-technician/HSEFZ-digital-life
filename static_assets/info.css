@@ -1,0 +1,14 @@
+body {
+    align-items: center;
+    background-color: #efefef !important;
+}
+
+.info-box {
+    max-width: 300px;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 30px 50px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+    margin: 50px auto;
+}

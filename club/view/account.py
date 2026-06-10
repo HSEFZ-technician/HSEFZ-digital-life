@@ -18,6 +18,8 @@ from django.contrib.auth.decorators import login_required
 import json
 import re
 from club.core import get_selection_data, convert_selection_data_to_html, get_selection_list
+from django.urls import reverse
+from django.contrib.sites.shortcuts import get_current_site
 
 
 def activate_email_view(request, token):
@@ -36,59 +38,135 @@ def activate_email_view(request, token):
     return render(request, "info.html", {'info': '账户不存在'})
 
 
-def register_view(request):
+# def register_view(request):
 
+#     if request.method == 'POST':
+#         register_form = RegisterForm(request.POST)
+
+#         if register_form.is_valid():
+
+#             student_id = register_form.cleaned_data['username']
+
+#             student_realname = register_form.cleaned_data['realname']
+
+#             student_username = register_form.cleaned_data['email']
+
+#             student_password = register_form.cleaned_data['password']
+
+#             new_account = StudentClubData.objects.filter(
+#                 username=student_username
+#             )[0]
+
+#             new_account.set_password(student_password)
+
+#             new_account.is_created = True
+
+#             new_account.save()
+
+#             token = VerifyToken.token_generator(
+#                 {
+#                     'activate_id': new_account.pk,
+#                     'username': student_username,
+#                     'sub': 'x'+str(int(time.time())),
+#                     'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
+#                 }
+#             )
+
+#             current_site = get_current_site(request)
+#             mail_subject = '激活你的账户'
+#             message = render_to_string(
+#                 'email.html',
+#                 {
+#                     'user': new_account,
+#                     'token': token,
+#                     'domain': current_site,
+#                     'title': 'EFZ数字生活·账号验证',
+#                     'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
+#                     'is_activate': True,
+#                 }
+#             )
+
+#             # print("start task")
+#             # send_email.delay(mail_subject, message, [
+#                             #  student_username+settings.EMAIL_SUFFIX,])
+#             send_email_nosync(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
+
+
+#             return render(request, 'info.html', {'info': '注册邮件已发送，请检查邮箱!'})
+
+#         else:
+#             return render(request, 'register.html', {'form': register_form, 'title': '注册'})
+
+#     else:
+#         form = RegisterForm()
+#         return render(request, 'register.html', {'form': form, 'title': '注册'})
+
+
+def register_view(request):
     if request.method == 'POST':
         register_form = RegisterForm(request.POST)
 
         if register_form.is_valid():
 
             student_id = register_form.cleaned_data['username']
-
             student_realname = register_form.cleaned_data['realname']
-
             student_username = register_form.cleaned_data['email']
-
             student_password = register_form.cleaned_data['password']
 
-            new_account = StudentClubData.objects.filter(
-                username=student_username
-            )[0]
+            # 获取账号并设置密码
+            # new_account = StudentClubData.objects.filter(username=student_username).first()
+            # if new_account:
+            #     new_account.set_password(student_password)
+            #     new_account.is_created = True
+            #     # 只更新指定字段，不触发 save() 中可能修改 is_active 的逻辑
+            #     new_account.save(update_fields=['password', 'is_created'])
+            
+            # 获取账号并设置密码
+            new_account = StudentClubData.objects.filter(username=student_username).first()
+            if new_account:
+                # 生成 Django 密码哈希
+                from django.contrib.auth.hashers import make_password
+                hashed_password = make_password(student_password)
+                
+                # 直接在数据库更新指定字段，不触发 save() 的逻辑
+                StudentClubData.objects.filter(pk=new_account.pk).update(
+                    password=hashed_password,
+                    is_created=True,
+                    # 不设置 is_active，这样仍为 False，等用户点击激活链接
+                )
 
-            new_account.set_password(student_password)
 
-            new_account.is_created = True
 
-            new_account.save()
-
-            token = VerifyToken.token_generator(
-                {
-                    'activate_id': new_account.pk,
-                    'username': student_username,
-                    'sub': 'x'+str(int(time.time())),
-                    'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
-                }
-            )
+            # 生成验证 token
+            token = VerifyToken.token_generator({
+                'activate_id': new_account.pk,
+                'username': student_username,
+                'sub': 'x' + str(int(time.time())),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
+            })
 
             current_site = get_current_site(request)
             mail_subject = '激活你的账户'
-            message = render_to_string(
-                'email.html',
-                {
-                    'user': new_account,
-                    'token': token,
-                    'domain': current_site,
-                    'title': 'EFZ数字生活·账号验证',
-                    'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
-                    'is_activate': True,
-                }
-            )
 
-            # print("start task")
-            # send_email.delay(mail_subject, message, [
-                            #  student_username+settings.EMAIL_SUFFIX,])
-            send_email_nosync(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
+            # 生成激活链接，保持和原 HTML 模板一致
+            activation_path = reverse('club:activate_email', kwargs={'token': token})
+            activation_link = f"http://{current_site}{activation_path}"
 
+            # 构造纯文本邮件
+            message = f"""
+{new_account.student_real_name} 您好！
+
+您的账号正在进行邮箱验证，请复制下面的链接完成邮箱认证：
+{activation_link}
+
+该邮件有效期 {settings.EMAIL_EXPIRED_MINUTES} 分钟，请尽快完成验证！
+
+如果这不是您本人的操作，请忽略这封邮件。
+
+"""
+
+            # 发送邮件
+            send_email_nosync(mail_subject, message, [student_username + settings.EMAIL_SUFFIX])
 
             return render(request, 'info.html', {'info': '注册邮件已发送，请检查邮箱!'})
 
@@ -155,44 +233,89 @@ def login_view(request, next="/"):
         raise Http404
 
 
-def manual_activate_view(request):
+# def manual_activate_view(request):
 
+#     if request.method == 'POST':
+#         manual_activate_form = ManualActivateForm(request.POST)
+
+#         if manual_activate_form.is_valid():
+
+#             account_id = manual_activate_form.cleaned_data['email']
+
+#             account = StudentClubData.objects.get(pk=account_id)
+
+#             token = VerifyToken.token_generator(
+#                 {
+#                     'activate_id': account.pk,
+#                     'username': account.username,
+#                     'sub': 'x'+str(int(time.time())),
+#                     'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
+#                 }
+#             )
+
+#             current_site = get_current_site(request)
+#             mail_subject = '激活你的账户'
+#             message = render_to_string(
+#                 'email.html',
+#                 {
+#                     'user': account,
+#                     'token': token,
+#                     'domain': current_site,
+#                     'title': 'EFZ数字生活·账号验证',
+#                     'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
+#                     'is_activate': True,
+#                 }
+#             )
+
+#             # print("start task")
+#             # send_email.delay(mail_subject, message, [
+#                             #  account.username+settings.EMAIL_SUFFIX,])
+#             send_email_nosync(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+
+#             return render(request, 'info.html', {'info': '注册邮件已发送，请检查邮箱！'})
+
+#         else:
+#             return render(request, 'empty_form.html', {'form': manual_activate_form, 'title': '激活账号'})
+#     else:
+#         form = ManualActivateForm()
+#         return render(request, 'empty_form.html', {'form': form, 'title': '激活账号'})
+
+
+def manual_activate_view(request):
     if request.method == 'POST':
         manual_activate_form = ManualActivateForm(request.POST)
 
         if manual_activate_form.is_valid():
 
             account_id = manual_activate_form.cleaned_data['email']
-
             account = StudentClubData.objects.get(pk=account_id)
 
-            token = VerifyToken.token_generator(
-                {
-                    'activate_id': account.pk,
-                    'username': account.username,
-                    'sub': 'x'+str(int(time.time())),
-                    'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
-                }
-            )
+            # 生成 token
+            token = VerifyToken.token_generator({
+                'activate_id': account.pk,
+                'username': account.username,
+                'sub': 'x' + str(int(time.time())),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
+            })
 
             current_site = get_current_site(request)
             mail_subject = '激活你的账户'
-            message = render_to_string(
-                'email.html',
-                {
-                    'user': account,
-                    'token': token,
-                    'domain': current_site,
-                    'title': 'EFZ数字生活·账号验证',
-                    'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
-                    'is_activate': True,
-                }
+
+            # 用 reverse 保持 URL 一致
+            activation_path = reverse('club:activate_email', kwargs={'token': token})
+            activation_link = f"http://{current_site}{activation_path}"
+
+            # 纯文本邮件内容
+            message = (
+                f"{account.student_real_name} 您好！\n\n"
+                "您的账号正在进行邮箱验证，请复制下面的链接完成邮箱认证：\n"
+                f"{activation_link}\n\n"
+                f"该邮件有效期 {settings.EMAIL_EXPIRED_MINUTES} 分钟，请尽快完成验证！\n\n"
+                "如果这不是您本人的操作，请忽略这封邮件。\n\n"
             )
 
-            # print("start task")
-            # send_email.delay(mail_subject, message, [
-                            #  account.username+settings.EMAIL_SUFFIX,])
-            send_email_nosync(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+            # 发送邮件
+            send_email_nosync(mail_subject, message, [account.username + settings.EMAIL_SUFFIX])
 
             return render(request, 'info.html', {'info': '注册邮件已发送，请检查邮箱！'})
 
@@ -201,6 +324,7 @@ def manual_activate_view(request):
     else:
         form = ManualActivateForm()
         return render(request, 'empty_form.html', {'form': form, 'title': '激活账号'})
+
 
 # def modify_password_view(request, token):
 
