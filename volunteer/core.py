@@ -73,7 +73,7 @@ def genfn():
     return res
 
 
-def addscore(name, class_id, servicename, serviceterm, servicepoint, uploaduser, desc):
+def addscore(name, class_id, servicename, serviceterm, servicepoint, uploaduser):
     ss = StudentClubData.objects.filter(student_real_name=name,
                                         student_id__regex="^120%s..|^%s" % (class_id, class_id))
     if (ss.count() == 0):
@@ -96,7 +96,7 @@ def addscore(name, class_id, servicename, serviceterm, servicepoint, uploaduser,
     ev = ev[0]
     _ = StudentScoreData(user_id=ss,
                          score_event_id=ev,
-                         date_of_addition=datetime.datetime.now(), date_of_activity=serviceterm, desc=desc)
+                         date_of_addition=datetime.datetime.now(), date_of_activity=serviceterm)
     _.save()
     return "No errors."
 
@@ -135,14 +135,14 @@ def check_file(F, uploaduser):
             if (fst):
                 fst = False
                 continue
-            if (len(row) % 4 != 0):
+            if (len(row) % 3 != 0):
                 res += "Csv file format wrong.\n"
                 return res
             student_id = row[2]
             class_id = student_id[3:7]
             name = row[1]
             # print(row)
-            for i in range(4, len(row), 4):
+            for i in range(3, len(row), 3):
                 try: 
                     servicename = row[i]
                     if servicename == '':
@@ -151,7 +151,7 @@ def check_file(F, uploaduser):
                     if(not is_number(servicepoint)):
                         res += 'Point error for %s %s where service name is %s\n' % (class_id, name, servicename)
                     serviceterm = row[i + 2]
-                    servicedesc = row[i + 3]
+                    # servicedesc = row[i + 3]
                 except Exception:
                     res += 'Unknown Error for %s %s\n' % (class_id, name)
         wr.close()
@@ -192,15 +192,15 @@ def process_import_file(F, uploaduser):
             student_id = row[2]
             class_id = student_id[3:7]
             name = row[1]
-            for i in range(4, len(row), 4):
+            for i in range(3, len(row), 3):
                 servicename = row[i]
                 if servicename == '':
                     continue
                 servicepoint = float(eval(row[i + 1]))
                 serviceterm = row[i + 2]
-                servicedesc = row[i + 3]
+                # servicedesc = row[i + 3]
                 ads = addscore(name, class_id, servicename,
-                               serviceterm, servicepoint, uploaduser, servicedesc)
+                               serviceterm, servicepoint, uploaduser)
         wr.close()
     os.remove(fn)
     return JsonResponse({'code': 1, 'message': 'No errors.'})
