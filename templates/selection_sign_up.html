@@ -13,6 +13,7 @@
 <script>
     const query_url = "http://{{ domain }}{% url 'club:selection_sign_up' %}?id={{ selection_id }}&&type=json";
     const submit_url = "http://{{ domain }}{% url 'club:selection_sign_up' %}?id={{ selection_id }}";
+    const favorite_url = "http://{{ domain }}{% url 'club:toggle_favorite' %}?id={{ selection_id }}";
     const desc_url = "http://{{ domain }}{% url 'club:selection_desc' %}";
 </script>
 <link rel="stylesheet" type="text/css" href="{% static 'selection_sign_up.css' %}">
@@ -74,12 +75,16 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th class="op-title">收藏</th>
                     <th class="status-title">状态</th>
                     <th class="name-title">名称</th>
                     <th>简介</th>
                     {% if display_type %}
-                    <th class="type-title">类别</th>
+                        <th class="type-title">类别</th>
+                    {% else %}
+                        <th class="type-title"></th>
                     {% endif %}
+
                     <th class="cnum-title">当前人数</th>
                     <th class="rnum-title">剩余名额</th>
                     <th class="op-title">操作</th>

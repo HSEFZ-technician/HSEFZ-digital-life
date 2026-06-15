@@ -121,3 +121,26 @@ class Notice(models.Model):
     content = models.TextField(verbose_name="Notice Content")
 
     active = models.BooleanField(verbose_name="Notice Status")
+
+class UserFavorite(models.Model):
+    user = models.ForeignKey(
+        StudentClubData, 
+        verbose_name="Student", 
+        on_delete=models.CASCADE,
+        related_name="favorites"
+    )
+    event_class = models.ForeignKey(
+        EventClassInformation, 
+        verbose_name="Favorited Class", 
+        on_delete=models.CASCADE,
+        related_name="favorited_by"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "event_class")  # 保证同一个人不会重复收藏同一个班
+        verbose_name = "User Favorite"
+        verbose_name_plural = "User Favorites"
+
+    def __str__(self):
+        return f"{self.user.student_real_name} -> {self.event_class.name}"

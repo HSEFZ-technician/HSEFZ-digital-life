@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 import json
 import re
 from .core import get_selection_data, convert_selection_data_to_html
+from django.urls import reverse
 
 # Create your views here.
 
@@ -35,6 +36,74 @@ def activate_email_view(request, token):
 
     return render(request, "info.html", {'info': '账户不存在'})
 
+# def register_view(request):
+
+#     if request.method == 'POST':
+#         register_form = RegisterForm(request.POST)
+        
+#         if register_form.is_valid():
+
+#             student_id       = register_form.cleaned_data['username']
+
+#             student_realname = register_form.cleaned_data['realname']
+
+#             student_username = register_form.cleaned_data['email']
+
+#             student_password = register_form.cleaned_data['password']
+
+#             new_account = StudentClubData.objects.filter(
+#                 username=student_username,
+#                 email=student_username+settings.EMAIL_SUFFIX,
+#                 is_active=False,
+#                 student_id=student_id,
+#                 student_real_name=student_realname,
+#             )
+
+#             # TODO: Email Authentication Removed
+
+#             new_account.set_password(student_password)
+
+#             new_account.save()
+
+#             token = VerifyToken.token_generator(
+#                 {
+#                     'activate_id': new_account.pk,
+#                     'username': student_username,
+#                     'sub': 'x'+str(int(time.time())),
+#                     'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
+#                 }
+#             )
+
+#             current_site = get_current_site(request)
+#             mail_subject = '激活你的账户'
+#             message = render_to_string(
+#                 'email.html',
+#                 {
+#                     'user': new_account,
+#                     'token': token,
+#                     'domain': current_site,
+#                     'title': '社团机选网站账号验证',
+#                     'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
+#                     'is_activate': True,
+#                 }
+#             )
+
+#             # print("start task")
+#             send_email_nosync(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
+#             # send_email.delay(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
+
+#             return render(request,'info.html', {'info':'注册邮件已发送，请检查邮箱!'})
+#             # return render(request,'info.html', {'info':'注册成功！'})
+ 
+#         else:
+#             return render(request,'register.html',{'form':register_form, 'title':'注册'})
+    
+#     else:
+#         form = RegisterForm()
+#         return render(request,'register.html',{'form':form, 'title':'注册'})
+
+
+
 def register_view(request):
 
     if request.method == 'POST':
@@ -43,11 +112,8 @@ def register_view(request):
         if register_form.is_valid():
 
             student_id       = register_form.cleaned_data['username']
-
             student_realname = register_form.cleaned_data['realname']
-
             student_username = register_form.cleaned_data['email']
-
             student_password = register_form.cleaned_data['password']
 
             new_account = StudentClubData.objects.filter(
@@ -57,11 +123,15 @@ def register_view(request):
                 student_id=student_id,
                 student_real_name=student_realname,
             )
+            
+            if new_account:
+                new_account.set_password(student_password)
+                new_account.is_active = False  # 强制未激活
+                new_account.save()
 
             # TODO: Email Authentication Removed
 
             new_account.set_password(student_password)
-
             new_account.save()
 
             token = VerifyToken.token_generator(
@@ -75,24 +145,23 @@ def register_view(request):
 
             current_site = get_current_site(request)
             mail_subject = '激活你的账户'
-            message = render_to_string(
-                'email.html',
-                {
-                    'user': new_account,
-                    'token': token,
-                    'domain': current_site,
-                    'title': '社团机选网站账号验证',
-                    'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
-                    'is_activate': True,
-                }
-            )
 
-            # print("start task")
+            # 构造纯文本邮件
+            activate_url = f"http://{current_site.domain}{reverse('club:activate_email', kwargs={'token': token})}"
+            message = f"""您好！{new_account.student_real_name}：
+
+您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证：
+{activate_url}
+
+该邮件有效期 {settings.EMAIL_EXPIRED_MINUTES} 分钟，请尽快完成验证！
+
+如果这不是您本人的操作，请忽略此邮件。
+"""
+
             send_email_nosync(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
             # send_email.delay(mail_subject, message, [student_username+settings.EMAIL_SUFFIX,])
 
             return render(request,'info.html', {'info':'注册邮件已发送，请检查邮箱!'})
-            # return render(request,'info.html', {'info':'注册成功！'})
  
         else:
             return render(request,'register.html',{'form':register_form, 'title':'注册'})
@@ -100,6 +169,7 @@ def register_view(request):
     else:
         form = RegisterForm()
         return render(request,'register.html',{'form':form, 'title':'注册'})
+
 
 def login_view(request, next="/"):
 
@@ -138,51 +208,93 @@ def login_view(request, next="/"):
         next_url = request.GET.get('next','/')
         return render(request,'login.html',{'form':form, 'title':'登录', 'next_url': next_url})
 
-def manual_activate_view(request):
+# def manual_activate_view(request):
 
+#     if request.method == 'POST':
+#         manual_activate_form = ManualActivateForm(request.POST)
+
+#         if manual_activate_form.is_valid():
+
+#             account_id = manual_activate_form.cleaned_data['email']
+
+#             account = StudentClubData.objects.get(pk=account_id)
+
+#             token = VerifyToken.token_generator(
+#                 {
+#                     'activate_id': account.pk,
+#                     'username': account.username,
+#                     'sub': 'x'+str(int(time.time())),
+#                     'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
+#                 }
+#             )
+
+#             current_site = get_current_site(request)
+#             mail_subject = '激活你的账户'
+#             message = render_to_string(
+#                 'email.html',
+#                 {
+#                     'user': account,
+#                     'token': token,
+#                     'domain': current_site,
+#                     'title': '社团机选网站账号验证',
+#                     'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
+#                     'is_activate': True,
+#                 }
+#             )
+
+#             # print("start task")
+#             # send_email.delay(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+#             send_email_nosync(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+
+#             return render(request, 'info.html',{'info':'注册邮件已发送，请检查邮箱！'})
+        
+#         else:
+#             return render(request,'empty_form.html', {'form':manual_activate_form,'title':'激活账号'})
+#     else:
+#         form = ManualActivateForm()
+#         return render(request, 'empty_form.html', {'form':form, 'title':'激活账号'})
+
+def manual_activate_view(request):
     if request.method == 'POST':
         manual_activate_form = ManualActivateForm(request.POST)
 
         if manual_activate_form.is_valid():
-
             account_id = manual_activate_form.cleaned_data['email']
-
             account = StudentClubData.objects.get(pk=account_id)
 
             token = VerifyToken.token_generator(
                 {
                     'activate_id': account.pk,
                     'username': account.username,
-                    'sub': 'x'+str(int(time.time())),
-                    'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
+                    'sub': 'x' + str(int(time.time())),
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=settings.EMAIL_EXPIRED_MINUTES),
                 }
             )
 
             current_site = get_current_site(request)
             mail_subject = '激活你的账户'
-            message = render_to_string(
-                'email.html',
-                {
-                    'user': account,
-                    'token': token,
-                    'domain': current_site,
-                    'title': '社团机选网站账号验证',
-                    'information': '您好！您的账号正在进行邮箱验证，请点击下方链接完成邮箱认证，该邮件有效期'+str(settings.EMAIL_EXPIRED_MINUTES)+'分钟，请尽快完成验证！',
-                    'is_activate': True,
-                }
-            )
+            activation_link = f"http://{current_site}/activate/{token}"
 
-            # print("start task")
-            # send_email.delay(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
-            send_email_nosync(mail_subject, message, [account.username+settings.EMAIL_SUFFIX,])
+            message = f"""
+{account.student_real_name} 您好！
 
-            return render(request, 'info.html',{'info':'注册邮件已发送，请检查邮箱！'})
-        
+您的账号正在进行邮箱验证，请复制下面的链接完成邮箱认证：
+{activation_link}
+
+该邮件有效期 {settings.EMAIL_EXPIRED_MINUTES} 分钟，请尽快完成验证！
+
+如果这不是您本人的操作，请忽略这封邮件。
+"""
+
+            send_email_nosync(mail_subject, message, [account.username + settings.EMAIL_SUFFIX])
+
+            return render(request, 'info.html', {'info': '激活邮件已发送，请检查邮箱！'})
         else:
-            return render(request,'empty_form.html', {'form':manual_activate_form,'title':'激活账号'})
+            return render(request, 'empty_form.html', {'form': manual_activate_form, 'title': '激活账号'})
     else:
         form = ManualActivateForm()
-        return render(request, 'empty_form.html', {'form':form, 'title':'激活账号'})
+        return render(request, 'empty_form.html', {'form': form, 'title': '激活账号'})
+
 
 # def modify_password_view(request, token):
 
@@ -534,6 +646,109 @@ def selection_sign_up_view(request):
     return render(request, 'selection_sign_up.html', {'title': _.title, 'sign_up_table_content': content,
                                                       'display_type': res['display_type'], 'domain': get_current_site(request),
                                                       'selection_id': _.pk})
+
+
+# @login_required()
+# def selection_sign_up_view(request):
+#     get_type = request.GET.get('type', None)
+#     selection_id = request.GET.get('id', None)
+
+#     try:
+#         _ = SelectionEvent.objects.get(pk=selection_id)
+#     except Exception as e:
+#         raise Http404
+
+#     if _.end_time < timezone.now():
+#         raise Http404
+
+#     is_started = (_.start_time <= timezone.now())
+
+#     user_groups     = [t.name for t in request.user.groups.all()]
+#     required_groups = [t.name for t in _.student_group.all()]
+#     teacher_groups  = [t.name for t in _.teachers_group.all()]
+
+#     avail = request.user.is_superuser
+#     for i in user_groups:
+#         for j in required_groups:
+#             if i == j:
+#                 avail = True
+#         for j in teacher_groups:
+#             if i == j:
+#                 avail = True
+#     if not avail:
+#         raise Http404
+
+#     res = get_selection_data(_, request.user, is_started)
+
+#     if request.method == 'POST':
+#         if not is_started:
+#             return JsonResponse({'code': 0, 'message': '当前选课还未开始', 'data': res})
+#         try:
+#             json_data = json.loads(request.body.decode())
+#             class_id  = json_data['class_id']
+#             type_name = json_data['type']
+
+#             if type_name == 'register':
+#                 # ✅ 限制逻辑：一个学生只能报名一个社团，或者被内定了不能再选
+#                 if StudentSelectionInformation.objects.filter(user_id=request.user, locked=True).exists():
+#                     return JsonResponse({'code': 0, 'message': '您已被内定，不能再报名其他社团', 'data': res})
+
+#                 if StudentSelectionInformation.objects.filter(user_id=request.user).exclude(info_id=class_id).exists():
+#                     return JsonResponse({'code': 0, 'message': '您已经报名了其他社团，不能重复报名', 'data': res})
+
+#                 for c in res['data']:
+#                     if c['id'] == class_id:
+#                         with transaction.atomic():
+#                             e = EventClassInformation.objects.select_for_update().get(pk=class_id)
+#                             cr = e.current_num
+#                             if c['status'] == 0 and cr < c['mnum']:
+#                                 sel = StudentSelectionInformation(info_id=e, user_id=request.user, locked=False)
+#                                 sel.save()
+#                                 # ✅ 更新人数
+#                                 EventClassInformation.objects.filter(pk=class_id).update(current_num=(cr+1))
+#                                 return JsonResponse({'code': 1, 'message': '报名成功', 'data': get_selection_data(_, request.user, True)})
+#                             else:
+#                                 return JsonResponse({'code': 0, 'message': '您当前无法报名此课程', 'data': res})
+
+#             elif type_name == 'cancel_register':
+#                 for c in res['data']:
+#                     if c['id'] == class_id:
+#                         if c['status'] == 4:
+#                             with transaction.atomic():
+#                                 e = EventClassInformation.objects.select_for_update().get(pk=class_id)
+#                                 cr = e.current_num
+#                                 sel = StudentSelectionInformation.objects.select_for_update().filter(
+#                                     info_id=e, user_id=request.user, locked=False
+#                                 )
+#                                 if sel.count() == 0:
+#                                     return JsonResponse({'code': 0, 'message': '您当前无法取消报名此课程', 'data': res})
+#                                 else:
+#                                     sel.delete()
+#                                     # ✅ 更新人数
+#                                     EventClassInformation.objects.filter(pk=class_id).update(current_num=(cr-1))
+#                                     return JsonResponse({'code': 1, 'message': '取消报名成功', 'data': get_selection_data(_, request.user, True)})
+#                         else:
+#                             return JsonResponse({'code': 0, 'message': '您当前无法取消报名此课程', 'data': res})
+
+#             else:
+#                 raise Exception
+
+#         except Exception as e:
+#             return JsonResponse({'code': 0, 'message': '请求非法', 'data': res})
+
+#         return JsonResponse({'code': 0, 'message': '无法找到该课程', 'data': res})
+
+#     if get_type == 'json':
+#         return JsonResponse(res)
+
+#     content = convert_selection_data_to_html(res)
+#     return render(request, 'selection_sign_up.html', {
+#         'title': _.title,
+#         'sign_up_table_content': content,
+#         'display_type': res['display_type'],
+#         'domain': get_current_site(request),
+#         'selection_id': _.pk
+#     })
 
 @login_required()
 def user_security_view(request):

@@ -23,7 +23,8 @@ def send_email(mail_subject, message, to):
     with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT) as k:
             k.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
-            msg = MIMEText(message, 'html', 'utf-8')
+            # msg = MIMEText(message, 'html', 'utf-8')
+            msg = MIMEText(message, 'plain', 'utf-8')
             msg['From'] = formataddr(['社团联技术顾问', settings.EMAIL_HOST_USER])
             msg['To'] = to
             msg['Subject'] = Header(mail_subject, 'utf-8')
@@ -61,8 +62,8 @@ def send_email_nosync(mail_subject, message, to):
     
     smtp_server = 'smtp.163.com'
     smtp_port = 465
-    email_user = 'hsefz_technician@163.com'
-    email_password = 'abcdefg'
+    email_user = 'bethany7690@163.com'
+    email_password = 'PKs3uMevCrcydEDK'
 
     server = smtplib.SMTP_SSL(smtp_server, smtp_port)
     server.login(email_user, email_password)

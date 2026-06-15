@@ -46,8 +46,6 @@ Run the server:
 python manage.py runserver
 ```
 
-And that's it!
-
 ## Selection system usage
 
 Please test locally before changing the database on the server. 
@@ -78,18 +76,13 @@ values(value1, value2, value3, 'title');
 Create a new set of events (or use django admin: url/admin): 
 ```bash
 insert into club_eventclasstype(id, type_name, event_id_id)
-values(value1, 'title', value2);
+values(value1, 'title', value2)
 ```
 
 Create a new group (or use django admin: url/admin):
 ```bash
 insert into auth_group(id, name)
-values(value1, 'group_name');
-```
-Create a new line in club_eventclasstypeconstraints:
-```bash
-insert into club_eventclasstypeconstraints(id, coef_1, coef_2, C, type_id1_id, type_id2_id, event_id_id)
-values(value1, 1, 1, 2, first_event_class_type, second_event_class_type, event_id);
+values(value1, 'group_name')
 ```
 
 Save new students to the database:
