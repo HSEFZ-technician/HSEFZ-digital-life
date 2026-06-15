@@ -196,7 +196,12 @@ def process_import_file(F, uploaduser):
                 servicename = row[i]
                 if servicename == '':
                     continue
-                servicepoint = float(eval(row[i + 1]))
+                servicepoint_raw = row[i + 1]
+                try:
+                    servicepoint = float(servicepoint_raw)
+                except ValueError:
+                    from fractions import Fraction
+                    servicepoint = float(Fraction(servicepoint_raw))
                 serviceterm = row[i + 2]
                 # servicedesc = row[i + 3]
                 ads = addscore(name, class_id, servicename,
