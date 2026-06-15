@@ -338,18 +338,17 @@ def toggle_favorite(request):
     
     action_type = data.get('type')
     class_id = data.get('class_id')
-    
-    try:
-        event_class = EventClassInformation.objects.get(pk=class_id)
-    except EventClassInformation.DoesNotExist:
-        return JsonResponse({'code': 0, 'message': '班级不存在'})
-    
-    selection_event = event_class.event_id   # ForeignKey 对象
-    is_started = (selection_event.start_time <= timezone.now())
 
     if not class_id or not action_type:
         return JsonResponse({'code': 0, 'message': '缺少 class_id 或 type'})
 
+    try:
+        event_class = EventClassInformation.objects.get(pk=class_id)
+    except EventClassInformation.DoesNotExist:
+        return JsonResponse({'code': 0, 'message': '班级不存在'})
+
+    selection_event = event_class.event_id   # ForeignKey 对象
+    is_started = (selection_event.start_time <= timezone.now())
     msg = ''
     # print(data)
     if action_type == 'add_favorite': 
