@@ -104,12 +104,13 @@ def is_number(s):
     try:
         float(s)
         return True
-    except ValueError:
+    except (TypeError, ValueError):
         pass
     try:
-        eval(s)
+        from fractions import Fraction
+        Fraction(s)
         return True
-    except ValueError:
+    except (TypeError, ValueError, ZeroDivisionError):
         pass
     try:
         import unicodedata
