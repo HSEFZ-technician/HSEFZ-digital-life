@@ -358,7 +358,7 @@ def toggle_favorite(request):
     elif action_type == 'remove_favorite':
         deleted, _ = UserFavorite.objects.filter(user=user, event_class=event_class).delete()
         msg = '已取消收藏' if deleted else '没有收藏记录可删除'
-        return JsonResponse({'code': 1, 'message': msg, 'data': get_selection_data(event_class.event_id, request.user, is_started)})
+        return JsonResponse({'code': 1 if deleted else 0, 'message': msg, 'data': get_selection_data(event_class.event_id, request.user, is_started)})
     else:
         return JsonResponse({'code': 0, 'message': '未知操作类型'})
 
