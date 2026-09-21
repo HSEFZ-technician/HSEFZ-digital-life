@@ -4,7 +4,7 @@ const row_content = "<tr>" +
     "<td class='op-content'>{0}</td>" +      // ← 收藏按钮列
     "<td class='status-content'>{1}</td>" +
     "<td class='name-content'>{2}</td>" +
-    "<td><div class='desc-full'><div class='col'>{3}</div>{4}</div></td>" +
+    "<td><div class='desc-full'><div class='col'><div class='inner'>{3}</div></div>{4}</div></td>" +
     "{5}" +                                       // 类型列
     "<td class='cnum-content'>{6}</td>" +
     "<td class='rnum-content'>{7}</td>" +
@@ -66,7 +66,7 @@ function convert_form_data_to_json(data) {
             op_content = "<button class='btn btn-danger id='{0}' disabled>未开始</button>".format(class_id);
         }
         if (c['full_desc']) {
-            full_desc_button = "<a href='{0}'>详情</a>".format(c['link']);
+            full_desc_button = "<a href='{0}' target='_blank'>详情</a>".format(c['link']);
         }
 
         if (c['is_favorite'] == 1) {
@@ -82,7 +82,7 @@ function convert_form_data_to_json(data) {
             <td class="op-content">${favorite_content}</td>
             <td class="status-content">${logo}</td>
             <td class="name-content">${name}</td>
-            <td><div class="desc-full"><div class="col">${desc}</div>${full_desc_button}</div></td>
+            <td><div class="desc-full"><div class="col"><div class="inner">${desc}</div></div>${full_desc_button}</div></td>
             ${type_div}
             <td class="cnum-content">${cnum}</td>
             <td class="rnum-content">${rnum}</td>
@@ -104,6 +104,7 @@ function refresh(data) {
     $('.sign-up').on('click', register);
     $('.cancel-sign-up').on('click', cancel_register);
     $('.btn-full-desc').on('click', jump_desc);
+    // delegated description handler is registered once in $(document).ready
 }
 
 // function refresh(data) {
@@ -263,6 +264,17 @@ function remove_favorite() {
     });
 }
 
+function expand_description(event) {
+    if($(event.target).closest('a').length || $(event.target).closest('button').length) return;
+    const tr = $(event.target).closest('tr');
+    const desc = tr.find('.desc-full');
+    if(desc.find('.col')[0].getAnimations().some(animation => animation.playState === "running")) return;
+    if(desc.hasClass('enabled')) {
+        desc.addClass('disabling');
+        setTimeout(() => {desc.removeClass("disabling"); desc.removeClass("enabled")}, 400);
+    }
+    else desc.addClass('enabled');
+}
 
 $(document).ready(function () {
     $('.sign-up').on('click', register);
@@ -271,4 +283,5 @@ $(document).ready(function () {
     $('.refresh-button').on('click', manual_refresh);
     $('.add-favorite').on('click', add_favorite);
     $('.cancel-favorite').on('click', remove_favorite);
+    $('#sign-up-table-tbody').on('click', expand_description);
 });

@@ -198,6 +198,17 @@
     margin-top: -0.1rem;
 }
 
+td:has(.desc-full){
+    position: relative;
+}
+
+.desc-full:not(.enabled, .disabling){
+    left: 12px;
+    top: 12px;
+    position: absolute;
+    min-height: calc(100% - 24px)
+}
+
 .desc-full .col{
     max-width: 100%;
     white-space: nowrap;
@@ -205,6 +216,32 @@
     padding-left: 0;
     padding-right: 0.5rem;
     text-overflow: ellipsis;
+    transition: grid-template-rows 400ms ease-out;
+    grid-template-rows: 0fr;
+    display: grid;
+}
+
+.desc-full a {
+    height: min-content;
+}
+
+.desc-full.enabled .col{
+    grid-template-rows: 1fr;
+}
+
+.desc-full.disabling .col{
+    grid-template-rows: 0fr!important;
+}
+
+.desc-full .col .inner{
+    min-height: 1.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.desc-full.enabled .col .inner{
+    white-space: normal;
+    text-overflow: unset;
 }
 
 .table{
