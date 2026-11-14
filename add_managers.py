@@ -65,8 +65,9 @@ with open('managers.txt', 'r', encoding='utf-8', errors='ignore') as f:
     email_list = [line.strip().split()[-1] for line in f if line.strip()]
 
 for email in email_list:
-    command = "UPDATE club_studentclubdata SET is_superuser=1,is_staff=1 WHERE email='%s';" % email
-    cursor.execute(command)
+    cursor.execute(
+        "UPDATE club_studentclubdata SET is_superuser=1,is_staff=1 WHERE email=%s;",
+        (email,))
 
 cnx.commit()
 

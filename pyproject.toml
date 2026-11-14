@@ -17,3 +17,21 @@ name = "hsefz-digital-life"
 readme = "README.md"
 requires-python = ">=3.12"
 version = "3.0.0"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "club_main.settings"
+testpaths = ["tests"]
+python_files = ["test_*.py", "tests.py"]
+
+[tool.coverage.run]
+source = ["."]
+omit = ["tests/*", "*/migrations/*", "*/backup/*", ".venv/*"]
+
+[tool.ruff]
+target-version = "py312"
+extend-exclude = ["**/migrations/**", "**/backup/**"]
+
+[tool.ruff.lint]
+# Start with a minimal, blocking rule set: syntax errors and undefined names.
+# Expand gradually (e.g. "F", "E", "I") once existing violations are cleaned up.
+select = ["E9", "F63", "F7", "F82"]

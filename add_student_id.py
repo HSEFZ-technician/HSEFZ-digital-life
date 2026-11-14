@@ -32,9 +32,9 @@ with open('26.csv', 'r', encoding='UTF-8') as wr:
         name = row[1]
         if name == '' or student_id =='':
             continue
-        command = "UPDATE club_studentclubdata SET student_id=\'%s\' WHERE student_id='\%s\' and student_real_name=\'%s\';" % (student_id,class_id,name)
-        # print(command)
-        cursor.execute(command)
+        cursor.execute(
+            "UPDATE club_studentclubdata SET student_id=%s WHERE student_id=%s and student_real_name=%s;",
+            (student_id, class_id, name))
     
 
 
