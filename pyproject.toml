@@ -17,3 +17,9 @@ name = "hsefz-digital-life"
 readme = "README.md"
 requires-python = ">=3.12"
 version = "3.0.0"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "club_main.test_settings"
+testpaths = ["tests"]
+# The repo does not commit migrations, so build the test DB from the models.
+addopts = "--nomigrations"

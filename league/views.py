@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.utils.html import format_html
+from club.html_utils import join_html
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
@@ -95,21 +97,19 @@ def league_manage(request):
             return JsonResponse({'code': 0, 'message': '数据非法或发生了错误'})
 
     _s = MatchData.objects.select_related('a_class', 'b_class').all()
-    table_content = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%d</td><td>%d</td><td>%s</td></tr>"
+    table_content = "<tr><td><a href='{}?id={}'>{}</a></td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>"
     cs = []
     for _ in _s:
-        cs.append(table_content %
-                  (modify_event_url, _.pk, _.name,
+        cs.append(format_html(table_content,
+                   modify_event_url, _.pk, _.name,
                    (_.time + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
                    _.a_class.name, _.b_class.name,
                    _.a_score, _.b_score, _.isPastEvent))
 
     cs.sort(key=lambda x: x[0])
 
-    table_div = ''
-
-    for i in cs:
-        table_div += i
+    
+    table_div = join_html(cs)
 
     return render(request, 'league/league_manage.html',
                   {'title': '赛事管理', 'now_league_manage': True, 'table_div': table_div})
@@ -137,20 +137,18 @@ def class_team_manage(request):
             return JsonResponse({'code': 0, 'message': '数据非法或发生了错误'})
 
     _s = ClassTeamData.objects.all()
-    table_content = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>"
+    table_content = "<tr><td><a href='{}?id={}'>{}</a></td><td>{}</td><td>{}</td><td>{}</td></tr>"
     cs = []
     for _ in _s:
-        cs.append(table_content %
-                  (modify_event_url, _.pk, _.name, colors.colors[int(_.color) - 1][1],
+        cs.append(format_html(table_content,
+                   modify_event_url, _.pk, _.name, colors.colors[int(_.color) - 1][1],
                    # colors.colors[int(_.color) - 1][1] + ' ' + colors.colors_name[int(_.color) - 1],
                    _.slogan, _.desc))
 
     cs.sort(key=lambda x: x[0])
 
-    table_div = ''
-
-    for i in cs:
-        table_div += i
+    
+    table_div = join_html(cs)
 
     return render(request, 'league/class_team_manage.html',
                   {'title': '赛事管理', 'now_class_team_manage': True, 'table_div': table_div})

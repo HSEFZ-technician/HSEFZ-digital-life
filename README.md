@@ -46,6 +46,17 @@ Run the server:
 python manage.py runserver
 ```
 
+## Testing
+
+Tests use pytest-django with an in-memory SQLite database (`club_main/test_settings.py`), so no MySQL, Redis or mail server is needed:
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest
+```
+
+`tests/test_security.py` holds XSS regression tests. When a view builds HTML in Python, build every fragment with `django.utils.html.format_html` and combine fragments with `club.html_utils.join_html`. Do not add `{% autoescape off %}` to templates.
+
 ## Selection system usage
 
 Please test locally before changing the database on the server. 

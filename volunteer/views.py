@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.utils.html import format_html
+from club.html_utils import join_html
 from django.contrib.auth.decorators import login_required
 from volunteer.models import ScoreEventData, StudentScoreData, StudentDataChecker
 import json
@@ -17,25 +19,26 @@ def generate_row(name, score, date):
                     <tbody>
                     <tr>
                         <td class="name-content">
-                            %s
+                            {}
                         </td>
                         <td class="snum-content">
-                            %d
+                            {}
                         </td>
                         <td class="date-content">
-                            %s
+                            {}
                         </td>
                     </tr>
                     </tbody>
     '''
-    return template % (name, score, date)
+    # Event names / activity dates are not superuser-only fields: escape them.
+    return format_html(template, name, int(score), date)
 
 
 @login_required()
 def index(request):
     _ = StudentScoreData.objects.filter(
         user_id=request.user.pk).select_related('score_event_id')
-    content = ''
+    rows = []
     ck_table = StudentDataChecker.objects.filter(user_id=request.user.pk)
     data_checked = False
     if len(ck_table) != 0:
@@ -61,7 +64,8 @@ def index(request):
     for i in _:
         event = i.score_event_id
         sum_of_course += event.point
-        content += generate_row(event.name, event.point, i.date_of_activity)
+        rows.append(generate_row(event.name, event.point, i.date_of_activity))
+    content = join_html(rows)
     return render(request, 'volunteer/home.html', {'content': content, 'percentage': (sum_of_course/40)*100, 'score': sum_of_course, 'checked': data_checked})
 
 
@@ -96,16 +100,15 @@ def score_manage(request):
             user_id=student_id).select_related('score_event_id')
         ss = StudentClubData.objects.get(pk=student_id)
         user_data = ' - %s %s' % (ss.student_id, ss.student_real_name)
-        table_content = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%s</td><td>%s</td></tr>"
+        table_content = "<tr><td><a href='{}?id={}'>{}</a></td><td>{}</td><td>{}</td></tr>"
         cs = []
         for _ in _s:
             ev = _.score_event_id
-            cs.append(table_content %
-                      (modify_score_url, _.pk, ev.name, ev.point, _.date_of_addition))
+            cs.append(format_html(table_content,
+                       modify_score_url, _.pk, ev.name, ev.point, _.date_of_addition))
         cs.sort(key=lambda x: x[0])
 
-        for i in cs:
-            table_div += i
+        table_div = join_html(cs)
 
     return render(request, 'volunteer/score_manage.html', {'title': '分数录入', 'now_score_manage': True, 'table_div': table_div, 'user_data': user_data})
 
@@ -133,18 +136,15 @@ def event_manage(request):
             return JsonResponse({'code': 0, 'message': '数据非法或发生了错误'})
 
     _s = ScoreEventData.objects.all()
-    table_content = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%d</td></tr>"
+    table_content = "<tr><td><a href='{}?id={}'>{}</a></td><td>{}</td></tr>"
     cs = []
     for _ in _s:
-        cs.append(table_content %
-                  (modify_event_url, _.pk, _.name, _.point))
+        cs.append(format_html(table_content,
+                   modify_event_url, _.pk, _.name, _.point))
 
     cs.sort(key=lambda x: x[0])
 
-    table_div = ''
-
-    for i in cs:
-        table_div += i
+    table_div = join_html(cs)
 
     return render(request, 'volunteer/score_event_manage.html', {'title': '课时事件管理', 'now_score_event_manage': True, 'table_div': table_div})
 

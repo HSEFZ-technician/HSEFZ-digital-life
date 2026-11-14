@@ -14,6 +14,8 @@
 # from club.tasks import send_email
 # from django.contrib.sites.shortcuts import get_current_site
 # from django.template.loader import render_to_string
+from django.utils.html import escape, format_html
+from club.html_utils import join_html
 # from django.utils.html import strip_tags
 # from django.utils import timezone
 # from django.http import JsonResponse, Http404
@@ -70,29 +72,19 @@ from club.tasks import send_email
 
 def selection_home_view(request):
 
+    # Notice titles are superuser-edited, but selection titles and group names
+    # are not guaranteed to be; escape everything via format_html.
     notice_template = '''<div class='row notice-row'><div class='notice-title'>
-                         <a href='/notice/%d/'>%s</a></div><div class='notice-date'>
-                         <span>%s</span></div></div>'''
-    running_div = '''
+                         <a href='/notice/{}/'>{}</a></div><div class='notice-date'>
+                         <span>{}</span></div></div>'''
+    selection_template = '''
         <div class="col-lg-6 selection">
         <div class="card selection-content">
             <div class="card-body">
-              <h5 class="card-title">%s <span class="badge badge-pill badge-primary">进行中</span></h5>
-              <h6 class="card-subtitle mb-2 text-muted">选课人群: %s</h6>
-              <p class="card-text">选课时间为 %s 至 %s</p>
-              <a href="%s" class="card-link">查看详情</a>
-            </div>
-        </div>
-        </div>
-    '''
-    not_started_div = '''
-    <div class="col-lg-6 selection">
-        <div class="card selection-content">
-            <div class="card-body">
-              <h5 class="card-title">%s <span class="badge badge-pill badge-info">未开始</span></h5>
-              <h6 class="card-subtitle mb-2 text-muted">选课人群: %s</h6>
-              <p class="card-text">选课时间为 %s 至 %s</p>
-              <a href="%s" class="card-link">查看详情</a>
+              <h5 class="card-title">{} <span class="badge badge-pill {}">{}</span></h5>
+              <h6 class="card-subtitle mb-2 text-muted">选课人群: {}</h6>
+              <p class="card-text">选课时间为 {} 至 {}</p>
+              <a href="/selection_sign_up/?id={}" class="card-link">查看详情</a>
             </div>
         </div>
         </div>
@@ -100,15 +92,13 @@ def selection_home_view(request):
 
     notice_set = Notice.objects.filter(active=True)
 
-    notice_div = ''
+    notice_parts = [
+        format_html(notice_template, n.id, n.title,
+                    n.release_date.strftime(settings.TIME_FORMAT))
+        for n in notice_set
+    ]
 
     selection_list = []
-
-    selection_div = ''
-
-    for n in notice_set:
-        notice_div += notice_template % (n.id, n.title,
-                                         n.release_date.strftime(settings.TIME_FORMAT))
 
     time_now = timezone.now()
 
@@ -117,8 +107,6 @@ def selection_home_view(request):
         if s.end_time < time_now:
 
             continue
-
-        student_string = ''
 
         # Use the prefetched list so we don't run a query per event.
         student_groups = list(s.student_group.all())
@@ -134,26 +122,20 @@ def selection_home_view(request):
             student_string = student_groups[0].name + '等'
 
         if s.start_time <= time_now:
-
-            selection_list.append((s.start_time, running_div % (s.title, student_string,
-                                                                s.start_time.astimezone(settings.LOCAL_TIMEZONE).strftime(
-                                                                    settings.SELECTION_TIME_FORMAT),
-                                                                s.end_time.astimezone(settings.LOCAL_TIMEZONE).strftime(
-                                                                    settings.SELECTION_TIME_FORMAT),
-                                                                '/selection_sign_up/?id=%d' % (s.pk))))
+            badge_class, badge_text = 'badge-primary', '进行中'
         else:
+            badge_class, badge_text = 'badge-info', '未开始'
 
-            selection_list.append((s.start_time, not_started_div % (s.title, student_string,
-                                                                    s.start_time.astimezone(settings.LOCAL_TIMEZONE).strftime(
-                                                                        settings.SELECTION_TIME_FORMAT),
-                                                                    s.end_time.astimezone(settings.LOCAL_TIMEZONE).strftime(
-                                                                        settings.SELECTION_TIME_FORMAT),
-                                                                    '/selection_sign_up/?id=%d' % (s.pk))))
+        selection_list.append((s.start_time, format_html(
+            selection_template, s.title, badge_class, badge_text, student_string,
+            s.start_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT),
+            s.end_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT),
+            s.pk)))
+
     selection_list.sort(key=lambda x: x[0])
 
-    for i in selection_list:
-
-        selection_div += i[1]
+    notice_div = join_html(notice_parts)
+    selection_div = join_html(i[1] for i in selection_list)
 
     return render(request, 'selection_home.html', {'title': '华师二附中选课系统', 'notice_content': notice_div, 'selection_content': selection_div, 'hasClass': len(selection_list) != 0})
 
@@ -275,7 +257,9 @@ def selection_desc_view(request):
 
         if not avail:
             raise Http404
-        return render(request, 'page.html', {'title': eci.name, 'content': eci.full_desc})
+        # full_desc is a link entered by club managers (non-superusers);
+        # page.html renders 'content' unescaped, so escape it here.
+        return render(request, 'page.html', {'title': eci.name, 'content': escape(eci.full_desc)})
     except Exception as e:
         raise Http404
 

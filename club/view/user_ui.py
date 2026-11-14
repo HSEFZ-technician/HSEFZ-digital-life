@@ -8,7 +8,8 @@ from club.tokens import VerifyToken, PasswordGenerator
 from club.tasks import send_email
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+from django.utils.html import strip_tags, format_html
+from club.html_utils import join_html
 from django.utils import timezone
 from django.http import JsonResponse,Http404
 from django.db import transaction
@@ -98,7 +99,7 @@ def event_manage_view(request):
 
     user_groups      = [t.name for t in request.user.groups.all()]
     _s               = SelectionEvent.objects.prefetch_related('teachers_group').all()
-    table_content    = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%s</td><td>%s</td></tr>"
+    table_content    = "<tr><td><a href='{}?id={}'>{}</a></td><td>{}</td><td>{}</td></tr>"
     modify_event_url = "/modify_event"
     cs               = []
     for _ in _s:
@@ -110,24 +111,21 @@ def event_manage_view(request):
                     cap = True
         if (not cap):
             continue
-        cs.append((_.start_time,table_content % (modify_event_url, _.pk, _.title,
+        cs.append((_.start_time,format_html(table_content, modify_event_url, _.pk, _.title,
                                                  _.start_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT),
                                                  _.end_time.astimezone(settings.LOCAL_TIMEZONE).strftime(settings.SELECTION_TIME_FORMAT))))
     
     cs.sort(key=lambda x:x[0])
 
-    table_div=''
-    
-    for i in cs:
-        table_div+=i[1]
+    table_div = join_html(i[1] for i in cs)
 
     return render(request,'event_manage.html',{'title':'课程管理','now_event_manage':True, 'table_div':table_div})
 
 def comb_list_single_data(d):
-    res=''
-    for i in range(len(d)):
-        res+='<tr><td>%d</td><td>%s</td><td><span>%s</span></td><td><span>%s</span></td></tr>' % (i+1,d[i]['n'],d[i]['e'],d[i]['g'])
-    return res
+    return join_html(
+        format_html('<tr><td>{}</td><td>{}</td><td><span>{}</span></td><td><span>{}</span></td></tr>',
+                    i+1, row['n'], row['e'], row['g'])
+        for i, row in enumerate(d))
 
 @login_required()
 def notice_manage_view(request):
@@ -151,18 +149,15 @@ def notice_manage_view(request):
             return JsonResponse({'code':0,'message':'数据非法或发生了错误'})
 
     _s               = Notice.objects.all()
-    table_content    = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%s</td></tr>"
+    table_content    = "<tr><td><a href='{}?id={}'>{}</a></td><td>{}</td></tr>"
     cs               = []
     for _ in _s:
-        cs.append((_.release_date,table_content % (modify_notice_url, _.pk, _.title,
+        cs.append((_.release_date,format_html(table_content, modify_notice_url, _.pk, _.title,
                                                  _.release_date)))
     
     cs.sort(key=lambda x:x[0])
 
-    table_div=''
-    
-    for i in cs:
-        table_div+=i[1]
+    table_div = join_html(i[1] for i in cs)
 
     return render(request,'notice_manage.html',{'title':'公告管理','now_notice_manage':True, 'table_div':table_div})
 

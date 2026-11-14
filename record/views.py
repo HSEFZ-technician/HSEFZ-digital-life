@@ -1,4 +1,6 @@
 import datetime
+from django.utils.html import format_html
+from club.html_utils import join_html
 from record.models import RecordData
 from record.models import RecordHolderData
 from record.forms import ModifyRecordForm, ModifyRecordHolderForm
@@ -87,15 +89,13 @@ def record_manage(request):
         raise Http404
 
     _s = RecordData.objects.all()
-    table_content = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%s</td><td>%s</td></tr>"
+    table_content = "<tr><td><a href='{}?id={}'>{}</a></td><td>{}</td><td>{}</td></tr>"
     cs = []
     for _ in _s:
-        cs.append(table_content %
-                  (modify_record_url, _.pk, _.name, _.desc, _.type))
+        cs.append(format_html(table_content,
+                   modify_record_url, _.pk, _.name, _.desc, _.type))
     cs.sort(key=lambda x: x[0])
-    table_div = ''
-    for i in cs:
-        table_div += i
+    table_div = join_html(cs)
 
     return render(request, 'record/record_manage.html',
                   {'title': '纪录管理', 'now_record_manage': True, 'table_div': table_div})
@@ -109,16 +109,14 @@ def record_holder_manage(request):
         raise Http404
 
     _s = RecordHolderData.objects.select_related('related_record').all()
-    table_content = "<tr><td><a href='%s?id=%d'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>"
+    table_content = "<tr><td><a href='{}?id={}'>{}</a></td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>"
     cs = []
     for _ in _s:
-        cs.append(table_content %
-                  (modify_record_url, _.pk, _.name, _.s_class, _.related_record.name, _.record, 
+        cs.append(format_html(table_content,
+                   modify_record_url, _.pk, _.name, _.s_class, _.related_record.name, _.record, 
                   (_.time + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"), _.visibility))
     cs.sort(key=lambda x: x[0])
-    table_div = ''
-    for i in cs:
-        table_div += i
+    table_div = join_html(cs)
 
     return render(request, 'record/record_holder_manage.html',
                   {'title': '纪录保持者管理', 'now_record_holder_manage': True, 'table_div': table_div})

@@ -1,8 +1,18 @@
+// Escape text before inserting it into HTML (names/descriptions are user-editable).
+function escapeHtml(value) {
+    return String(value === undefined || value === null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function comb_data(data) {
     res = '';
     let l = data.length;
     for (let i = 0; i < l; i++) {
-        res += '<tr><td>' + (i + 1) + '</td><td>' + data[i]['n'] + '</td><td><span>' + data[i]['e'] + '</span></td><td><span>' + data[i]['g'] + '</span></td></tr>';
+        res += '<tr><td>' + (i + 1) + '</td><td>' + escapeHtml(data[i]['n']) + '</td><td><span>' + escapeHtml(data[i]['e']) + '</span></td><td><span>' + escapeHtml(data[i]['g']) + '</span></td></tr>';
     }
     return res;
 }

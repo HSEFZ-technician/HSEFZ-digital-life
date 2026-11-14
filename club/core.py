@@ -5,6 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count
 from .models import UserFavorite, EventClassInformation, StudentClubData
 import json
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+from club.html_utils import join_html, safe_url
 
 # display_type:   是否显示类型
 # types:          所有的类型
@@ -150,130 +153,95 @@ def get_selection_data(selection_object, user, is_started, ignore_forbid=False):
 
 
 def convert_selection_data_to_html(data):
+    # Class names / descriptions / links are edited by club managers (non
+    # superusers), so every value goes through format_html to be escaped.
 
     row_content = '''
     <tr>
         <td class='op-content'>
-            %s
+            {}
         </td>
         <td class='status-content'>
-            %s
+            {}
         </td>
         <td class='name-content'>
-            %s
+            {}
         </td>
         <td>
             <div class='desc-full'>
                 <div class='col'>
                     <div class='inner'>
-                        %s
+                        {}
                     </div>
                 </div>
-                %s
+                {}
             </div>
         </td>
-        %s
+        {}
         <td class='cnum-content'>
-            %s
+            {}
         </td>
         <td class='rnum-content'>
-            %s
+            {}
         </td>
         <td class='op-content'>
-            %s
+            {}
         </td>
     </tr>
     '''
 
-    result = ''
+    # status -> (button classes, disabled, label)
+    op_buttons = {
+        0: ('btn btn-primary sign-up', False, '报名'),
+        1: ('btn btn-primary', True, '不可报名'),
+        2: ('btn btn-danger', True, '不可报名'),
+        3: ('btn btn-primary', True, '已满'),
+        4: ('btn btn-danger cancel-sign-up', False, '取消报名'),
+        5: ('btn btn-danger', True, '不可取消'),
+        6: ('btn btn-primary', True, '未开始'),
+    }
+
+    rows = []
     dtype = data['display_type']
 
-    # disa = False
-
-    # for c in data['data']:
-    #     if c['status']==4 or c['status']==5:
-    #         disa = True
-    #         break
-
     for c in data['data']:
-        name = c['name']
         logo = ''
 
         if c['status'] == 4 or c['status'] == 5 or c['status'] == 7:
-            logo = "<span><i class='fa-solid fa-check fa-lg'></i></span>"
+            logo = mark_safe("<span><i class='fa-solid fa-check fa-lg'></i></span>")
 
         elif c['status'] == 2:
-            logo = "<span><i class='fa-solid fa-ban fa-lg'></i></span>"
+            logo = mark_safe("<span><i class='fa-solid fa-ban fa-lg'></i></span>")
 
         elif c['status'] == 3:
-            logo = "<span style='margin-left:0.15rem;'><i class='fa-solid fa-xmark fa-xl'></i></span>"
-
-        desc = c['desc']
-
-        # type_div = ''
-        type_div = "<td class='type-content'></td>"
+            logo = mark_safe("<span style='margin-left:0.15rem;'><i class='fa-solid fa-xmark fa-xl'></i></span>")
 
         if dtype:
-            type_div = "<td class='type-content'>%s</td>" % (
-                data['types'][c['type']])
-
-        cnum = str(c['cnum'])
-        rnum = str(c['rnum'])
-
-        class_id = str(c['id'])
-
-        if c['status'] == 0:
-            op_content = "<button class='btn btn-primary sign-up' id='%s'>报名</button>" % (
-                class_id)
-
-        elif c['status'] == 1:
-            op_content = "<button class='btn btn-primary' id='%s' disabled>不可报名</button>" % (
-                class_id)
-
-        elif c['status'] == 2:
-            op_content = "<button class='btn btn-danger' id='%s' disabled>不可报名</button>" % (
-                class_id)
-
-        elif c['status'] == 3:
-            op_content = "<button class='btn btn-primary' id='%s' disabled>已满</button>" % (
-                class_id)
-
-        elif c['status'] == 4:
-            op_content = "<button class='btn btn-danger cancel-sign-up' id='%s'>取消报名</button>" % (
-                class_id)
-
-        elif c['status'] == 5:
-            op_content = "<button class='btn btn-danger' id='%s' disabled>不可取消</button>" % (
-                class_id)
-
-        # elif disa:
-        #     op_content = "<button class='btn border-success' id='%s' disabled>已选其他</button>" % (class_id)
-
-        elif c['status'] == 6:
-            op_content = "<button class='btn btn-primary' id='%s' disabled>未开始</button>" % (
-                class_id)
-
+            type_div = format_html("<td class='type-content'>{}</td>", data['types'][c['type']])
         else:
-            op_content = "<button class='btn btn-danger id='%s' disabled>未开始</button>" % (
-                class_id)
+            type_div = mark_safe("<td class='type-content'></td>")
+
+        class_id = c['id']
+        btn_class, disabled, label = op_buttons.get(c['status'], ('btn btn-danger', True, '未开始'))
+        op_content = format_html("<button class='{}' id='{}'{}>{}</button>",
+                                 btn_class, class_id, mark_safe(' disabled') if disabled else '', label)
 
         full_desc_button = ''
-        
         if c['full_desc']:
-            full_desc_button = "<a href='%s' target='_blank'>详情</a>" % (c['link'])
+            full_desc_button = format_html("<a href='{}' target='_blank' rel='noopener noreferrer'>详情</a>",
+                                           safe_url(c['link']))
 
-        if c['is_favorite'] == 1:
-            favorite_content = "<button class='btn favorite-btn-cancel cancel-favorite' id='%s'>取消收藏</button>" % (
-                class_id)
-        
+        if c['is_favorite']:
+            favorite_content = format_html(
+                "<button class='btn favorite-btn-cancel cancel-favorite' id='{}'>取消收藏</button>", class_id)
         else:
-            favorite_content = "<button class='btn favorite-btn add-favorite' id='%s'>收藏</button>" % (
-                class_id)
+            favorite_content = format_html(
+                "<button class='btn favorite-btn add-favorite' id='{}'>收藏</button>", class_id)
 
-        result += row_content % (favorite_content, logo, name, desc,
-                                 full_desc_button, type_div, cnum, rnum, op_content)
+        rows.append(format_html(row_content, favorite_content, logo, c['name'], c['desc'],
+                                full_desc_button, type_div, c['cnum'], c['rnum'], op_content))
 
-    return result
+    return join_html(rows)
 
 
 def get_selection_list(rec):

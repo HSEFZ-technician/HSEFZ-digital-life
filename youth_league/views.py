@@ -12,48 +12,55 @@ from youth_league.core import *
 from datetime import datetime
 
 from django.contrib.auth.hashers import make_password
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+
+
+# Course/test titles are set by staff and appeal content/responses are written
+# by students and staff, so every generate_* helper escapes its arguments via
+# format_html; the accumulated SafeStrings render with autoescaping on.
 
 def generate_row(type, id, title, date, stu_score, avg, max, type1, id1, id2):
     template = '''
                     <tr>
-                        <td id='%s-title-%s'>
-                            %s
+                        <td id='{}-title-{}'>
+                            {}
                         </td>
                         <td>
-                            %s
+                            {}
                         </td>
                         <td>
-                            %s
+                            {}
                         </td>
                         <td>
-                            %s
+                            {}
                         </td>
                         <td>
-                            %s
+                            {}
                         </td>
                         <td>
-                            <button type='button' class='appeal-link btn btn-outline-secondary btn-sm' %s_id=%s data-toggle="modal" data-target="#appeal-window" onclick="showAppealWindow(%s);">申诉</button>
+                            <button type='button' class='appeal-link btn btn-outline-secondary btn-sm' {}_id={} data-toggle="modal" data-target="#appeal-window" onclick="showAppealWindow({});">申诉</button>
                         </td>
                     </tr>
     '''
-    return template % (type, id, title,  date, stu_score, avg, max, type1, id1, id2)
+    return format_html(template, type, id, title,  date, stu_score, avg, max, type1, id1, id2)
 
 
 def generate_row_notice(id, title, content, response, time):
     template = '''
                 <div class="row entry-row">
                 <div class="entry-title entry-category">
-                    <a href="" data-toggle="modal" data-target="#appeal-window-%s">
-                    申诉：%s
+                    <a href="" data-toggle="modal" data-target="#appeal-window-{}">
+                    申诉：{}
                     </a>
                 </div>
                 <div class="entry-date entry-category">
-                    %s
+                    {}
                 </div>
                 </div>
 
 
-                <div class="modal fade" id="appeal-window-%s" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="appeal-window-{}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -64,10 +71,10 @@ def generate_row_notice(id, title, content, response, time):
                     </div>
                     <div class="modal-body">
                         <h5>申诉内容：</h5>
-                        %s
+                        {}
                         <hr>
                         <h5>申诉反馈:</h5>
-                        %s
+                        {}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
@@ -79,12 +86,12 @@ def generate_row_notice(id, title, content, response, time):
 
                 
     '''
-    return template % (id, title, time, id, content, response)
+    return format_html(template, id, title, time, id, content, response)
 
 @login_required()
 def index(request):
     appeal_data_course = AppealData.objects.filter(stu_id=request.user.pk).values('id', 'content', 'response', 'update_time', 'creation_time', 'course_id').order_by('update_time')
-    appeal_content = ''
+    appeal_content = mark_safe('')  # SafeString; += of format_html output stays safe
     # Load lookup tables once instead of querying per appeal row.
     course_titles = dict(CourseData.objects.values_list('id', 'title'))
     test_titles = dict(TestData.objects.values_list('id', 'title'))
@@ -122,7 +129,7 @@ def homework_inquiry(request):
     }
 
     course_list = CourseData.objects.all()
-    content=''
+    content = mark_safe('')  # SafeString; += of format_html output stays safe
     for i in course_list:
         course_title = i.title
         course_date = i.date
@@ -166,7 +173,7 @@ def test_inquiry(request):
     }
 
     test_list = TestData.objects.all()
-    content=''
+    content = mark_safe('')  # SafeString; += of format_html output stays safe
     for i in test_list:
         test_title = i.title
         test_date = i.date
@@ -224,60 +231,60 @@ def test_score_manage(request):
 
 def generate_row_appeal_not_handled(appeal_id, stu_no, title, content, time):
     template = '''
-                <button class="btn btn-outline-primary btn-block" type="button" data-toggle="collapse" data-target="#appeal-window-container-%s" aria-expanded="false" aria-controls="collapseExample">
-                    申诉课程（考试）：%s
+                <button class="btn btn-outline-primary btn-block" type="button" data-toggle="collapse" data-target="#appeal-window-container-{}" aria-expanded="false" aria-controls="collapseExample">
+                    申诉课程（考试）：{}
                     &nbsp; &nbsp; &nbsp;
-                    申诉学生学号：%s
+                    申诉学生学号：{}
                     &nbsp; &nbsp; &nbsp;
-                    申诉时间：%s
+                    申诉时间：{}
                 </button>
-                <div class="collapse" id="appeal-window-container-%s">
+                <div class="collapse" id="appeal-window-container-{}">
                 <div class="card card-body">
                     <ul class="list-group list-group-flush">
                     申诉内容：
-                    <li class="list-group-item">%s</li>
+                    <li class="list-group-item">{}</li>
                     <br>
                     提交回复：
                     <li class="list-group-item">            
                         <input type="hidden" id="appeal-id" name="appeal_id">
-                        <textarea class="form-control" id="appeal-respond-input-%s" name="appeal_respond_content" rows="10"></textarea>
-                        <button class="btn btn-primary appeal-respond-submit" appeal_id="%s">提交</button>
+                        <textarea class="form-control" id="appeal-respond-input-{}" name="appeal_respond_content" rows="10"></textarea>
+                        <button class="btn btn-primary appeal-respond-submit" appeal_id="{}">提交</button>
                     </li>
                     </ul>
                 </div>
                 </div>
     '''
-    return template % (appeal_id, title, stu_no, time, appeal_id, content, appeal_id, appeal_id)
+    return format_html(template, appeal_id, title, stu_no, time, appeal_id, content, appeal_id, appeal_id)
 
 def generate_row_appeal_handled(appeal_id, stu_no, title, content, time, response):
     template = '''
-                <button class="btn btn-outline-secondary btn-block" type="button" data-toggle="collapse" data-target="#appeal-window-container-%s" aria-expanded="false" aria-controls="collapseExample">
-                    申诉课程（考试）：%s
+                <button class="btn btn-outline-secondary btn-block" type="button" data-toggle="collapse" data-target="#appeal-window-container-{}" aria-expanded="false" aria-controls="collapseExample">
+                    申诉课程（考试）：{}
                     &nbsp; &nbsp; &nbsp;
-                    申诉学生学号：%s
+                    申诉学生学号：{}
                     &nbsp; &nbsp; &nbsp;
-                    申诉时间：%s
+                    申诉时间：{}
                 </button>
-                <div class="collapse" id="appeal-window-container-%s">
+                <div class="collapse" id="appeal-window-container-{}">
                 <div class="card card-body">
                     <ul class="list-group list-group-flush">
                     申诉内容：
-                    <li class="list-group-item">%s</li>
+                    <li class="list-group-item">{}</li>
                     <br>
                     回复内容：
-                    <li class="list-group-item">%s</li>
+                    <li class="list-group-item">{}</li>
                     <br>
                     重新提交回复：
                     <li class="list-group-item">            
                         <input type="hidden" id="appeal-id" name="appeal_id">
-                        <textarea class="form-control" id="appeal-respond-input-%s" name="appeal_respond_content" rows="10"></textarea>
-                        <button class="btn btn-primary appeal-respond-submit" appeal_id="%s">提交</button>
+                        <textarea class="form-control" id="appeal-respond-input-{}" name="appeal_respond_content" rows="10"></textarea>
+                        <button class="btn btn-primary appeal-respond-submit" appeal_id="{}">提交</button>
                     </li>
                     </ul>
                 </div>
                 </div>
     '''
-    return template % (appeal_id, title, stu_no, time, appeal_id, content, response, appeal_id, appeal_id)
+    return format_html(template, appeal_id, title, stu_no, time, appeal_id, content, response, appeal_id, appeal_id)
 
 
 def appeal_respond(request):
@@ -287,8 +294,8 @@ def appeal_respond(request):
 
     appeal_data_not_handled = AppealData.objects.filter(state=False).values('id', 'stu_id', 'course_id', 'content', 'creation_time')
     appeal_data_handled = AppealData.objects.filter(state=True).values('id', 'stu_id', 'course_id', 'content', 'creation_time', 'response')
-    content_not_handled = ''
-    content_handled = ''
+    content_not_handled = mark_safe('')  # SafeString; += of format_html output stays safe
+    content_handled = mark_safe('')  # SafeString; += of format_html output stays safe
     # Preload lookup tables once instead of querying per appeal row.
     stu_no_map = dict(StudentClubData.objects.values_list('id', 'student_id'))
     course_titles = dict(CourseData.objects.values_list('id', 'title'))
@@ -334,8 +341,8 @@ def appeal_test_respond(request):
 
     appeal_data_not_handled = AppealDataTest.objects.filter(state=False).values('id', 'stu_id', 'test_id', 'content', 'creation_time')
     appeal_data_handled = AppealDataTest.objects.filter(state=True).values('id', 'stu_id', 'test_id', 'content', 'creation_time', 'response')
-    content_not_handled = ''
-    content_handled = ''
+    content_not_handled = mark_safe('')  # SafeString; += of format_html output stays safe
+    content_handled = mark_safe('')  # SafeString; += of format_html output stays safe
     # Preload lookup tables once instead of querying per appeal row.
     stu_no_map = dict(StudentClubData.objects.values_list('id', 'student_id'))
     test_titles = dict(TestData.objects.values_list('id', 'title'))

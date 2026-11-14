@@ -1,3 +1,23 @@
+// Escape text before inserting it into HTML (names/descriptions are user-editable).
+function escapeHtml(value) {
+    return String(value === undefined || value === null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// Only allow http(s) or relative links; blocks javascript:/data: URLs.
+function safeUrl(url) {
+    url = String(url || '').trim();
+    let m = /^([a-zA-Z][a-zA-Z0-9+.-]*):/.exec(url.replace(/[\u0000-\u0020]/g, ''));
+    if (m && !/^https?$/i.test(m[1])) {
+        return '#';
+    }
+    return url;
+}
+
 // const row_content = "<tr><td class='status-content'>{0}</td><td class='name-content'>{1}</td><td><div class='desc-full'><div class='col'>{2}</div>{3}</div></td>{4}<td class='cnum-content'>{5}</td><td class='rnum-content'>{6}</td><td class='op-content'>{7}</td></tr>";
 
 const row_content = "<tr>" +
@@ -27,7 +47,7 @@ function convert_form_data_to_json(data) {
     //     }
     // }
     for (c of data['data']) {
-        let name = c['name'], logo = '', desc = c['desc'], type_div = '', cnum = c['cnum'], rnum = c['rnum'], class_id = c['id'], op_content = '', full_desc_button = '';
+        let name = escapeHtml(c['name']), logo = '', desc = escapeHtml(c['desc']), type_div = '', cnum = c['cnum'], rnum = c['rnum'], class_id = c['id'], op_content = '', full_desc_button = '';
         if (c['status'] == 4 || c['status'] == 5 || c['status'] == 7) {
             logo = "<span><i class='fa-solid fa-check fa-lg'></i></span>";
         } else if (c['status'] == 2) {
@@ -36,7 +56,7 @@ function convert_form_data_to_json(data) {
             logo = "<span style='margin-left:0.15rem;'><i class='fa-solid fa-xmark fa-xl'></i></span>";
         }
         if (dtype) {
-            type_div = "<td class='type-content'>{0}</td>".format(data['types'][c['type']]);
+            type_div = "<td class='type-content'>{0}</td>".format(escapeHtml(data['types'][c['type']]));
         } else {
             type_div = "<td class='type-content'></td>";  // 保证占位
         }
@@ -63,10 +83,10 @@ function convert_form_data_to_json(data) {
             op_content = "<button class='btn btn-primary' id='{0}' disabled>未开始</button>".format(class_id);
         }
         else {
-            op_content = "<button class='btn btn-danger id='{0}' disabled>未开始</button>".format(class_id);
+            op_content = "<button class='btn btn-danger' id='{0}' disabled>未开始</button>".format(class_id);
         }
         if (c['full_desc']) {
-            full_desc_button = "<a href='{0}' target='_blank'>详情</a>".format(c['link']);
+            full_desc_button = "<a href='{0}' target='_blank' rel='noopener noreferrer'>详情</a>".format(escapeHtml(safeUrl(c['link'])));
         }
 
         if (c['is_favorite'] == 1) {

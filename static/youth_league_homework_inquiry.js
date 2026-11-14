@@ -7,8 +7,8 @@ $(document).ready(function () {
 });
 
 function showAppealWindow(appeal_current_num) {
-    var appeal_current_course_title = $('#course-title-'+appeal_current_num).html();
-    appeal_window_label[0].innerHTML = '申诉（课程名称：' + appeal_current_course_title + '）';
+    var appeal_current_course_title = $('#course-title-'+appeal_current_num).text().trim();
+    appeal_window_label[0].textContent = '申诉（课程名称：' + appeal_current_course_title + '）';
     $('#appeal-window-course-id')[0].setAttribute('value', appeal_current_num);
 }
 
