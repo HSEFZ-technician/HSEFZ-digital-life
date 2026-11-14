@@ -46,6 +46,25 @@ Run the server:
 python manage.py runserver
 ```
 
+## Testing | 测试
+
+Install the dev dependencies (on Linux you may need `pkg-config` and `libmysqlclient-dev` for `mysqlclient`):
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+Tests run against SQLite, so no MySQL server is needed:
+
+```bash
+export DB_ENGINE=django.db.backends.sqlite3 DB_NAME=test.sqlite3
+python manage.py makemigrations club bingo league volunteer youth_league record verification
+pytest --cov
+ruff check .
+```
+
+Every push and PR runs the same steps in GitHub Actions (`.github/workflows/python-ci.yml`): ruff lint, Django system check, pytest with coverage on Python 3.12/3.13, and a non-blocking `pip-audit` dependency scan. Put new tests under `tests/`.
+
 ## Selection system usage
 
 Please test locally before changing the database on the server. 

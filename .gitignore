@@ -75,3 +75,11 @@ tmp/
 .env.local
 .env.production
 .csv
+
+# Test / coverage
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.ruff_cache/
+*.sqlite3

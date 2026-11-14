@@ -1,0 +1,6 @@
+-r requirements.txt
+pytest
+pytest-django
+pytest-cov
+ruff
+pip-audit

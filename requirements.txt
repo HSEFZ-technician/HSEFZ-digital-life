@@ -8,3 +8,4 @@ django-widget-tweaks
 crispy-bootstrap4
 celery[redis]
 Pillow
+python-dotenv
