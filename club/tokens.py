@@ -1,6 +1,6 @@
 import jwt
 from django.conf import settings
-import random
+import secrets
 
 class VerifyToken:
 
@@ -27,10 +27,10 @@ def PasswordGenerator(length):
 
     for i in range(length-2):
 
-        new_password += random.choice('0123456789abcdefghijklmnopqrstuvwxyz')
+        new_password += secrets.choice('0123456789abcdefghijklmnopqrstuvwxyz')
 
-    new_password += random.choice('0123456789')
+    new_password += secrets.choice('0123456789')
 
-    new_password += random.choice('abcdefghijklmnopqrstuvwxyz')
+    new_password += secrets.choice('abcdefghijklmnopqrstuvwxyz')
 
     return new_password

@@ -19,6 +19,7 @@ import json
 import re
 from club.core import get_selection_data, convert_selection_data_to_html, get_selection_list
 from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.contrib.sites.shortcuts import get_current_site
 
 
@@ -210,7 +211,11 @@ def login_view(request, next="/"):
                     else:
                         next_url = '/'
 
-                    if next_url == '':
+                    # Only follow same-site redirects to prevent open redirect attacks.
+                    if not url_has_allowed_host_and_scheme(
+                            next_url,
+                            allowed_hosts={request.get_host()},
+                            require_https=request.is_secure()):
                         next_url = '/'
 
                     return redirect(next_url)

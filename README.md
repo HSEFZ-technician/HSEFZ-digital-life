@@ -63,7 +63,14 @@ pytest --cov
 ruff check .
 ```
 
-Every push and PR runs the same steps in GitHub Actions (`.github/workflows/python-ci.yml`): ruff lint, Django system check, pytest with coverage on Python 3.12/3.13, and a non-blocking `pip-audit` dependency scan. Put new tests under `tests/`.
+To test against MySQL instead, point `DB_*` at a MySQL server (see `.env.example`); the test database is created automatically.
+
+GitHub Actions runs on every push and PR:
+
+- `.github/workflows/python-ci.yml`: ruff lint, Django system check, pytest + coverage on Python 3.12/3.13 (SQLite), and the full suite on MySQL 8.0.
+- `.github/workflows/security.yml`: bandit (blocks on medium+ findings), CodeQL, `pip-audit`, Django `check --deploy`, and dependency review on PRs. Results appear under the repo's *Security → Code scanning* tab.
+
+Put new tests under `tests/`; security regression tests live in `tests/test_security.py`.
 
 ## Selection system usage
 

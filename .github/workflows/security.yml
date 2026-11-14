@@ -1,0 +1,123 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "23 3 * * 1"   # weekly, catches newly published CVEs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bandit:
+    name: SAST (bandit)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "bandit[sarif]"
+      # Full report (all severities) goes to the repo's Security > Code scanning tab.
+      - name: Bandit full report (SARIF)
+        run: >
+          bandit -r . -f sarif -o bandit.sarif --exit-zero
+          -x ./tests,./.git,./static,./templates,./club/backup
+      - uses: github/codeql-action/upload-sarif@v3
+        # Fork PRs have no permission to upload SARIF.
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          sarif_file: bandit.sarif
+          category: bandit
+      # Blocking gate: fail on medium or higher severity findings.
+      - name: Bandit gate (medium+)
+        run: bandit -r . -ll -x ./tests,./.git,./static,./templates,./club/backup
+
+  codeql:
+    name: CodeQL (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python, actions]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended
+      - uses: github/codeql-action/analyze@v3
+        with:
+          category: /language:${{ matrix.language }}
+
+  django-deploy-check:
+    name: Django deploy checklist
+    runs-on: ubuntu-latest
+    # Informational until HTTPS settings (HSTS, secure cookies, SSL redirect) are decided.
+    continue-on-error: true
+    env:
+      DB_ENGINE: django.db.backends.sqlite3
+      DB_NAME: ci.sqlite3
+      DEBUG: "False"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - run: sudo apt-get update && sudo apt-get install -y pkg-config default-libmysqlclient-dev
+      - run: pip install -r requirements.txt
+      - name: manage.py check --deploy
+        run: |
+          export SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')"
+          set -o pipefail
+          python manage.py check --deploy --fail-level WARNING 2>&1 | tee deploy-check.txt
+      - name: Summary
+        if: always()
+        run: |
+          echo '### Django deploy check' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat deploy-check.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+  pip-audit:
+    name: Dependency audit (pip-audit)
+    runs-on: ubuntu-latest
+    # Informational for now: djangorestframework-jwt pins an old PyJWT with known CVEs.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y pkg-config default-libmysqlclient-dev
+      - run: pip install pip-audit
+      - run: pip-audit -r requirements.txt
+
+  dependency-review:
+    name: Dependency review (new deps in PR)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: on-failure
